@@ -1,0 +1,9 @@
+[env]
+NAME = "fevunge"
+FULLNAME = "Fernando Vunge"
+
+[tasks]
+push = "git push origin main"
+
+[tools]
+ruby = "4.0.1"
