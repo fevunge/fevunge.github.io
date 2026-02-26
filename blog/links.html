@@ -1,341 +1,306 @@
 <!DOCTYPE html>
 <html lang="pt">
+
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Construindo CLIs performáticos em Rust no 2026 | Blog seu-cli</title>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>Construindo CLIs performáticos em Rust no 2026 | Blog seu-cli</title>
 
-  <!-- Meta tags básicas -->
-  <meta name="description" content="Guia prático para criar ferramentas de linha de comando rápidas e agradáveis usando Rust em 2026." />
-  <meta name="author" content="Fernando" />
+	<!-- Meta tags básicas -->
+	<meta name="description"
+		content="Guia prático para criar ferramentas de linha de comando rápidas e agradáveis usando Rust em 2026." />
+	<meta name="author" content="Fernando" />
 
-  <!-- Open Graph -->
-  <meta property="og:title" content="Construindo CLIs performáticos em Rust no 2026" />
-  <meta property="og:description" content="Por que Rust está dominando o mundo das ferramentas CLI? Estrutura, boas práticas e exemplo real." />
-  <meta property="og:image" content="https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&q=80&w=1200" />
-  <meta property="og:type" content="article" />
+	<!-- Open Graph -->
+	<meta property="og:title" content="Construindo CLIs performáticos em Rust no 2026" />
+	<meta property="og:description"
+		content="Por que Rust está dominando o mundo das ferramentas CLI? Estrutura, boas práticas e exemplo real." />
+	<meta property="og:image"
+		content="https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&q=80&w=1200" />
+	<meta property="og:type" content="article" />
 
-  <!-- Nerd Fonts -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@nerdfonts/nerd-fonts@latest/css/nerd-fonts.min.css">
+	<!-- Nerd Fonts -->
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@nerdfonts/nerd-fonts@latest/css/nerd-fonts.min.css">
 
-  <style>
-    :root {
-      --color-blue:   #09598A;
-      --color-white:  #F4F3F1;
-      --color-gray:   #707887;
-      --color-black:  #222427;
-    }
+	<style>
+		:root {
+			--color-blue: #09598A;
+			--color-white: #F4F3F1;
+			--color-gray: #707887;
+			--color-black: #222427;
+		}
 
-    body {
-      background: var(--color-white);
-      color: var(--color-black);
-      margin: 0;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-      line-height: 1.72;
-      font-size: 1.08rem;
-    }
+		body {
+			background: var(--color-white);
+			color: var(--color-black);
+			margin: 0;
+			font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+			line-height: 1.72;
+			font-size: 1.08rem;
+		}
 
-    .container {
-      max-width: 820px;
-      margin: 0 auto;
-      padding: 0 1.5rem;
-    }
+		.container {
+			max-width: 820px;
+			margin: 0 auto;
+			padding: 0 1.5rem;
+		}
 
-    /* Navbar mínima */
-    .navbar {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 70px;
-      background: var(--color-white);
-      border-bottom: 1px solid rgba(112, 136, 135, 0.15);
-      z-index: 100;
-      display: flex;
-      align-items: center;
-    }
+		/* Navbar mínima */
+		.navbar {
+			position: fixed;
+			top: 0;
+			left: 0;
+			right: 0;
+			height: 70px;
+			background: var(--color-white);
+			border-bottom: 1px solid rgba(112, 136, 135, 0.15);
+			z-index: 100;
+			display: flex;
+			align-items: center;
+		}
 
-    .nav-inner {
-      max-width: 820px;
-      margin: 0 auto;
-      width: 100%;
-      padding: 0 1.5rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
+		.nav-inner {
+			max-width: 820px;
+			margin: 0 auto;
+			width: 100%;
+			padding: 0 1.5rem;
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+		}
 
-    .back-link {
-      color: var(--color-blue);
-      text-decoration: none;
-      font-weight: 500;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
+		.back-link {
+			color: var(--color-blue);
+			text-decoration: none;
+			font-weight: 500;
+			display: flex;
+			align-items: center;
+			gap: 0.5rem;
+		}
 
-    .back-link:hover {
-      text-decoration: underline;
-    }
+		.back-link:hover {
+			text-decoration: underline;
+		}
 
-    main {
-      padding-top: 140px;
-      padding-bottom: 6rem;
-    }
+		main {
+			padding-top: 140px;
+			padding-bottom: 6rem;
+		}
 
-    .article-header {
-      text-align: center;
-      margin-bottom: 4rem;
-    }
+		.article-header {
+			text-align: center;
+			margin-bottom: 4rem;
+		}
 
-    .article-meta {
-      color: var(--color-gray);
-      font-size: 0.98rem;
-      margin-bottom: 1.2rem;
-    }
+		.article-meta {
+			color: var(--color-gray);
+			font-size: 0.98rem;
+			margin-bottom: 1.2rem;
+		}
 
-    .article-meta span {
-      margin: 0 0.8rem;
-    }
+		.article-meta span {
+			margin: 0 0.8rem;
+		}
 
-    .article-title {
-      font-size: 3.1rem;
-      font-weight: 700;
-      line-height: 1.15;
-      margin: 0 0 1.5rem;
-      color: var(--color-black);
-    }
+		.article-title {
+			font-size: 3.1rem;
+			font-weight: 700;
+			line-height: 1.15;
+			margin: 0 0 1.5rem;
+			color: var(--color-black);
+		}
 
-    .article-subtitle {
-      font-size: 1.32rem;
-      color: var(--color-gray);
-      margin: 0;
-      font-weight: 400;
-    }
+		.article-subtitle {
+			font-size: 1.32rem;
+			color: var(--color-gray);
+			margin: 0;
+			font-weight: 400;
+		}
 
-    .article-content {
-      font-size: 1.1rem;
-    }
+		.article-content {
+			font-size: 1.1rem;
+		}
 
-    .article-content h2,
-    .article-content h3 {
-      font-weight: 700;
-      color: var(--color-black);
-      margin: 2.8rem 0 1.4rem;
-    }
+		.article-content h2,
+		.article-content h3 {
+			font-weight: 700;
+			color: var(--color-black);
+			margin: 2.8rem 0 1.4rem;
+		}
 
-    .article-content h2 {
-      font-size: 2.1rem;
-    }
+		.article-content h2 {
+			font-size: 2.1rem;
+		}
 
-    .article-content h3 {
-      font-size: 1.65rem;
-    }
+		.article-content h3 {
+			font-size: 1.65rem;
+		}
 
-    .article-content p {
-      margin: 1.4rem 0;
-    }
+		.article-content p {
+			margin: 1.4rem 0;
+		}
 
-    .article-content code {
-      font-family: "JetBrainsMono Nerd Font", "FiraCode Nerd Font", monospace;
-      background: rgba(112, 136, 135, 0.08);
-      padding: 0.2em 0.45em;
-      border-radius: 4px;
-      color: var(--color-blue);
-      font-size: 0.96em;
-    }
+		.article-content code {
+			font-family: "JetBrainsMono Nerd Font", "FiraCode Nerd Font", monospace;
+			background: rgba(112, 136, 135, 0.08);
+			padding: 0.2em 0.45em;
+			border-radius: 4px;
+			color: var(--color-blue);
+			font-size: 0.96em;
+		}
 
-    .article-content pre {
-      background: var(--color-black);
-      color: #d4d4d8;
-      padding: 1.4rem 1.6rem;
-      border-radius: 8px;
-      overflow-x: auto;
-      font-family: "JetBrainsMono Nerd Font", monospace;
-      font-size: 0.97rem;
-      line-height: 1.55;
-      margin: 1.8rem 0;
-    }
+		.article-content pre {
+			background: var(--color-black);
+			color: #d4d4d8;
+			padding: 1.4rem 1.6rem;
+			border-radius: 8px;
+			overflow-x: auto;
+			font-family: "JetBrainsMono Nerd Font", monospace;
+			font-size: 0.97rem;
+			line-height: 1.55;
+			margin: 1.8rem 0;
+		}
 
-    .article-content pre code {
-      background: none;
-      padding: 0;
-      color: inherit;
-    }
+		.article-content pre code {
+			background: none;
+			padding: 0;
+			color: inherit;
+		}
 
-    .article-content ul,
-    .article-content ol {
-      padding-left: 1.8rem;
-      margin: 1.4rem 0;
-    }
+		.article-content ul,
+		.article-content ol {
+			padding-left: 1.8rem;
+			margin: 1.4rem 0;
+		}
 
-    .article-content a {
-      color: var(--color-blue);
-      text-decoration: none;
-      font-weight: 500;
-      transition: color 0.14s ease;
-    }
+		.article-content a {
+			color: var(--color-blue);
+			text-decoration: none;
+			font-weight: 500;
+			transition: color 0.14s ease;
+		}
 
-    .article-content a:hover {
-      color: #074b75;
-      text-decoration: underline;
-    }
+		.article-content a:hover {
+			color: #074b75;
+			text-decoration: underline;
+		}
 
-    .article-footer {
-      margin-top: 5rem;
-      padding-top: 2.5rem;
-      border-top: 1px solid rgba(112, 136, 135, 0.18);
-      text-align: center;
-    }
+		.article-footer {
+			margin-top: 5rem;
+			padding-top: 2.5rem;
+			border-top: 1px solid rgba(112, 136, 135, 0.18);
+			text-align: center;
+		}
 
-    .share-title {
-      font-size: 1.35rem;
-      margin-bottom: 1.5rem;
-      color: var(--color-gray);
-    }
+		.share-title {
+			font-size: 1.35rem;
+			margin-bottom: 1.5rem;
+			color: var(--color-gray);
+		}
 
-    .share-links {
-      display: flex;
-      justify-content: center;
-      gap: 1.8rem;
-      flex-wrap: wrap;
-    }
+		.share-links {
+			display: flex;
+			justify-content: center;
+			gap: 1.8rem;
+			flex-wrap: wrap;
+		}
 
-    .share-link {
-      color: var(--color-blue);
-      font-size: 1.4rem;
-      text-decoration: none;
-      transition: color 0.14s ease;
-    }
+		.share-link {
+			color: var(--color-blue);
+			font-size: 1.4rem;
+			text-decoration: none;
+			transition: color 0.14s ease;
+		}
 
-    .share-link:hover {
-      color: #074b75;
-    }
+		.share-link:hover {
+			color: #074b75;
+		}
 
-    @media (max-width: 680px) {
-      .article-title {
-        font-size: 2.4rem;
-      }
-      .article-content {
-        font-size: 1.05rem;
-      }
-      .article-content h2 {
-        font-size: 1.9rem;
-      }
-    }
-  </style>
+		@media (max-width: 680px) {
+			.article-title {
+				font-size: 2.4rem;
+			}
+
+			.article-content {
+				font-size: 1.05rem;
+			}
+
+			.article-content h2 {
+				font-size: 1.9rem;
+			}
+		}
+	</style>
 </head>
+
 <body>
 
-  <nav class="navbar">
-    <div class="nav-inner">
-      <a href="/blog" class="back-link">
-        ← Voltar ao blog
-      </a>
-      <a href="/" class="logo">seu<span class="mono">cli</span></a>
-    </div>
-  </nav>
+	<nav class="navbar">
+		<div class="nav-inner">
+			<a href="/blog" class="back-link">
+				← Voltar ao blog
+			</a>
+			<a href="/" class="logo">seu<span class="mono">cli</span></a>
+		</div>
+	</nav>
 
-  <main class="container">
+	<main class="container">
 
-    <header class="article-header">
-      <div class="article-meta">
-        <time datetime="2026-02-26">26 de fevereiro de 2026</time>
-        <span>•</span>
-        <span>9 min de leitura</span>
-      </div>
+		<header class="article-header">
+			<div class="article-meta">
+				<time datetime="2026-02-26">26 de fevereiro de 2026</time>
+				<span>•</span>
+				<span>9 min de leitura</span>
+			</div>
 
-      <h1 class="article-title">
-        Construindo CLIs performáticos em Rust no 2026
-      </h1>
+			<h1 class="article-title">
+				Links úteis para profissionais de TI
+			</h1>
 
-      <p class="article-subtitle">
-        Por que Rust está dominando o mundo das ferramentas de linha de comando? Estrutura moderna, boas práticas e um exemplo real que você pode usar como base.
-      </p>
-    </header>
+			<p class="article-subtitle">
+				Uma coleção de links úteis para profissionais de TI, incluindo recursos de aprendizado, ferramentas e
+				comunidades.
 
-    <article class="article-content">
 
-      <p>Se você acompanha o ecossistema de ferramentas CLI nos últimos anos, já deve ter percebido uma tendência clara: <strong>Rust</strong> está tomando conta de projetos que exigem performance, segurança e binários pequenos.</p>
+			</p>
+		</header>
 
-      <p>Projetos como <code>ripgrep</code>, <code>bat</code>, <code>fd</code>, <code>zoxide</code>, <code>starship</code> e até partes do próprio <code>deno</code> mostram que Rust não é mais apenas “a linguagem do futuro” — ela já é o presente para quem quer CLIs rápidas e confiáveis.</p>
+		<article class="article-content">
 
-      <h2>Por que escolher Rust para CLIs em 2026?</h2>
+			<ul>
+				<li><a href="https://github.com/naoimportaweb/book">naoimportaweb-book</a></li>
+				<li><a
+						href="https://github.com/sdmg15/Best-websites-a-programmer-should-visit">Best-websites-a-programmer-should-visit</a>
+				</li>
+				<li><a href="https://github.com/codecrafters-io/build-your-own-x">build-your-own-x</a></li>
+				<li><a href="https://github.com/AzatAI/cs_books"></a>cs_books</li>
+				<li><a href="https://www.atsflow.xyz/">atsflow</a></li>
+			</ul>
 
-      <ul>
-        <li>Compilação para binário único (sem runtime)</li>
-        <li>Velocidade próxima de C/C++</li>
-        <li>Segurança de memória garantida em compile-time</li>
-        <li>Ecossistema maduro para argumentos (<code>clap</code>), cores (<code>colored</code>), erros (<code>anyhow</code>, <code>thiserror</code>)</li>
-        <li>Cross-compilation fácil para Linux, macOS, Windows</li>
-      </ul>
+		</article>
+		<footer class="article-footer">
+			<p class="share-title">Gostou do artigo? Compartilhe:</p>
 
-      <h2>Estrutura recomendada de projeto (2026)</h2>
+			<div class="share-links">
+				<a href="https://twitter.com/intent/tweet?text=Construindo%20CLIs%20perform%C3%A1ticos%20em%20Rust%20no%202026&url=https://seu-cli.dev/blog/rust-cli-2026"
+					target="_blank" class="share-link">
+					X
+				</a>
+				<a href="https://www.linkedin.com/sharing/share-offsite/?url=https://seu-cli.dev/blog/rust-cli-2026"
+					target="_blank" class="share-link">
+					LinkedIn
+				</a>
+				<a href="#"
+					onclick="navigator.clipboard.writeText(window.location.href); alert('Link copiado!'); return false;"
+					class="share-link">
+					Copiar Link
+				</a>
+			</div>
 
-      <pre><code>seu-cli/
-├── Cargo.toml
-├── src/
-│   ├── main.rs
-│   ├── cli.rs          # Definição do Clap
-│   ├── commands/       # Cada subcomando em um arquivo
-│   │   ├── init.rs
-│   │   ├── run.rs
-│   │   └── ...
-│   ├── utils.rs        # Cores, logging, etc
-│   └── errors.rs
-└── README.md</code></pre>
+		</footer>
+		<br><br><br>
 
-      <p>Exemplo de <code>cli.rs</code> usando Clap v4:</p>
-
-      <pre><code>use clap::{Parser, Subcommand};
-
-#[derive(Parser)]
-#[command(name = "seu-cli", version, about = "Ferramenta CLI prazerosa")]
-pub struct Cli {
-    #[command(subcommand)]
-    pub command: Commands,
-}
-
-#[derive(Subcommand)]
-pub enum Commands {
-    Init(InitArgs),
-    Run(RunArgs),
-    // ...
-}</code></pre>
-
-      <!-- Continue o conteúdo do artigo aqui com mais <p>, <h2>, <pre>, <ul>, etc. -->
-
-      <h2>Conclusão</h2>
-
-      <p>Rust continua sendo uma das melhores escolhas para ferramentas CLI em 2026. Se você ainda está em Go ou Python e sente que a performance ou o tamanho do binário está limitando seu projeto, vale a pena experimentar.</p>
-
-      <p>Quer ver um exemplo completo? O repositório do <strong>seu-cli</strong> está aberto:</p>
-
-      <p style="text-align: center; margin: 2.5rem 0;">
-        <a href="https://github.com/seu-usuario/seu-cli" style="font-size: 1.3rem; font-weight: 600;">
-          github.com/seu-usuario/seu-cli
-        </a>
-      </p>
-
-    </article>
-
-    <footer class="article-footer">
-      <p class="share-title">Gostou do artigo? Compartilhe:</p>
-
-      <div class="share-links">
-        <a href="https://twitter.com/intent/tweet?text=Construindo%20CLIs%20perform%C3%A1ticos%20em%20Rust%20no%202026&url=https://seu-cli.dev/blog/rust-cli-2026" target="_blank" class="share-link">
-          <i class="nf nf-fa-twitter"></i>
-        </a>
-        <a href="https://www.linkedin.com/sharing/share-offsite/?url=https://seu-cli.dev/blog/rust-cli-2026" target="_blank" class="share-link">
-          <i class="nf nf-fa-linkedin"></i>
-        </a>
-        <a href="#" onclick="navigator.clipboard.writeText(window.location.href); alert('Link copiado!'); return false;" class="share-link">
-          <i class="nf nf-md-link"></i>
-        </a>
-      </div>
-    </footer>
-
-  </main>
+	</main>
 
 </body>
+
 </html>
