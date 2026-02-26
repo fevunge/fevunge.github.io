@@ -19,21 +19,166 @@
       list-style: none;
       padding-left: 20px;
     }
+
+    .blog-section {
+      padding: 7rem 1.5rem 5rem;
+      background: var(--color-white);
+    }
+
+    .blog-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 2.5rem;
+      margin-top: 3rem;
+    }
+
+    .blog-card {
+      background: white;
+      border-radius: 8px;
+      overflow: hidden;
+      border: 1px solid rgba(112, 136, 135, 0.12);
+      transition: border-color 0.18s ease, transform 0.18s ease;
+    }
+
+    .blog-card:hover {
+      border-color: var(--color-blue);
+      transform: translateY(-4px);
+    }
+
+    .blog-image img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      display: block;
+    }
+
+    .blog-content {
+      padding: 1.6rem 1.8rem 2rem;
+    }
+
+    .blog-title {
+      font-size: 1.38rem;
+      font-weight: 700;
+      margin: 0 0 0.9rem;
+      line-height: 1.3;
+      color: var(--color-black);
+    }
+
+    .blog-excerpt {
+      font-size: 1rem;
+      line-height: 1.55;
+      color: var(--color-gray);
+      margin: 0 0 1.4rem;
+    }
+
+    .btn-read-more {
+      display: inline-flex;
+      align-items: center;
+      color: var(--color-blue);
+      font-weight: 600;
+      text-decoration: none;
+      font-size: 1.02rem;
+      transition: color 0.14s ease;
+    }
+
+    .btn-read-more:hover {
+      color: #074b75;
+      text-decoration: underline;
+    }
+
+    @media (max-width: 600px) {
+      .blog-grid {
+        gap: 2rem;
+      }
+
+      .blog-card {
+        margin: 0 auto;
+        max-width: 380px;
+      }
+    }
   </style>
 </head>
 
 <body>
-  <ul>
-    <li><a href="https://github.com/practical-tutorials/project-based-learning.git">project-based-learning</a></li>
-    <li><a href="https://github.com/AzatAI/cs_books">computer-science-books</a></li>
+  <main>
+    <section id="blog" class="section blog-section">
+      <div class="container">
+
+        <h2>Blog & Dicas</h2>
+
+        <p class="section-intro">
+          Artigos, tutoriais e atualizações sobre CLI, produtividade no terminal e desenvolvimento.
+        </p>
+
+        <div class="blog-grid">
+
+          <!-- Card 1 -->
+          <article class="blog-card">
+            <div class="blog-image">
+              <img src="https://avatars.githubusercontent.com/u/89421154?s=200&v=4"
+                alt="Terminal moderno com comandos CLI" loading="lazy">
+            </div>
+            <div class="blog-content">
+              <h3 class="blog-title">Project Based Learning</h3>
+              <p class="blog-excerpt">
+                A list of programming tutorials in which aspiring software developers learn how to build an application from scratch. These tutorials are divided into different primary programming languages.
+              </p>
+              <a href="https://github.com/practical-tutorials/project-based-learning.git" class="btn-read-more">
+                Ler mais →
+              </a>
+            </div>
+          </article>
+
+          <!-- Card 2 -->
+          <article class="blog-card">
+            <div class="blog-image">
+              <img src="https://avatars.githubusercontent.com/u/56104965?s=200&v=4"
+                alt="Dicas de terminal avançado" loading="lazy">
+            </div>
+            <div class="blog-content">
+              <h3 class="blog-title">Computer Science Books</h3>
+              <p class="blog-excerpt">
+                Computer science books Recommended by AzatAI. (Education ONLY)
+              </p>
+              <a href="https://github.com/AzatAI/cs_books" class="btn-read-more">
+                Read more →
+              </a>
+            </div>
+          </article>
+
+          <!-- Card 3 -->
+          <article class="blog-card">
+            <div class="blog-image">
+              <img src="https://www.atsflow.xyz/assets/images/ats-flow.png"
+                alt="Automação com scripts shell" loading="lazy">
+            </div>
+            <div class="blog-content">
+              <h3 class="blog-title">Free ATS-first resume builder.</h3>
+              <p class="blog-excerpt">
+                Create, edit, and export professional resumes using a clean visual editor.
+              </p>
+              <a href="https://www.atsflow.xyz/" class="btn-read-more">
+                Ler mais →
+              </a>
+            </div>
+          </article>
+
+          <!-- Adicione mais cards aqui conforme necessário -->
+
+        </div>
+
+      </div>
+    </section>
+  </main>
+<footer>
+<ul>
     <li><a href="https://github.com/naoimportaweb/book">naoimportaweb-book</a></li>
     <li><a
         href="https://github.com/sdmg15/Best-websites-a-programmer-should-visit">Best-websites-a-programmer-should-visit</a>
     </li>
     <li><a href="https://github.com/codecrafters-io/build-your-own-x">build-your-own-x</a></li>
-    <li><a href="https://www.atsflow.xyz/">Free ATS-first resume builder.</a></li>
-
   </ul>
+</footer>
 </body>
 
 </html>
