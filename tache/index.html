@@ -1,18 +1,101 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Tachê</title>
+	<link rel="shortcut icon" href="assets/image/image.png" type="image/x-icon">
 	<link rel="stylesheet" href="assets/css/normalize.css">
+	<!-- Compiled and minified CSS -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+	<!-- Compiled and minified JavaScript -->
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@nerdfonts/nerd-fonts@latest/css/nerd-fonts.min.css">
 	<link rel="stylesheet" href="assets/css/style.css">
-	<script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-	    
 </head>
+
 <body>
-	<h1 class="text-3xl font-bold underline">
-      Hello world!
-    </h1>
+	<main>
+		<section class="hero">
+			<div>
+				<span class="logo"><img src="assets/image/image.png" alt="logo"></span>
+				<h1>tachê</h1>
+				<p class="subtitle">
+					An enterprise-grade task management system built entirely in the terminal <br>
+					designed to mirror the rigor <br>
+					and low-level thinking encouraged by 42 School projects.</p>
+				<div>
+					<a class="buttons btn-simple btn-primary" href="#installation">Get Started</a>
+					<a  class="buttons btn-simple" href="github.com/fevunge/tache" target="_blank">View on GitHub</a>
+				</div>
+				<div class="section-links">
+					<a href="#installation">Installation</a>
+					<a href="#features">Features</a>
+					<a href="#use-guide">Use Guide</a>
+				</div>
+			</div>
+
+		</section>
+
+		<article id="installation">
+			<h2>Installation</h2>
+			<hr><br>
+			<div class="container">
+				<p class="section-intro">
+					Instale o em menos de 30 segundos.
+					Escolha o método que preferir.
+				</p>
+
+				
+				<p>1. Via npm (recomendado)</p>
+				<div class="install-block">
+					<pre><code class="mono">npm install -g seu-cli</code></pre>
+					<p>Ou com yarn/pnpm:</p>
+					<pre><code class="mono">yarn global add seu-cli</code></pre>
+					<pre><code class="mono">pnpm add -g seu-cli</code></pre>
+				</div>
+
+				<p>2. Instalação rápida com um comando (curl)</p>
+				<div class="install-block">
+					<pre><code class="mono">curl -fsSL https://get.seucli.dev | bash</code></pre>
+					<p class="small-note">
+						Ou com wget:
+					</p>
+					<pre><code class="mono">wget -qO- https://get.seucli.dev | bash</code></pre>
+				</div>
+
+				<p>3. Download manual (binários prontos)</p>
+				<div class="install-block">
+					<p>Baixe a versão mais recente para o seu sistema:</p>
+					<ul class="install-options">
+						<li><a href="https://github.com/seu-usuario/seu-cli/releases/latest/download/seu-cli-linux-amd64"
+								class="link-mono">Linux (x64)</a></li>
+						<li><a href="https://github.com/seu-usuario/seu-cli/releases/latest/download/seu-cli-macos-arm64"
+								class="link-mono">macOS (Apple Silicon)</a></li>
+						<li><a href="https://github.com/seu-usuario/seu-cli/releases/latest/download/seu-cli-macos-x64"
+								class="link-mono">macOS (Intel)</a></li>
+						<li><a href="https://github.com/seu-usuario/seu-cli/releases/latest/download/seu-cli-windows.exe"
+								class="link-mono">Windows</a></li>
+					</ul>
+					<p class="small-note">Depois de baixar, coloque o binário em um diretório no seu <code>$PATH</code>.
+					</p>
+				</div>
+
+				<p>Verifique a instalação</p>
+				<div class="install-block verify">
+					<pre><code class="mono">seu-cli --version</code></pre>
+					<p>Ou veja a ajuda:</p>
+					<pre><code class="mono">seu-cli --help</code></pre>
+				</div>
+
+			</div>
+			
+		</article>
+
+	</main>
+
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 	<script src="js/script.js"></script>
 </body>
+
 </html>
