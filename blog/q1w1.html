@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="pt">
+
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>Construindo CLIs performáticos em Rust no 2026 | Blog seu-cli</title>
+
+	<!-- Meta tags básicas -->
+	<meta name="description"
+		content="Guia prático para criar ferramentas de linha de comando rápidas e agradáveis usando Rust em 2026." />
+	<meta name="author" content="Fernando" />
+
+	<!-- Open Graph -->
+	<meta property="og:title" content="Construindo CLIs performáticos em Rust no 2026" />
+	<meta property="og:description"
+		content="Por que Rust está dominando o mundo das ferramentas CLI? Estrutura, boas práticas e exemplo real." />
+	<meta property="og:image"
+		content="https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&q=80&w=1200" />
+	<meta property="og:type" content="article" />
+
+	<!-- Nerd Fonts -->
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@nerdfonts/nerd-fonts@latest/css/nerd-fonts.min.css">
+
+	<style>
+		:root {
+			--color-blue: #09598A;
+			--color-white: #F4F3F1;
+			--color-gray: #707887;
+			--color-black: #222427;
+		}
+
+		body {
+			background: var(--color-white);
+			color: var(--color-black);
+			margin: 0;
+			font-family: "JetBrainsMono Nerd Font", "FiraCode Nerd Font", monospace;
+			line-height: 1.72;
+			font-size: 1.08rem;
+		}
+
+		.container {
+			max-width: 820px;
+			margin: 0 auto;
+			padding: 0 1.5rem;
+		}
+
+		/* Navbar mínima */
+		.navbar {
+			position: fixed;
+			top: 0;
+			left: 0;
+			right: 0;
+			height: 70px;
+			background: var(--color-white);
+			border-bottom: 1px solid rgba(112, 136, 135, 0.15);
+			z-index: 100;
+			display: flex;
+			align-items: center;
+		}
+
+		.nav-inner {
+			max-width: 820px;
+			margin: 0 auto;
+			width: 100%;
+			padding: 0 1.5rem;
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+		}
+
+		.back-link {
+			color: var(--color-blue);
+			text-decoration: none;
+			font-weight: 500;
+			display: flex;
+			align-items: center;
+			gap: 0.5rem;
+		}
+
+		.back-link:hover {
+			text-decoration: underline;
+		}
+
+		main {
+			padding-top: 140px;
+			padding-bottom: 6rem;
+		}
+
+		.article-header {
+			text-align: center;
+			margin-bottom: 4rem;
+		}
+
+		.article-meta {
+			color: var(--color-gray);
+			font-size: 0.98rem;
+			margin-bottom: 1.2rem;
+		}
+
+		.article-meta span {
+			margin: 0 0.8rem;
+		}
+
+		.article-title {
+			font-size: 3.1rem;
+			font-weight: 700;
+			line-height: 1.15;
+			margin: 0 0 1.5rem;
+			color: var(--color-black);
+		}
+
+		.article-subtitle {
+			font-size: 1.32rem;
+			color: var(--color-gray);
+			margin: 0;
+			font-weight: 400;
+		}
+
+		.article-content {
+			font-size: 1.1rem;
+		}
+
+		.article-content h2,
+		.article-content h3 {
+			font-weight: 700;
+			color: var(--color-black);
+			margin: 2.8rem 0 1.4rem;
+		}
+
+		.article-content h2 {
+			font-size: 2.1rem;
+		}
+
+		.article-content h3 {
+			font-size: 1.65rem;
+		}
+
+		.article-content p {
+			margin: 1.4rem 0;
+		}
+
+		.article-content code {
+			font-family: "JetBrainsMono Nerd Font", "FiraCode Nerd Font", monospace;
+			background: rgba(112, 136, 135, 0.08);
+			padding: 0.2em 0.45em;
+			border-radius: 4px;
+			color: var(--color-blue);
+			font-size: 0.96em;
+		}
+
+		.article-content pre {
+			background: var(--color-black);
+			color: #d4d4d8;
+			padding: 1.4rem 1.6rem;
+			border-radius: 8px;
+			overflow-x: auto;
+			font-family: "JetBrainsMono Nerd Font", monospace;
+			font-size: 0.97rem;
+			line-height: 1.55;
+			margin: 1.8rem 0;
+		}
+
+		.article-content pre code {
+			background: none;
+			padding: 0;
+			color: inherit;
+		}
+
+		.article-content ul,
+		.article-content ol {
+			padding-left: 1.8rem;
+			margin: 1.4rem 0;
+		}
+
+		.article-content a {
+			color: var(--color-blue);
+			text-decoration: none;
+			font-weight: 500;
+			transition: color 0.14s ease;
+		}
+
+		.article-content a:hover {
+			color: #074b75;
+			text-decoration: underline;
+		}
+
+		.article-footer {
+			margin-top: 5rem;
+			padding-top: 2.5rem;
+			border-top: 1px solid rgba(112, 136, 135, 0.18);
+			text-align: center;
+		}
+
+		.share-title {
+			font-size: 1.35rem;
+			margin-bottom: 1.5rem;
+			color: var(--color-gray);
+		}
+
+		.share-links {
+			display: flex;
+			justify-content: center;
+			gap: 1.8rem;
+			flex-wrap: wrap;
+		}
+
+		.share-link {
+			color: var(--color-blue);
+			font-size: 1.4rem;
+			text-decoration: none;
+			transition: color 0.14s ease;
+		}
+
+		.share-link:hover {
+			color: #074b75;
+		}
+
+		@media (max-width: 680px) {
+			.article-title {
+				font-size: 2.4rem;
+			}
+
+			.article-content {
+				font-size: 1.05rem;
+			}
+
+			.article-content h2 {
+				font-size: 1.9rem;
+			}
+		}
+	</style>
+</head>
+
+<body>
+
+	<nav class="navbar">
+		<div class="nav-inner">
+			<a href="index.html" class="back-link">
+				← Voltar ao blog
+			</a>
+			<a href="/" class="logo">seu<span class="mono">cli</span></a>
+		</div>
+	</nav><br><br><br><br>
+
+	<main class="container">
+
+		<header class="article-header">
+			<div class="article-meta">
+				<time datetime="2026-02-26">26 de fevereiro de 2026</time>
+				<span>•</span>
+				<span>9 min de leitura</span>
+			</div>
+
+			<h1 class="article-title">
+				TypeScript Avançado + System Design Basics
+			</h1>
+
+			<p class="article-subtitle">
+				Essa é a primeira semana do meu roteiro de estudos para ano de 2026, fazendo parte da <b>FASE1:
+					FUNDAMENTOS AVANÇADOS + CYBERSECURITY</b>
+			</p>
+		</header>
+
+		<article class="article-content">
+
+			<h4>Objetivos de Aprendizado</h4>
+			<p>
+				Oi, eu sou o Fernando e este material/curso/série foi feito pensando exatamente no que eu gostaria de
+				ter dominado há uns anos atrás — e no que vejo fazer muita diferença hoje em dia nos projetos reais, nas
+				entrevistas e na vida de times que entregam produto de verdade.
+			</p>
+
+			<p>Ao final deste percurso, eu quero que você saia daqui se sentindo muito mais seguro e poderoso para lidar
+				com TypeScript no nível sênior, escrever código limpo que escala e adotar práticas profissionais que
+				realmente impressionam (e facilitam a vida) em empresas sérias.</p>
+
+			<h5>O que pretendo dominar de forma prática e profunda no final dessa semana?:</h5>
+
+			<p>
+				Entender e aplicar com naturalidade os recursos mais poderosos do sistema de tipos: <br>
+				<code>Generics</code> avançados (constraints, keyof, infer, distributive conditional types), <br>
+				<code>Conditional Types</code> em profundidade (inferência condicional, tipos utilitários customizados,
+				tipo “é isso ou aquilo”), <br>
+				<code>Mapped Types</code> e <code>Template Literal Types</code> para criar tipos dinâmicos,
+				transformações de objetos e utilitários extremamente expressivos, <br> Criação de tipos utilitários
+				próprios que imitam os do próprio TypeScript (Partial, Required, Pick, Omit, etc.)
+			</p>
+			<p>
+				<strong>Design Patterns</strong>, vou implementar e questionar cada um na prática <br>
+				Vou pegar os padrões clássicos, implementar em TypeScript moderno (com tipos fortes), testar em cenários
+				reais e decidir sozinho quando eles valem a pena ou quando são só firula. <br> Meu plano <br>
+				<strong>Factory</strong> (Method e Abstract Factory) – criar fábricas tipadas e flexíveis <br>
+				<strong> Singleton</strong> – testar várias abordagens seguras em TS/JS e escolher a que eu mais confio
+				<br>
+				Observer / Pub-Sub – fazer na mão, comparar com EventEmitter e ver se vale usar libs modernas <br>
+				E o principal: vou me perguntar sempre “isso resolve um problema de verdade ou estou forçando padrão por
+				moda?” <br>
+
+			</p>
+			<p>
+				Princípios SOLID – vou aplicar, quebrar e consertar na prática
+				Chega de ler teoria bonita. Eu quero viver cada letra no código que eu escrevo sozinho:
+				<br>
+				Single Responsibility: refatorar códigos meus antigos e ver onde a responsabilidade vaza <br>
+				Open/Closed: criar sistemas extensíveis sem tocar no código existente <br>
+				Liskov Substitution: caçar exemplos reais onde herança quebra o princípio (e eu já caí nisso) <br>
+				Interface Segregation: aplicar em APIs e componentes React/Next.js que eu crio <br>
+				Dependency Inversion: praticar injeção de dependência manual e testar com containers leves <br>
+				Vou debater comigo mesmo onde o SOLID ajuda de verdade e onde ele vira dogma que atrapalha a
+				produtividade.
+			</p>
+
+			
+			<p>Quer ver um exemplo completo? O repositório do <strong>seu-cli</strong> está aberto:</p>
+
+			<p style="text-align: center; margin: 2.5rem 0;">
+				<a href="https://github.com/seu-usuario/seu-cli" style="font-size: 1.3rem; font-weight: 600;">
+					github.com/seu-usuario/seu-cli
+				</a>
+			</p>
+
+		</article>
+
+		<footer class="article-footer">
+			<p class="share-title">Gostou do artigo? Compartilhe:</p>
+
+			<div class="share-links">
+				<a href="https://twitter.com/intent/tweet?text=Construindo%20CLIs%20perform%C3%A1ticos%20em%20Rust%20no%202026&url=https://seu-cli.dev/blog/rust-cli-2026"
+					target="_blank" class="share-link">
+					X
+				</a>
+				<a href="https://www.linkedin.com/sharing/share-offsite/?url=https://seu-cli.dev/blog/rust-cli-2026"
+					target="_blank" class="share-link">
+					LinkedIn
+				</a>
+				<a href="#"
+					onclick="navigator.clipboard.writeText(window.location.href); alert('Link copiado!'); return false;"
+					class="share-link">
+					Copiar Link
+				</a>
+			</div>
+			
+		</footer>
+		<br><br><br>
+
+	</main>
+
+</body>
+
+</html>
