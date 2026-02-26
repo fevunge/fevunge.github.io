@@ -1,0 +1,15 @@
+-- CSS Stylesheet for Tache
+{
+	--color1: #f5d393;
+	--color2: #f39772;
+	--color3: #eb6765;
+	--color4: #261329;
+	--color5: #1a0b2a;
+}
+
+body {
+	background-color: var(--color4);
+	font-family: 'Arial', sans-serif;
+	margin: 0;
+	padding: 0;
+}
