@@ -1,15 +1,231 @@
--- CSS Stylesheet for Tache
-{
-	--color1: #f5d393;
-	--color2: #f39772;
-	--color3: #eb6765;
-	--color4: #261329;
-	--color5: #1a0b2a;
+root {
+	--color-blue: #09598A;
+	--color-white: #F4F3F1;
+	--color-gray: #707887;
+	--color-black: #222427;
 }
 
 body {
-	background-color: var(--color4);
-	font-family: 'Arial', sans-serif;
+	background: var(--color-white);
+	color: var(--color-black);
+	font-family: "JetBrainsMono Nerd Font", "FiraCode Nerd Font", "Cascadia Code NF", Consolas, monospace;
+	letter-spacing: 0.4px;
 	margin: 0;
-	padding: 0;
+}
+
+.hero h1 {
+	font-size: 4rem;
+	font-weight: 700;
+	margin: 0 0 1.5rem;
+	color: var(--color-black);
+}
+
+article {
+	padding: 4rem 1.5rem;
+	margin: auto;
+	width: 80%;
+}
+
+article h2 {
+	font-size: 2.4rem;
+	font-weight: 600;
+	text-align: center;
+	margin: 0 0 1.2rem;
+	color: var(--color-black);
+}
+
+.section-links {
+	margin: 4rem auto 0;
+	max-width: 600px;
+	text-align: center;
+}
+
+.section-links a {
+	margin: 0 1.8rem;
+	color: var(--color-gray);
+	text-decoration: none;
+	font-size: 1.15rem;
+	font-weight: 500;
+	transition: color 0.14s ease;
+}
+
+.section-links a:hover {
+	color: var(--color-blue);
+}
+
+.hero {
+	min-height: 80vh;
+	display: flex;
+	min-height: 100vh;
+	align-items: center;
+	justify-content: center;
+	text-align: center;
+	background: var(--color-white);
+}
+
+.hero .logo img {
+	width: 120px;
+}
+
+.hero .logo {
+	display: inline-block;
+	margin-bottom: 1.5rem;
+}
+
+.hero-content {
+	max-width: 680px;
+}
+
+h1 {
+	font-size: 3.6rem;
+	font-weight: 700;
+	margin: 0 0 1.2rem;
+	line-height: 1.05;
+	color: var(--color-black);
+	letter-spacing: -0.03em;
+}
+
+.subtitle {
+	font-size: 1.38rem;
+	line-height: 1.48;
+	color: var(--color-gray);
+	margin: 0 0 2.8rem;
+	font-weight: 400;
+}
+
+.buttons {
+	display: flex;
+	gap: 1.2rem;
+	justify-content: center;
+	flex-wrap: wrap;
+	background-color: var(--color-black);
+}
+
+.btn-simple {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.5rem;
+	padding: 0.9rem 1.9rem;
+	font-size: 1.05rem;
+	font-weight: 500;
+	text-decoration: none;
+	border-radius: 6px;
+	transition: all 0.13s ease;
+	border: none;
+	cursor: pointer;
+}
+
+.btn-primary {
+	background: #222427;
+	color: white;
+}
+
+.btn-primary:hover {
+	background: #074b75;
+}
+
+.btn-outline {
+	background: transparent;
+	color: var(--color-blue);
+	border: 2px solid var(--color-blue);
+}
+
+.btn-outline:hover {
+	background: rgba(9, 89, 138, 0.07);
+}
+
+@media (max-width: 600px) {
+	h1 {
+		font-size: 2.8rem;
+	}
+
+	.subtitle {
+		font-size: 1.18rem;
+	}
+
+	.buttons {
+		flex-direction: column;
+		gap: 1rem;
+	}
+
+	.btn-simple {
+		width: 100%;
+		justify-content: center;
+	}
+}
+
+.section-intro {
+  font-size: 1.25rem;
+  color: var(--color-gray);
+  text-align: center;
+  margin: 0 0 3.5rem;
+  line-height: 1.5;
+}
+
+.install-block {
+  margin-bottom: 3.5rem;
+  background: rgba(112, 136, 135, 0.04); /* cinza bem claro */
+  padding: 1.8rem 2rem;
+  border-radius: 8px;
+  border: 1px solid rgba(112, 136, 135, 0.12);
+}
+
+
+.install-block pre {
+  margin: 1rem 0;
+  padding: 1.1rem 1.4rem;
+  background: var(--color-black);
+  color: #074b75;
+  border-radius: 6px;
+  overflow-x: auto;
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+.install-block code.mono {
+  font-family: "JetBrainsMono Nerd Font", "FiraCode Nerd Font", monospace;
+}
+
+.small-note {
+  font-size: 0.95rem;
+  color: var(--color-gray);
+  margin: 0.6rem 0 0;
+}
+
+.install-options {
+  list-style: none;
+  padding: 0;
+  margin: 1.2rem 0;
+}
+
+.install-options li {
+  margin: 0.8rem 0;
+}
+
+.install-options a {
+  color: var(--color-blue);
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.install-options a:hover {
+  text-decoration: underline;
+}
+
+.link-mono {
+  font-family: "JetBrainsMono Nerd Font", monospace;
+}
+
+.verify {
+  background: rgba(9, 89, 138, 0.06);
+  border-color: rgba(9, 89, 138, 0.2);
+}
+
+@media (max-width: 600px) {
+  .section h2 {
+    font-size: 2.2rem;
+  }
+  .install-block {
+    padding: 1.4rem;
+  }
 }
