@@ -8,57 +8,119 @@
   <meta name="author" content="fevunge">
   <title>fevunge index</title>
   <link rel="shortcut icon" href="assets/devunge.png" type="image/x-icon">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
   <link rel="stylesheet" href="assets/css/main.css">
 </head>
 
 <body>
-  <main>
-    <section class="container">
-      <h1>fevunge index</h1>
-      <sub>human coder | software engineer </sub>
-      <br>
+  <div class="container">
+
+    <header class="site-header">
+      <h1>fevunge</h1>
+      <div class="sub">human coder · software engineer</div>
       <div class="contact-links">
-        <a href="https://github.com/fevunge" target="_blank">github@fevunge</a>
+        <a href="https://github.com/fevunge" target="_blank">gh@fevunge</a>
         <a href="https://linkedin.com/in/fevunge" target="_blank">in@fevunge</a>
         <a href="https://x.com/fevunge" target="_blank">x@fevunge</a>
       </div>
-    </section>
+    </header>
 
-    <section class="content-wrapper">
-      <div class="articles-column">
-        <h2>Articles</h2>
-        <div class="cards-list">
-          <article class="card">
-            <h3>article example</h3>
-            <p>article description long enough to test the layout of the card and see how it behaves with more text content. This is just a placeholder for an actual article that would be written in the future.</p>
-            <a href="./blog/article.html">→ read</a>
-          </article>
+    <hr>
+
+    <main class="content-wrapper">
+      <section id="articles-section">
+        <div class="col-header">
+          <h2>Articles</h2>
+          <input
+            type="text"
+            class="search-input"
+            id="search-articles"
+            placeholder="search articles..."
+            aria-label="Search articles"
+          >
         </div>
-      </div>
-
-      <div class="projects-column">
-        <h2>Projects</h2>
-        <div class="cards-list">
-          <article class="card">
-            <h3>Tache</h3>
-            <p> tache-cli: CLI task managment system with local ai</p>
+        <div class="cards-scroll" id="articles-list">
+          <article class="card-item" data-title="article example" data-desc="placeholder description for an article about something interesting">
+            <div class="card-title">article example</div>
+            <div class="card-desc">placeholder description for an article about something interesting.</div>
             <div class="card-links">
-              <a href="https://github.com/fevunge/" target="_blank">→ github</a>
-              <a href="https://fevunge.github.io/" target="_blank">→ page</a>
-            </div>
-          </article>
-          <article class="card">
-            <h3>Pick Framework</h3>
-            <p> pick: secure API framework and security middleware library</p>
-            <div class="card-links">
-              <a href="https://github.com/fevunge/" target="_blank">→ github</a>
-              <a href="https://fevunge.github.io/" target="_blank">→ page</a>
+              <a href="./blog/article.html">read →</a>
             </div>
           </article>
         </div>
-      </div>
-    </section>
-  </main>
+      </section>
+
+      <section id="projects-section">
+        <div class="col-header">
+          <h2>Projects</h2>
+          <input
+            type="text"
+            class="search-input"
+            id="search-projects"
+            placeholder="search projects..."
+            aria-label="Search projects"
+          >
+        </div>
+        <div class="cards-scroll" id="projects-list">
+          <article class="card-item" data-title="tache" data-desc="cli task management system with local ai">
+            <div class="card-title">Tache</div>
+            <div class="card-desc">CLI task management system with local AI.</div>
+            <div class="card-links">
+              <a href="https://github.com/fevunge/" target="_blank">github →</a>
+              <a href="https://fevunge.github.io/" target="_blank">page →</a>
+            </div>
+          </article>
+
+          <article class="card-item" data-title="pick framework" data-desc="secure api framework and security middleware library">
+            <div class="card-title">Pick Framework</div>
+            <div class="card-desc">Secure API framework and security middleware library.</div>
+            <div class="card-links">
+              <a href="https://github.com/fevunge/" target="_blank">github →</a>
+              <a href="https://fevunge.github.io/" target="_blank">page →</a>
+            </div>
+          </article>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <script>
+    function filterList(inputId, listId) {
+      const input = document.getElementById(inputId);
+      const list = document.getElementById(listId);
+
+      input.addEventListener('input', function () {
+        const query = this.value.toLowerCase().trim();
+        const items = list.querySelectorAll('.card-item');
+        let anyVisible = false;
+
+        items.forEach(function (item) {
+          const title = item.getAttribute('data-title') || '';
+          const desc = item.getAttribute('data-desc') || '';
+          const match = title.includes(query) || desc.includes(query);
+          item.style.display = match ? '' : 'none';
+          if (match) anyVisible = true;
+        });
+
+        // show/hide no results message
+        let noMsg = list.querySelector('.no-results');
+        if (!anyVisible) {
+          if (!noMsg) {
+            noMsg = document.createElement('p');
+            noMsg.className = 'no-results';
+            noMsg.textContent = 'no results found.';
+            list.appendChild(noMsg);
+          }
+          noMsg.style.display = '';
+        } else {
+          if (noMsg) noMsg.style.display = 'none';
+        }
+      });
+    }
+
+    filterList('search-articles', 'articles-list');
+    filterList('search-projects', 'projects-list');
+  </script>
+
 </body>
 </html>
