@@ -185,7 +185,7 @@ sup {
 .content-wrapper {
 	display: flex;
 	flex-direction: row;
-	gap: 20px;
+	justify-content: space-between;
 	width: 100%;
 }
 
@@ -193,11 +193,12 @@ sup {
 	display: flex;
 	flex-direction: column;
 	gap: 20px;
+  margin: 4px;
+  max-width: 50%;
 }
 
 .articles-column h2, .projects-column h2 {
 	font-size: 1.8em;
-	margin: 5px 10px;
 	margin-bottom: 10px;
 }
 
