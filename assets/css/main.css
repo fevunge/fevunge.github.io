@@ -230,7 +230,10 @@ section {
   display: flex;
   align-items: center;
   gap: 8px;
+  padding: 4px 8px;
+  padding-bottom: 12px;
 }
+
 
 .search-prefix {
   color: #c29df1;
