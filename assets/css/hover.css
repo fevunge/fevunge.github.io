@@ -1,12 +1,40 @@
 .hover {
+	position: relative;
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
-	padding: 0;
+	padding: 20px;
 	margin: 0;
 	gap: 60px;
+	z-index: 0;
 }
+
+.hover::before {
+	content: "";
+	position: absolute;
+	inset: 0;
+	z-index: -1;
+	background-image:
+		repeating-linear-gradient(90deg, rgba(194, 157, 241, 0.035) 0px, rgba(194, 157, 241, 0.035) 1px, transparent 1px, transparent 48px),
+		repeating-linear-gradient(0deg, rgba(194, 157, 241, 0.035) 0px, rgba(194, 157, 241, 0.035) 1px, transparent 1px, transparent 48px),
+		repeating-linear-gradient(45deg, transparent, transparent 67px, rgba(194, 157, 241, 0.02) 67px, rgba(194, 157, 241, 0.02) 68px, transparent 68px, transparent 136px),
+		repeating-linear-gradient(-45deg, transparent, transparent 67px, rgba(194, 157, 241, 0.02) 67px, rgba(194, 157, 241, 0.02) 68px, transparent 68px, transparent 136px),
+		radial-gradient(circle, rgba(194, 157, 241, 0.08) 1.5px, transparent 1.5px);
+	background-size:
+		48px 100%,
+		100% 48px,
+		100% 100%,
+		100% 100%,
+		48px 48px;
+	background-position:
+		0 0,
+		0 0,
+		0 0,
+		0 0,
+		-1px -1px;
+}
+
 .hover a.devunge-link {
 	width: fit-content;
 	display: flex;
@@ -14,12 +42,14 @@
 	justify-content: center;
 	min-width: min-content;
 }
+
 img.devunge-logo {
 	width: 28%;
 	padding: 0;
 	margin: 0;
 	animation: devunge-bounce 3s ease-in-out infinite;
 }
+
 img.devunge-logo:hover {
 	animation-duration: 1.5s;
 }

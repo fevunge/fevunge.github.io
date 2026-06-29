@@ -40,12 +40,20 @@ a:visited {
   color: #9775fa;
 }
 
+.body-layout {
+  display: flex;
+  gap: 36px;
+  align-items: flex-start;
+  margin: 0 auto;
+  padding: 32px 16px;
+  max-width: 1800px;
+}
+
 .container {
   display: flex;
   flex-direction: column;
-  margin: 0 auto;
-  padding: 40px 32px;
-  max-width: 1100px;
+  flex: 1;
+  min-width: 0;
 }
 
 .site-header {
@@ -65,8 +73,39 @@ a:visited {
   background-size: cover;
   background-position: center;
   filter: grayscale(1);
-  opacity: 0.15;
+  opacity: 0.18;
   z-index: -1;
+}
+
+.site-header::after {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  z-index: -1;
+  background-color: transparent;
+  background-image:
+    /* vertical lines */
+    repeating-linear-gradient(90deg, rgba(194, 157, 241, 0.035) 0px, rgba(194, 157, 241, 0.035) 1px, transparent 1px, transparent 48px),
+    /* horizontal lines */
+    repeating-linear-gradient(0deg, rgba(194, 157, 241, 0.035) 0px, rgba(194, 157, 241, 0.035) 1px, transparent 1px, transparent 48px),
+    /* diagonal lines (top-left to bottom-right) */
+    repeating-linear-gradient(45deg, transparent, transparent 67px, rgba(194, 157, 241, 0.02) 67px, rgba(194, 157, 241, 0.02) 68px, transparent 68px, transparent 136px),
+    /* diagonal lines (top-right to bottom-left) */
+    repeating-linear-gradient(-45deg, transparent, transparent 67px, rgba(194, 157, 241, 0.02) 67px, rgba(194, 157, 241, 0.02) 68px, transparent 68px, transparent 136px),
+    /* dots at grid intersections */
+    radial-gradient(circle, rgba(194, 157, 241, 0.08) 1.5px, transparent 1.5px);
+  background-size:
+    48px 100%,
+    100% 48px,
+    100% 100%,
+    100% 100%,
+    48px 48px;
+  background-position:
+    0 0,
+    0 0,
+    0 0,
+    0 0,
+    -1px -1px;
 }
 
 .site-header h1 {
@@ -95,6 +134,267 @@ hr {
 section {
   margin-bottom: 0;
 }
+
+#education-section {
+  margin: 32px 0 0;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+#education-section .section-title {
+  margin-bottom: 0;
+  border-bottom: none;
+  padding-bottom: 0;
+  flex-shrink: 0;
+}
+
+.edu-card {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  background-color: #24273a;
+  padding: 8px 16px;
+  border-left: 3px solid #c29df1;
+}
+
+.edu-head {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.edu-name {
+  color: #f3bce6;
+  font-size: 0.7em;
+  font-weight: bold;
+}
+
+.edu-login {
+  color: #c29df1;
+  font-size: 0.55em;
+}
+
+.edu-badge img {
+  display: block;
+}
+
+#github-aside {
+  width: 360px;
+  min-width: 300px;
+  max-height: calc(100vh - 80px);
+  overflow-y: auto;
+  position: sticky;
+  top: 40px;
+  border-left: 1px dashed #24273a;
+  padding-left: 24px;
+  flex-shrink: 0;
+}
+
+#devto-aside {
+  width: 300px;
+  min-width: 240px;
+  max-height: calc(100vh - 80px);
+  overflow-y: auto;
+  position: sticky;
+  top: 40px;
+  border-left: 1px dashed #24273a;
+  padding-left: 24px;
+  flex-shrink: 0;
+}
+
+#github-aside::-webkit-scrollbar,
+#devto-aside::-webkit-scrollbar {
+  width: 4px;
+}
+#github-aside::-webkit-scrollbar-thumb,
+#devto-aside::-webkit-scrollbar-thumb {
+  background: #24273a;
+}
+
+.content-grid {
+  flex: 1;
+  min-width: 0;
+}
+
+#github-content {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.github-profile {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+}
+
+.github-avatar {
+  width: 64px;
+  height: 64px;
+  border: 2px solid #24273a;
+  flex-shrink: 0;
+}
+
+.github-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.github-name {
+  color: #f3bce6;
+  font-size: 0.85em;
+  font-weight: bold;
+}
+
+.github-bio {
+  color: #f3bce6;
+  font-size: 0.55em;
+  line-height: 1.6;
+  opacity: 0.85;
+}
+
+.github-numbers {
+  display: flex;
+  gap: 16px;
+  margin-top: 4px;
+  flex-wrap: wrap;
+}
+
+.github-num {
+  font-size: 0.55em;
+  color: #c29df1;
+}
+
+.github-num span {
+  color: #f3bce6;
+  font-weight: bold;
+}
+
+.github-stats {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.github-stats img {
+  max-width: 100%;
+  height: auto;
+  border: 1px solid #24273a;
+}
+
+.github-subtitle {
+  color: #c29df1;
+  font-size: 0.65em;
+  font-weight: bold;
+  margin-bottom: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.github-repo-card {
+  background-color: #24273a;
+  padding: 12px 14px;
+  margin-bottom: 10px;
+  border-left: 2px solid #24273a;
+  transition: border-color 0.15s;
+}
+
+.github-repo-card:hover {
+  border-left-color: #c29df1;
+}
+
+.github-repo-name {
+  font-size: 0.65em;
+  font-weight: bold;
+  color: #f3bce6;
+}
+
+.github-repo-name i {
+  color: #c29df1;
+  margin-right: 6px;
+}
+
+.github-repo-desc {
+  font-size: 0.5em;
+  color: #f3bce6;
+  margin-top: 4px;
+  opacity: 0.8;
+  line-height: 1.5;
+}
+
+.github-repo-meta {
+  font-size: 0.5em;
+  color: #c29df1;
+  margin-top: 6px;
+  display: flex;
+  gap: 14px;
+}
+
+.github-repo-meta i {
+  margin-right: 4px;
+}
+
+.devto-card {
+  background-color: #24273a;
+  padding: 12px 14px;
+  margin-bottom: 10px;
+  border-left: 2px solid #24273a;
+  transition: border-color 0.15s;
+  font-size: 0.65em;
+}
+
+.devto-card:hover {
+  border-left-color: #c29df1;
+}
+
+.devto-card a {
+  color: #f3bce6;
+  font-weight: bold;
+}
+
+.devto-card .devto-tags {
+  color: #c29df1;
+  font-size: 0.8em;
+  margin-top: 4px;
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.devto-card .devto-tags span {
+  opacity: 0.8;
+}
+
+.devto-card .devto-meta {
+  color: #c29df1;
+  font-size: 0.8em;
+  margin-top: 6px;
+  opacity: 0.7;
+}
+
+@media (max-width: 800px) {
+  .body-layout {
+    flex-direction: column;
+  }
+  #github-aside,
+  #devto-aside {
+    width: 100%;
+    min-width: 0;
+    max-height: none;
+    overflow-y: visible;
+    position: static;
+    border-left: none;
+    padding-left: 0;
+    border-top: 1px dashed #24273a;
+    padding-top: 24px;
+    margin-top: 24px;
+  }
+}
+
+
 
 .content-grid {
   display: grid;
@@ -266,3 +566,5 @@ input#search-index::placeholder {
 .hidden {
   display: none;
 }
+
+

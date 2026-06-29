@@ -15,6 +15,7 @@
 </head>
 
 <body>
+  <div class="body-layout">
   <div class="container">
     <header class="site-header">
       <h1>fevunge<span class="fevunge-extension">.tlhc</span></h1>
@@ -97,8 +98,55 @@
         </section>
       </div>
     </main>
+
+    <hr>
+
+    <section id="education-section">
+      <h3 class="section-title"><i class="fa-solid fa-school"></i> education</h3>
+      <div class="edu-card">
+        <div class="edu-head">
+          <span class="edu-name">42 School</span>
+          <span class="edu-login">fevunge</span>
+        </div>
+        <div class="edu-badge">
+          <a href="https://profile.intra.42.fr/users/fevunge" target="_blank">
+            <img src="https://img.shields.io/badge/42-fevunge-c29df1?style=flat-square&labelColor=24273a" alt="42 fevunge">
+          </a>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <aside id="github-aside">
+    <h3 class="section-title"><i class="fa-brands fa-github"></i> github</h3>
+    <div id="github-content">
+      <div class="github-profile">
+        <img class="github-avatar" src="https://github.com/fevunge.png" alt="fevunge">
+        <div class="github-info">
+          <h4 class="github-name">fevunge</h4>
+          <p class="github-bio" id="github-bio"></p>
+          <div class="github-numbers" id="github-numbers"></div>
+        </div>
+      </div>
+      <div class="github-stats">
+        <img src="https://github-readme-stats.vercel.app/api?username=fevunge&show_icons=true&count_private=true&theme=dark&bg_color=131020&text_color=f3bce6&icon_color=c29df1&title_color=c29df1&border_color=24273a&hide_border=true" alt="GitHub Stats">
+        <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=fevunge&layout=compact&theme=dark&bg_color=131020&text_color=f3bce6&title_color=c29df1&border_color=24273a&hide_border=true" alt="Top Languages">
+      </div>
+      <div class="github-repos" id="github-repos">
+        <h4 class="github-subtitle"><i class="fa-regular fa-clock"></i> recent repositories</h4>
+        <div id="repos-list"></div>
+      </div>
+    </div>
+  </aside>
+
+  <aside id="devto-aside">
+    <h3 class="section-title"><i class="fa-brands fa-dev"></i> dev.to</h3>
+    <div id="devto-list"></div>
+  </aside>
+
   </div>
   <script src="js/search-index.js"></script>
+  <script src="js/github.js"></script>
 </body>
 </html>
 
