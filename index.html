@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt">
+<html lang="en">
 
 <head>
   <meta charset="UTF-8">
@@ -9,26 +9,96 @@
   <title>fevunge index</title>
   <link rel="shortcut icon" href="assets/devunge.png" type="image/x-icon">
   <link rel="stylesheet" href="assets/css/main.css">
+  <link rel="stylesheet" href="assets/css/hover.css">
+
 </head>
 
 <body>
   <div class="container">
-
     <header class="site-header">
-      <h1>fevunge</h1>
-      <div class="sub">the last human coder</div>
-      <div class="contact-links">
-        <a href="https://github.com/fevunge" target="_blank">gh@fevunge</a>
-        <a href="https://linkedin.com/in/fevunge" target="_blank">in@fevunge</a>
-        <a href="https://x.com/fevunge" target="_blank">x@fevunge</a>
-      </div>
+      <h1>fevunge<span class="fevunge-extension">.tlhc</span></h1>
+      <div class="tagline">the last human ...</div>
     </header>
 
     <hr>
 
-    <main class="content-wrapper">
-      <img src="assets/images.png" alt="site under construction" width="800px"> 
+    <div class="hover">
+      <a class="devunge-link" href="https://github.com/devunge">
+        <img class="devunge-logo" src="assets/devunge.svg" alt="devunge">
+      </a>
+      <div class="hover-links">
+        <a href="https://github.com/fevunge" target="_blank" data-logo="GitHub">gh@fevunge</a>
+        <a href="https://linkedin.com/in/fevunge" target="_blank" data-logo="LinkedIn">in@fevunge</a>
+        <a href="https://x.com/fevunge" target="_blank" data-logo="X">x@fevunge</a>
+        <a href="https://youtube.com/@fevunge" target="_blank" data-logo="YouTube">yt@fevunge</a>
+      </div>
+    </div>
+
+    <hr>
+
+    <main>
+      <div id="index">
+        <h2>index</h2>
+        <div class="search-wrapper">
+          <span class="search-prefix">$</span>
+          <input type="search" name="search-index" id="search-index" placeholder="filter...">
+        </div>
+      </div>
+
+      <div class="content-grid">
+        <section id="projects-section">
+          <h3 class="section-title">projects</h3>
+          <div class="project-list">
+            <div class="project-card searchable-item">
+              <div class="project-card-head">
+                <h4 class="project-card-name">Tache CLI</h4>
+                <div class="project-card-links">
+                  <a class="project-card-link" href="https://github.com/fevunge/tache-cli">code</a>
+                  <a class="project-card-link" href="#">demo</a>
+                </div>
+              </div>
+              <p class="project-card-desc">task, project, and calendar management integrated with Ollama</p>
+              <div class="project-card-tech">
+                <span class="tech-item">Rust</span>
+                <span class="tech-item">Python</span>
+              </div>
+            </div>
+            <div class="project-card searchable-item">
+              <div class="project-card-head">
+                <h4 class="project-card-name">The Last BlackHole</h4>
+                <div class="project-card-links">
+                  <a class="project-card-link" href="https://github.com/devunge/the_black_hole">code</a>
+                  <a class="project-card-link" href="#">demo</a>
+                </div>
+              </div>
+              <p class="project-card-desc"></p>
+              <div class="project-card-tech">
+                <span class="tech-item">C</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="blog-section">
+          <h3 class="section-title">blog</h3>
+          <div class="blog-list">
+            <div class="blog-item searchable-item">
+              <a href="blog/can_machine_read_part_one.html">Can Machine Read? Yes! (part 1)</a>
+              <span class="blog-meta">2026-05-16 — 9 min — C, get_next_line</span>
+            </div>
+            <div class="blog-item searchable-item">
+              <a href="blog/links.html">Construindo CLIs performáticos em Rust no 2026</a>
+              <span class="blog-meta">Rust, CLI tooling</span>
+            </div>
+            <div class="blog-item searchable-item">
+              <a href="blog/q1w1.html">Construindo CLIs performáticos em Rust no 2026 (Q1W1)</a>
+              <span class="blog-meta">Rust, CLI tooling</span>
+            </div>
+          </div>
+        </section>
+      </div>
     </main>
   </div>
+  <script src="js/search-index.js"></script>
 </body>
 </html>

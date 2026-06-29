@@ -1,0 +1,63 @@
+.hover {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	padding: 0;
+	margin: 0;
+	gap: 60px;
+}
+.hover a.devunge-link {
+	width: fit-content;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	min-width: min-content;
+}
+img.devunge-logo {
+	width: 28%;
+	padding: 0;
+	margin: 0;
+	animation: devunge-bounce 3s ease-in-out infinite;
+}
+img.devunge-logo:hover {
+	animation-duration: 1.5s;
+}
+
+@keyframes devunge-bounce {
+	0%, 100% {
+		transform: translateY(0);
+		filter: drop-shadow(0 0 4px rgba(194, 157, 241, 0.2));
+	}
+	50% {
+		transform: translateY(-12px);
+		filter: drop-shadow(0 0 18px rgba(194, 157, 241, 0.6));
+	}
+}
+
+.hover-links a {
+	position: relative;
+	padding: 50px;
+}
+
+.hover-links a::after {
+	content: attr(data-logo);
+	position: absolute;
+	bottom: 100%;
+	left: 50%;
+	transform: translateX(-50%);
+	font-size: 0.6em;
+	color: #c29df1;
+	border: 1px solid #24273a;
+	padding: 2px 8px;
+	background-color: #131020;
+	opacity: 0;
+	transition: opacity 0.15s, transform 0.15s;
+	pointer-events: none;
+	white-space: nowrap;
+}
+
+.hover-links a:hover::after {
+	opacity: 1;
+	transform: translateX(-50%) translateY(-4px);
+}
