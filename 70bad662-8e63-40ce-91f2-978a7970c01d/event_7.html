@@ -1,0 +1,236 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <style>body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif;
+  line-height: 1.6;
+  min-width: 1200px;
+  padding: 2rem;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: var(--keyword);
+  margin-top: 1.5em;
+}
+
+h1 {
+  font-size: 2.2em;
+  border-bottom: 2px solid var(--border);
+  padding-bottom: 0.3em;
+}
+
+h2 {
+  font-size: 1.8em;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 0.2em;
+}
+
+h3 {
+  font-size: 1.4em;
+}
+
+h4,
+h5,
+h6 {
+  color: var(--constant);
+}
+
+a {
+  color: #66aaff;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+code {
+  background-color: var(--surface);
+  color: var(--function);
+  padding: 0.2em 0.4em;
+  border-radius: 4px;
+}
+
+pre {
+  background-color: var(--surface);
+  color: var(--foreground);
+  padding: 1em;
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  white-space: pre-wrap;
+  /* Wrap long lines */
+  word-wrap: break-word;
+  overflow-y: hidden;
+  /* Disable vertical scrolling */
+}
+
+pre code {
+  background: none;
+  padding: 0;
+  color: inherit;
+  display: block;
+}
+
+pre::-webkit-scrollbar {
+  display: none;
+  /* Hide scrollbar */
+}
+
+blockquote {
+  border-left: 4px solid var(--type);
+  background-color: var(--surface);
+  padding: 0.8em 1em;
+  color: var(--comment);
+  margin: 1em 0;
+}
+
+ul,
+ol {
+  padding-left: 2em;
+}
+
+li::marker {
+  color: var(--function);
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 1em 0;
+}
+
+th,
+td {
+  border: 1px solid var(--border);
+  padding: 0.6em 1em;
+}
+
+th {
+  background-color: var(--surface);
+  color: var(--function);
+}
+
+tr:nth-child(even) {
+  background-color: var(--surface);
+}
+
+hr {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 2em 0;
+}
+
+
+
+:root {
+  --keyword: #FFB347;
+  --function: #D4FF59;
+  --type: #66E6FF;
+  --constant: #D8A5FF;
+  --comment: #5C6773;
+  --foreground: #FFFFFF;
+  
+  /* UI Colors */
+  --background: #14161f;
+  --surface: #1E2129;
+  --border: #5C6773;
+}
+</style>
+</head>
+<body>
+  <h1>Authentication &amp; Authorization Deep Dive</h1>
+<p>#week</p>
+<h2>Objectivos</h2>
+<ul>
+<li>OAuth 2.0: todos os flows com Authorization Code + PKCE, Client Credentials, Device Authorization</li>
+<li>OpenID Connect: ID tokens, UserInfo endpoint, discovery document</li>
+<li>JWT: estrutura, algoritmos (HS256 vs RS256 vs ES256), vulnerabilidades conhecidas</li>
+<li>RBAC vs ABAC — modelação e implementação em bases de dados relacionais</li>
+<li>Session management seguro em sistemas distribuídos</li>
+<li>Passkeys / WebAuthn — arquitectura e implementação completa</li>
+<li>Passwordless authentication</li>
+</ul>
+<h2>Recursos</h2>
+<table>
+<thead>
+<tr>
+<th>Tipo</th>
+<th>Recurso</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Spec</td>
+<td>OAuth 2.0 RFC 6749 + RFC 7636 (PKCE)</td>
+</tr>
+<tr>
+<td>Site</td>
+<td>oauth.net — guias práticos do Aaron Parecki</td>
+</tr>
+<tr>
+<td>Site</td>
+<td>webauthn.guide — introdução a Passkeys</td>
+</tr>
+<tr>
+<td>Docs</td>
+<td>OWASP Authentication Cheat Sheet</td>
+</tr>
+<tr>
+<td>Video</td>
+<td>“OAuth 2.0 and OpenID Connect in Plain English” — OktaDev (YouTube)</td>
+</tr>
+</tbody>
+</table>
+<h2>Projeto</h2>
+<h3>Auth Platform Production-Ready com Passkeys</h3>
+<p><strong>Tech Stack</strong> 
+Node.js + TypeScript + Hono + PostgreSQL + Redis + <code>@simplewebauthn/server</code></p>
+<p><strong>Overview</strong>
+Um serviço de autenticação completo e independente — o tipo de solução que a maioria das empresas compra ao Auth0 ou Clerk por centenas de dólares por mês, mas que tu vais construir do zero e entender completamente.
+O serviço actua como um <strong>OAuth 2.0 Authorization Server</strong> próprio, capaz de emitir tokens para as tuas aplicações, com <strong>OpenID Connect</strong> completo e <strong>discovery document</strong> no endpoint padrão <code>.well-known/openid-configuration</code>.
+Implementas todos os flows de autenticação relevantes: <strong>email/password</strong> com Argon2id, OAuth social via Google e GitHub, magic links <strong>passwordless</strong>, <strong>2FA com TOTP</strong>, e o diferencial crítico de 2026 — Passkeys (WebAuthn) completo com registo de authenticators, verificação de assinatura de desafio, e suporte a multiple authenticators por utilizador.
+O sistema de sessões usa Redis para distribuição, tokens têm curta duração (15min access, 7 dias refresh com rotação automática), e o audit log usa hash chaining para garantir imutabilidade.
+O projecto termina dockerizado e funcional, com OpenAPI spec completa e testes de todos os fluxos críticos.</p>
+<p><strong>Core Features</strong></p>
+<ul>
+<li>OAuth 2.0 Authorization Server próprio (emite tokens para as tuas apps)</li>
+<li>OpenID Connect completo com discovery document</li>
+<li>Passkeys (WebAuthn): registo e autenticação sem password</li>
+<li>Strategies: local (email+password), Google, GitHub OAuth</li>
+<li>2FA com TOTP + magic links passwordless</li>
+<li>Refresh token rotation automática com revogação por Redis</li>
+<li>Session management distribuído via Redis</li>
+<li>RBAC com permissions granulares por recurso e organização</li>
+<li>Brute force protection com lockout progressivo</li>
+<li>Audit log imutável com hash chaining</li>
+<li>Rate limiting por utilizador, por IP e por endpoint</li>
+<li>Email verification + password reset flow com tokens de uso único</li>
+<li>Magic links (passwordless via email)</li>
+</ul>
+<p><strong>Requisitos Técnicos</strong></p>
+<ul>
+<li>Argon2id para hashing de passwords</li>
+<li>PKCE obrigatório para todos os Authorization Code flows</li>
+<li>Tokens de curta duração (15min access, 7d refresh)</li>
+<li>Secure cookies: <code>HttpOnly</code>, <code>Secure</code>, <code>SameSite=Strict</code></li>
+</ul>
+<p><strong>Entregáveis</strong></p>
+<ul>
+<li><input type="checkbox" disabled="" /> Microservice dockerizado com <code>docker-compose</code> funcional</li>
+<li><input type="checkbox" disabled="" /> OpenAPI 3.1 spec completa com Swagger UI</li>
+<li><input type="checkbox" disabled="" /> Blog: “Building a Production Auth System with Passkeys in 2026”</li>
+<li><input type="checkbox" disabled="" /> Video: Demo de registo e login via Passkey (do zero)</li>
+</ul>
+
+</body>
+</html>

@@ -1,0 +1,235 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <style>body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif;
+  line-height: 1.6;
+  min-width: 1200px;
+  padding: 2rem;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: var(--keyword);
+  margin-top: 1.5em;
+}
+
+h1 {
+  font-size: 2.2em;
+  border-bottom: 2px solid var(--border);
+  padding-bottom: 0.3em;
+}
+
+h2 {
+  font-size: 1.8em;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 0.2em;
+}
+
+h3 {
+  font-size: 1.4em;
+}
+
+h4,
+h5,
+h6 {
+  color: var(--constant);
+}
+
+a {
+  color: #66aaff;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+code {
+  background-color: var(--surface);
+  color: var(--function);
+  padding: 0.2em 0.4em;
+  border-radius: 4px;
+}
+
+pre {
+  background-color: var(--surface);
+  color: var(--foreground);
+  padding: 1em;
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  white-space: pre-wrap;
+  /* Wrap long lines */
+  word-wrap: break-word;
+  overflow-y: hidden;
+  /* Disable vertical scrolling */
+}
+
+pre code {
+  background: none;
+  padding: 0;
+  color: inherit;
+  display: block;
+}
+
+pre::-webkit-scrollbar {
+  display: none;
+  /* Hide scrollbar */
+}
+
+blockquote {
+  border-left: 4px solid var(--type);
+  background-color: var(--surface);
+  padding: 0.8em 1em;
+  color: var(--comment);
+  margin: 1em 0;
+}
+
+ul,
+ol {
+  padding-left: 2em;
+}
+
+li::marker {
+  color: var(--function);
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 1em 0;
+}
+
+th,
+td {
+  border: 1px solid var(--border);
+  padding: 0.6em 1em;
+}
+
+th {
+  background-color: var(--surface);
+  color: var(--function);
+}
+
+tr:nth-child(even) {
+  background-color: var(--surface);
+}
+
+hr {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 2em 0;
+}
+
+
+
+:root {
+  --keyword: #FFB347;
+  --function: #D4FF59;
+  --type: #66E6FF;
+  --constant: #D8A5FF;
+  --comment: #5C6773;
+  --foreground: #FFFFFF;
+  
+  /* UI Colors */
+  --background: #14161f;
+  --surface: #1E2129;
+  --border: #5C6773;
+}
+</style>
+</head>
+<body>
+  <h1>Interview Preparation Intensive</h1>
+<p>#week</p>
+<h2>Foco</h2>
+<p>Preparação sistemática para entrevistas técnicas em empresas de produto e infraestrutura.</p>
+<h2>Algoritmos &amp; Data Structures — Esta semana</h2>
+<ul>
+<li><strong>LeetCode:</strong> 20-30 problemas focados nos padrões mais comuns</li>
+<li><strong>Target final:</strong> 200+ problemas com distribuição equilibrada</li>
+<li><strong>Foco especial:</strong> Sliding Window, Two Pointers, BFS/DFS, DP, Binary Search</li>
+</ul>
+<h2>System Design — 10 designs completos</h2>
+<table>
+<thead>
+<tr>
+<th>Sistema</th>
+<th>Componente principal a aprofundar</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Twitter Feed</td>
+<td>Fan-out on write vs read, caching, CDN</td>
+</tr>
+<tr>
+<td>Netflix</td>
+<td>CDN edge, encoding pipeline, recommendation</td>
+</tr>
+<tr>
+<td>Uber</td>
+<td>Geospatial indexing (H3), real-time matching</td>
+</tr>
+<tr>
+<td>WhatsApp</td>
+<td>Message delivery guarantees, E2E encryption</td>
+</tr>
+<tr>
+<td>YouTube</td>
+<td>Video processing pipeline, adaptive streaming</td>
+</tr>
+<tr>
+<td>Dropbox</td>
+<td>Sync protocol, conflict resolution, versioning</td>
+</tr>
+<tr>
+<td>Discord</td>
+<td>Real-time at scale, presence, voice</td>
+</tr>
+<tr>
+<td>GitHub</td>
+<td>Git hosting, CI/CD at scale, code search</td>
+</tr>
+<tr>
+<td>Stripe</td>
+<td>Payment processing, idempotency, reconciliation</td>
+</tr>
+<tr>
+<td>Cloudflare</td>
+<td>Edge caching, anycast, DDoS mitigation</td>
+</tr>
+</tbody>
+</table>
+<h2>Behavioral — STAR Method</h2>
+<ul>
+<li>20 histórias preparadas por categoria(conflict, failure, leadership, technical decision)</li>
+<li>Pratica em voz alta (não só por escrito)</li>
+<li>Grava-te e revê - o deconforto é o ponto</li>
+</ul>
+<h3>Mock Interviews</h3>
+<ul>
+<li><strong>Pramp</strong> — gratuito, pairs de developers</li>
+<li><strong>Interviewing.io</strong> — free tier disponível</li>
+<li><strong>Target:</strong> 5-10 mocks antes de aplicar</li>
+<li>Grava para rever e melhorar</li>
+</ul>
+<h3>📊 Entregáveis</h3>
+<ul>
+<li><input type="checkbox" disabled="" /> 200+ LeetCode (count final)</li>
+<li><input type="checkbox" disabled="" /> 10 system designs documentados (Excalidraw ou draw.io)</li>
+<li><input type="checkbox" disabled="" /> 20 STAR stories escritas e praticadas</li>
+<li><input type="checkbox" disabled="" /> Mock interview feedback documentado</li>
+<li><input type="checkbox" disabled="" /> Blog: “How I Prepared for Senior Engineer Interviews — Honest Retrospective”</li>
+</ul>
+
+</body>
+</html>

@@ -1,0 +1,241 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <style>body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif;
+  line-height: 1.6;
+  min-width: 1200px;
+  padding: 2rem;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: var(--keyword);
+  margin-top: 1.5em;
+}
+
+h1 {
+  font-size: 2.2em;
+  border-bottom: 2px solid var(--border);
+  padding-bottom: 0.3em;
+}
+
+h2 {
+  font-size: 1.8em;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 0.2em;
+}
+
+h3 {
+  font-size: 1.4em;
+}
+
+h4,
+h5,
+h6 {
+  color: var(--constant);
+}
+
+a {
+  color: #66aaff;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+code {
+  background-color: var(--surface);
+  color: var(--function);
+  padding: 0.2em 0.4em;
+  border-radius: 4px;
+}
+
+pre {
+  background-color: var(--surface);
+  color: var(--foreground);
+  padding: 1em;
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  white-space: pre-wrap;
+  /* Wrap long lines */
+  word-wrap: break-word;
+  overflow-y: hidden;
+  /* Disable vertical scrolling */
+}
+
+pre code {
+  background: none;
+  padding: 0;
+  color: inherit;
+  display: block;
+}
+
+pre::-webkit-scrollbar {
+  display: none;
+  /* Hide scrollbar */
+}
+
+blockquote {
+  border-left: 4px solid var(--type);
+  background-color: var(--surface);
+  padding: 0.8em 1em;
+  color: var(--comment);
+  margin: 1em 0;
+}
+
+ul,
+ol {
+  padding-left: 2em;
+}
+
+li::marker {
+  color: var(--function);
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 1em 0;
+}
+
+th,
+td {
+  border: 1px solid var(--border);
+  padding: 0.6em 1em;
+}
+
+th {
+  background-color: var(--surface);
+  color: var(--function);
+}
+
+tr:nth-child(even) {
+  background-color: var(--surface);
+}
+
+hr {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 2em 0;
+}
+
+
+
+:root {
+  --keyword: #FFB347;
+  --function: #D4FF59;
+  --type: #66E6FF;
+  --constant: #D8A5FF;
+  --comment: #5C6773;
+  --foreground: #FFFFFF;
+  
+  /* UI Colors */
+  --background: #14161f;
+  --surface: #1E2129;
+  --border: #5C6773;
+}
+</style>
+</head>
+<body>
+  <h1>C++ Advanced — Templates &amp; Memory Allocators</h1>
+<p>#week</p>
+<h2>Objectivos</h2>
+<ul>
+<li>Template specialization (full e partial) e quando usar cada uma</li>
+<li>SFINAE e <code>if contexpr</code></li>
+<li>C++20 Concepts — substituição legível do SFINAE</li>
+<li>Variadic templates e fold expressions</li>
+<li><code>constexpr</code> e <code>consteval</code> — computação garantida em compile-time</li>
+<li>Type traits e meta-programming</li>
+</ul>
+<h2>Recursos</h2>
+<table>
+<thead>
+<tr>
+<th>Tipo</th>
+<th>Recurso</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Livro</td>
+<td><em>C++ Templates: The Complete Guide</em> (2ª edição) — Vandevoorde, Josuttis</td>
+</tr>
+<tr>
+<td>Ref</td>
+<td>cppreference.com — Concepts, Templates</td>
+</tr>
+<tr>
+<td>Prática</td>
+<td>Template metaprogramming katas no Exercism</td>
+</tr>
+<tr>
+<td>Site</td>
+<td>compiler-explorer.com — vê o que o compilador faz</td>
+</tr>
+<tr>
+<td>Video</td>
+<td>CppCon 2023 — “C++20 Concepts in Practice”</td>
+</tr>
+</tbody>
+</table>
+<h2>Projeto</h2>
+<h3>Custom Memory Allocator Framework + Visualizador Web</h3>
+<p><strong>Tech Stack</strong> 
+C++20 + Emscripten (Wasm) + React (visualizador) + Google Benchmark</p>
+<p><strong>Overview</strong>
+Um framework de allocators de memória customizáveis em C++20 com um visualizador web que mostra o layout de memória em tempo real via WebAssembly — um dos projectos mais instrutivos que podes fazer para entender performance de software a baixo nível.
+Implementas quatro allocators com trade-offs distintos:
+<strong>Pool Allocator</strong> para objectos de tamanho fixo com zero fragmentação e O(1) alloc/free;
+<strong>Stack/Linear Allocator</strong> para alocações temporárias onde liberas tudo de uma vez em O(1);
+<strong>Free List Allocator</strong> para alocações de propósito geral com baixa fragmentação;
+<strong>Buddy System</strong> para alocações em potências de dois com coalescing eficiente.
+O visualizador React+Wasm mostra cada byte de memória colorido por estado (livre, alocado, metadata), uma timeline de allocs e frees, e a fragmentação calculada em tempo real.
+Para cada allocator, produzes benchmarks comparativos contra <code>malloc</code> standard usando Google Benchmark, e versões thread-safe com <code>std::atomic</code>. O projecto usa Concepts para garantir em compile-time que só tipos corretos podem usar cada allocator.</p>
+<p><strong>Core Features</strong></p>
+<ul>
+<li>Mapa de memória em tempo real (cada byte colorido por estado)</li>
+<li>Timeline de allocs/frees</li>
+<li>Fragmentação calculada ao vivo</li>
+<li>Memory tracking &amp; leak detection</li>
+<li>Alignment suppor</li>
+<li>Comparação de performance: <code>malloc</code> vs cada allocator</li>
+<li>Thread-safe versions com <code>std::atomic</code> e lock-free queues</li>
+<li>Benchmark automático com critério de performance</li>
+<li>Detecção de double-free e use-after-free (debug mode)</li>
+</ul>
+<p><strong>Requisitos</strong></p>
+<pre style="background-color:#1e2129;"><code class="language-cpp"><span style="color:#ffb347;">template</span><span style="color:#ffffff;">&lt;</span><span style="color:#ffb347;">typename</span><span style="color:#ffffff;"> T, </span><span style="color:#66e6ff;">size_t</span><span style="color:#ffffff;"> PoolSize&gt;
+</span><span style="color:#ffffff;">  requires std::is_trivially_destructible_v&lt;T&gt;
+</span><span style="color:#ffffff;">class PoolAllocator;          // Fixed-size, zero fragmentation
+</span><span style="color:#ffffff;">
+</span><span style="color:#ffffff;">template&lt;</span><span style="color:#66e6ff;">size_t Size</span><span style="color:#ffffff;">&gt;
+</span><span style="color:#ffffff;">class LinearAllocator;        // </span><span style="color:#d4ff59;">O</span><span style="color:#ffffff;">(</span><span style="color:#d8a5ff;">1</span><span style="color:#ffffff;">) alloc, </span><span style="color:#d4ff59;">O</span><span style="color:#ffffff;">(</span><span style="color:#d8a5ff;">1</span><span style="color:#ffffff;">) free-all
+</span><span style="color:#ffffff;">
+</span><span style="color:#ffb347;">template</span><span style="color:#ffffff;">&lt;</span><span style="color:#ffb347;">typename</span><span style="color:#ffffff;"> T&gt;
+</span><span style="color:#ffb347;">class </span><span style="color:#ffffff;">FreeListAllocator;      </span><span style="color:#5c6773;">// General purpose, low fragmentation
+</span><span style="color:#ffffff;">
+</span><span style="color:#ffb347;">template</span><span style="color:#ffffff;">&lt;</span><span style="color:#66e6ff;">size_t</span><span style="color:#ffffff;"> TotalSize, </span><span style="color:#66e6ff;">size_t</span><span style="color:#ffffff;"> MinBlock = </span><span style="color:#d8a5ff;">16</span><span style="color:#ffffff;">&gt;
+</span><span style="color:#ffb347;">class </span><span style="color:#ffffff;">BuddyAllocator;         </span><span style="color:#5c6773;">// Power-of-two, easy coalescing
+</span></code></pre>
+<p><strong>Entregáveis</strong></p>
+<ul>
+<li><input type="checkbox" disabled="" /> Header-only library + visualizador web publicado</li>
+<li><input type="checkbox" disabled="" /> Benchmark report vs malloc em operações típicas</li>
+<li><input type="checkbox" disabled="" /> Blog: “Memory Allocators in C++20 — From Theory to Implementation”</li>
+<li><input type="checkbox" disabled="" /> Video: visualizador em acção explicando fragmentação visualmente</li>
+</ul>
+
+</body>
+</html>

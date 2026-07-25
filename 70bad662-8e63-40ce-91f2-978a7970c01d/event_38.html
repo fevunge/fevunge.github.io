@@ -1,0 +1,236 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <style>body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif;
+  line-height: 1.6;
+  min-width: 1200px;
+  padding: 2rem;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: var(--keyword);
+  margin-top: 1.5em;
+}
+
+h1 {
+  font-size: 2.2em;
+  border-bottom: 2px solid var(--border);
+  padding-bottom: 0.3em;
+}
+
+h2 {
+  font-size: 1.8em;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 0.2em;
+}
+
+h3 {
+  font-size: 1.4em;
+}
+
+h4,
+h5,
+h6 {
+  color: var(--constant);
+}
+
+a {
+  color: #66aaff;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+code {
+  background-color: var(--surface);
+  color: var(--function);
+  padding: 0.2em 0.4em;
+  border-radius: 4px;
+}
+
+pre {
+  background-color: var(--surface);
+  color: var(--foreground);
+  padding: 1em;
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  white-space: pre-wrap;
+  /* Wrap long lines */
+  word-wrap: break-word;
+  overflow-y: hidden;
+  /* Disable vertical scrolling */
+}
+
+pre code {
+  background: none;
+  padding: 0;
+  color: inherit;
+  display: block;
+}
+
+pre::-webkit-scrollbar {
+  display: none;
+  /* Hide scrollbar */
+}
+
+blockquote {
+  border-left: 4px solid var(--type);
+  background-color: var(--surface);
+  padding: 0.8em 1em;
+  color: var(--comment);
+  margin: 1em 0;
+}
+
+ul,
+ol {
+  padding-left: 2em;
+}
+
+li::marker {
+  color: var(--function);
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 1em 0;
+}
+
+th,
+td {
+  border: 1px solid var(--border);
+  padding: 0.6em 1em;
+}
+
+th {
+  background-color: var(--surface);
+  color: var(--function);
+}
+
+tr:nth-child(even) {
+  background-color: var(--surface);
+}
+
+hr {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 2em 0;
+}
+
+
+
+:root {
+  --keyword: #FFB347;
+  --function: #D4FF59;
+  --type: #66E6FF;
+  --constant: #D8A5FF;
+  --comment: #5C6773;
+  --foreground: #FFFFFF;
+  
+  /* UI Colors */
+  --background: #14161f;
+  --surface: #1E2129;
+  --border: #5C6773;
+}
+</style>
+</head>
+<body>
+  <h1>AI Engineering — RAG, Agents &amp; LLM Integration</h1>
+<p>#week</p>
+<h2>Objectivos</h2>
+<ul>
+<li>RAG (Retrieval Augmented Generation): arquitectura e implementação</li>
+<li>Vector databases: embeddings, similarity search, HNSW index</li>
+<li>LLM APIs: OpenAI-compatible APIs (Ollama local — gratuito)</li>
+<li>AI Agents: function calling, tool use, chain-of-thought</li>
+<li>Evaluation de sistemas RAG: métricas e benchmarks</li>
+</ul>
+<h2>Recursos</h2>
+<table>
+<thead>
+<tr>
+<th>Tipo</th>
+<th>Recurso</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Docs</td>
+<td>Ollama — ollama.ai (LLMs locais, gratuito)</td>
+</tr>
+<tr>
+<td>Paper</td>
+<td>“Retrieval-Augmented Generation” — Lewis et al. (paper original)</td>
+</tr>
+<tr>
+<td>Course</td>
+<td>deeplearning.ai — “Building Systems with ChatGPT API” (gratuito com registo)</td>
+</tr>
+<tr>
+<td>Video</td>
+<td>“RAG from Scratch” — LangChain YouTube channel</td>
+</tr>
+<tr>
+<td>Tool</td>
+<td>Qdrant — vector DB open-source com Docker</td>
+</tr>
+</tbody>
+</table>
+<h2>Projeto</h2>
+<h3>AI Knowledge Base — RAG System Completo</h3>
+<p><strong>Tech Stack</strong>
+Python + Ollama (LLM local) + Qdrant (vector DB) + FastAPI + React</p>
+<p><strong>Overview</strong>
+Construir um sistema RAG (Retrieval Augmented Generation) production-ready que responde perguntas sobre documentação técnica com citações de fontes — tudo local, sem pagar nenhuma API. O pipeline ingere documentos em PDF, Markdown, TXT e URLs via scraping, faz chunking recursivo com overlap configurável para preservar contexto entre chunks, gera embeddings com o modelo <code>nomic-embed-text</code> via Ollama (gratuito, local), e indexa num Qdrant (vector database open-source em Docker) com HNSW index para similarity search O(log n). Quando um utilizador faz uma pergunta, o sistema faz hybrid search: busca semântica com os embeddings mais um BM25 keyword search, combina os resultados com Reciprocal Rank Fusion, e passa os top-K chunks mais um cross-encoder re-ranker para ordenação final. O contexto retrived é enviado ao <code>llama3.1</code> ou <code>mistral</code> via Ollama para geração da resposta com streaming SSE. O sistema suporta AI Agents com tool use: a LLM pode chamar uma calculadora, fazer web search (via SearXNG self-hosted), e executar snippets de código para responder perguntas que requerem computação. O RAGAS evaluation dashboard mede automaticamente faithfulness, answer relevancy e context precision.</p>
+<p><strong>Core Features</strong></p>
+<ul>
+<li>Ingestão de documentos: PDF, Markdown, TXT, URLs (web scraping)</li>
+<li>Chunking estratégico com overlap configurável</li>
+<li>Hybrid search: semântica + keyword (BM25)</li>
+<li>Re-ranking com cross-encoder (mais preciso)</li>
+<li>Streaming de respostas (SSE)</li>
+<li>Source citations com highlights</li>
+<li><strong>AI Agents:</strong> o sistema pode usar tools (calculadora, web search, código)</li>
+<li>Evaluation dashboard: RAGAS metrics automáticas</li>
+<li><code>ollama run llama3.1</code> — LLM gratuito e privado</li>
+<li>Qdrant em Docker — vector DB sem custo</li>
+<li>Zero chamadas a APIs pagas</li>
+</ul>
+<p><strong>Pipeline RAG:</strong></p>
+<pre style="background-color:#1e2129;"><code><span style="color:#ffffff;">Documents (PDF, MD, TXT)
+</span><span style="color:#ffffff;">    ↓
+</span><span style="color:#ffffff;">Chunking (recursive, semantic, sliding window)
+</span><span style="color:#ffffff;">    ↓
+</span><span style="color:#ffffff;">Embedding (nomic-embed-text via Ollama — gratuito)
+</span><span style="color:#ffffff;">    ↓
+</span><span style="color:#ffffff;">Qdrant (HNSW index, cosine similarity)
+</span><span style="color:#ffffff;">    ↓
+</span><span style="color:#ffffff;">Query → Embed → Search → Retrieve top-K chunks
+</span><span style="color:#ffffff;">    ↓
+</span><span style="color:#ffffff;">Context + Query → LLM (llama3.1 ou mistral via Ollama)
+</span><span style="color:#ffffff;">    ↓
+</span><span style="color:#ffffff;">Generated Answer + Source Citations
+</span></code></pre>
+<h2>Entregáveis</h2>
+<ul>
+<li><input type="checkbox" disabled="" /> Sistema RAG funcional e deployado localmente</li>
+<li><input type="checkbox" disabled="" /> Blog: “Building a Production RAG System with Zero API Costs in 2026”</li>
+<li><input type="checkbox" disabled="" /> Evaluation report: métricas de precisão e recall</li>
+<li><input type="checkbox" disabled="" /> Video: demo completo — ingere documentação → faz perguntas → respostas com fontes</li>
+</ul>
+
+</body>
+</html>

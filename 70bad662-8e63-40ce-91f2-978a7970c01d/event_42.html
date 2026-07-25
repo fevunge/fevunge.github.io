@@ -1,0 +1,185 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <style>body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif;
+  line-height: 1.6;
+  min-width: 1200px;
+  padding: 2rem;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: var(--keyword);
+  margin-top: 1.5em;
+}
+
+h1 {
+  font-size: 2.2em;
+  border-bottom: 2px solid var(--border);
+  padding-bottom: 0.3em;
+}
+
+h2 {
+  font-size: 1.8em;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 0.2em;
+}
+
+h3 {
+  font-size: 1.4em;
+}
+
+h4,
+h5,
+h6 {
+  color: var(--constant);
+}
+
+a {
+  color: #66aaff;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+code {
+  background-color: var(--surface);
+  color: var(--function);
+  padding: 0.2em 0.4em;
+  border-radius: 4px;
+}
+
+pre {
+  background-color: var(--surface);
+  color: var(--foreground);
+  padding: 1em;
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  white-space: pre-wrap;
+  /* Wrap long lines */
+  word-wrap: break-word;
+  overflow-y: hidden;
+  /* Disable vertical scrolling */
+}
+
+pre code {
+  background: none;
+  padding: 0;
+  color: inherit;
+  display: block;
+}
+
+pre::-webkit-scrollbar {
+  display: none;
+  /* Hide scrollbar */
+}
+
+blockquote {
+  border-left: 4px solid var(--type);
+  background-color: var(--surface);
+  padding: 0.8em 1em;
+  color: var(--comment);
+  margin: 1em 0;
+}
+
+ul,
+ol {
+  padding-left: 2em;
+}
+
+li::marker {
+  color: var(--function);
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 1em 0;
+}
+
+th,
+td {
+  border: 1px solid var(--border);
+  padding: 0.6em 1em;
+}
+
+th {
+  background-color: var(--surface);
+  color: var(--function);
+}
+
+tr:nth-child(even) {
+  background-color: var(--surface);
+}
+
+hr {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 2em 0;
+}
+
+
+
+:root {
+  --keyword: #FFB347;
+  --function: #D4FF59;
+  --type: #66E6FF;
+  --constant: #D8A5FF;
+  --comment: #5C6773;
+  --foreground: #FFFFFF;
+  
+  /* UI Colors */
+  --background: #14161f;
+  --surface: #1E2129;
+  --border: #5C6773;
+}
+</style>
+</head>
+<body>
+  <h1>Real-time Multiplayer Platform (Enhanced)</h1>
+<p>#week</p>
+<h3>Gaming Platform com 4 Jogos + Sistema de Torneios</h3>
+<p><strong>Tech Stack:</strong></p>
+<ul>
+<li>Engine (C++20 + Emscripten → Wasm) — reutiliza <a href="week_26" data-wikilink="true">week_26</a></li>
+<li>Backend (Rust + Axum + WebSocket) — reutiliza <a href="week_26" data-wikilink="true">week_26</a></li>
+<li>Streaming: WebRTC para spectators</li>
+<li>Novos: sistema de torneios + betting com moeda virtual</li>
+</ul>
+<p><strong>Overview</strong>
+Vais evoluir a plataforma de jogos multiplayer da semana 26 adicionando um sistema de torneios com brackets automáticos, live spectating via WebRTC para zero latência, e um sistema de clan wars. O sistema de torneios suporta dois formatos: Single Elimination com brackets automáticos gerados após registo, e Swiss System onde cada jogador encontra adversários com score similar — o Swiss é matematicamente mais justo para determinar o melhor jogador sem eliminar ninguém cedo demais. O live spectating usa WebRTC data channels para retransmitir o estado do jogo com menos de 100ms de latência para até 100 spectators simultâneos sem passar pelo servidor autoritativo — os clientes dos spectators recebem o game state directamente do cliente do jogador via P2P mesh gerido pelo servidor de sinalização. O replay system guarda todos os inputs com timestamps e reproduz-os no cliente usando a mesma engine determinística — o que significa que podes saltar para qualquer momento de uma partida. O clan system permite grupos de 10+ jogadores, Wars entre clans com pontuação acumulada, e leaderboard de clans global.</p>
+<p><strong>Novidades:</strong></p>
+<ul>
+<li>
+<ol>
+<li>Pong (classic), Snake multiplayer, Tetris battle, Card game (simple)</li>
+</ol>
+</li>
+<li>2 novos jogos (escolha: Breakout 1v1, Connect Four, Wordle Battle)</li>
+<li>Tournament brackets automáticos com Swiss ou Single Elimination</li>
+<li>Live spectating via WebRTC (zero latência para 100 spectators)</li>
+<li>Replay system: guarda inputs → reproduz server-side</li>
+<li>Clan system: grupos de jogadores, wars entre clans</li>
+<li>In-game economy: moeda virtual por ganhar partidas, gastar em cosmetics</li>
+</ul>
+<h2>Entregáveis</h2>
+<ul>
+<li><input type="checkbox" disabled="" /> Platform completa e melhorada (URL pública)</li>
+<li><input type="checkbox" disabled="" /> Blog: “WebRTC for Game Spectating — Architecture and Challenges”</li>
+<li><input type="checkbox" disabled="" /> Video: torneio ao vivo com spectators</li>
+</ul>
+
+</body>
+</html>

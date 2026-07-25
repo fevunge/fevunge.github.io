@@ -1,0 +1,208 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <style>body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif;
+  line-height: 1.6;
+  min-width: 1200px;
+  padding: 2rem;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: var(--keyword);
+  margin-top: 1.5em;
+}
+
+h1 {
+  font-size: 2.2em;
+  border-bottom: 2px solid var(--border);
+  padding-bottom: 0.3em;
+}
+
+h2 {
+  font-size: 1.8em;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 0.2em;
+}
+
+h3 {
+  font-size: 1.4em;
+}
+
+h4,
+h5,
+h6 {
+  color: var(--constant);
+}
+
+a {
+  color: #66aaff;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+code {
+  background-color: var(--surface);
+  color: var(--function);
+  padding: 0.2em 0.4em;
+  border-radius: 4px;
+}
+
+pre {
+  background-color: var(--surface);
+  color: var(--foreground);
+  padding: 1em;
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  white-space: pre-wrap;
+  /* Wrap long lines */
+  word-wrap: break-word;
+  overflow-y: hidden;
+  /* Disable vertical scrolling */
+}
+
+pre code {
+  background: none;
+  padding: 0;
+  color: inherit;
+  display: block;
+}
+
+pre::-webkit-scrollbar {
+  display: none;
+  /* Hide scrollbar */
+}
+
+blockquote {
+  border-left: 4px solid var(--type);
+  background-color: var(--surface);
+  padding: 0.8em 1em;
+  color: var(--comment);
+  margin: 1em 0;
+}
+
+ul,
+ol {
+  padding-left: 2em;
+}
+
+li::marker {
+  color: var(--function);
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 1em 0;
+}
+
+th,
+td {
+  border: 1px solid var(--border);
+  padding: 0.6em 1em;
+}
+
+th {
+  background-color: var(--surface);
+  color: var(--function);
+}
+
+tr:nth-child(even) {
+  background-color: var(--surface);
+}
+
+hr {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 2em 0;
+}
+
+
+
+:root {
+  --keyword: #FFB347;
+  --function: #D4FF59;
+  --type: #66E6FF;
+  --constant: #D8A5FF;
+  --comment: #5C6773;
+  --foreground: #FFFFFF;
+  
+  /* UI Colors */
+  --background: #14161f;
+  --surface: #1E2129;
+  --border: #5C6773;
+}
+</style>
+</head>
+<body>
+  <h1>PROJECTO SHOWCASE #3 — Security Operations Platform</h1>
+<p>#week</p>
+<h2>SecOps Platform — Scanner + WAF + SIEM</h2>
+<p><strong>Descrição:</strong> Suite de ferramentas de segurança integradas — o tipo de coisa que as empresas pagam centenas de milhares de dólares por ano mas que tu podes construir.</p>
+<p><strong>Tech Stack</strong>
+Go + Python + Rust + PostgreSQL + ClickHouse + Nginx</p>
+<p><strong>Overview</strong>
+Vais construir uma suite de quatro ferramentas de segurança integradas — o tipo de produtos que empresas vendem separadamente por centenas de milhares por ano. O Vulnerability Scanner em Go faz port scanning via nmap API, service fingerprinting, CVE lookup na NVD API gratuita, e análise da configuração de segurança HTTP (headers, TLS config, CORS policy), produzindo relatórios em Markdown e PDF com findings ordenados por CVSS score. O Web Application Firewall em Go com Nginx aplica um rules engine baseado no OWASP Core Rule Set com anomaly scoring configurável, bot detection por padrões de behaviour, e um dashboard de ataques bloqueados em tempo real. O SIEM Light em Python com ClickHouse colecciona logs de múltiplas fontes em formatos diferentes (JSON, syslog, CEF), aplica regras de correlação configuráveis (“X eventos de tipo Y em Z segundos = alerta”), usa Isolation Forest para anomaly detection, e roteia alertas para email, webhook ou Slack. O Secrets Vault em Rust com AES-256-GCM guarda secrets encriptados com RBAC por namespace, audit log com hash chaining, rotação automática de secrets, e uma CLI + API. A integração entre os quatro: o SIEM detecta um ataque e instrui o WAF a bloquear automaticamente o IP atacante.</p>
+<p><strong>Tools:</strong></p>
+<p><strong>1. Vulnerability Scanner (Go):</strong></p>
+<ul>
+<li>Port scanning via <code>nmap</code> API</li>
+<li>Service fingerprinting</li>
+<li>CVE lookup via NVD API (gratuita)</li>
+<li>Web app scanning: headers, SSL/TLS config, CORS</li>
+<li>Relatório em Markdown e PDF</li>
+</ul>
+<p><strong>2. Web Application Firewall — WAF (Go + Nginx):</strong></p>
+<ul>
+<li>Rules engine baseado em OWASP Core Rule Set</li>
+<li>Rate limiting por IP, user, endpoint</li>
+<li>Anomaly scoring (bloqueia se score &gt; threshold)</li>
+<li>Bot detection (user-agent, behaviour patterns)</li>
+<li>Dashboard de ataques bloqueados</li>
+</ul>
+<p><strong>3. SIEM Light (Python + ClickHouse):</strong></p>
+<ul>
+<li>Log collection de múltiplas fontes (JSON, syslog, CEF)</li>
+<li>Correlation rules: “se X eventos em Y segundos → alerta”</li>
+<li>Anomaly detection com ML simples (isolation forest)</li>
+<li>Dashboard de incidents (Grafana)</li>
+<li>Alert routing: email, webhook, Slack</li>
+</ul>
+<p><strong>4. Secrets Vault (Rust + AES-256-GCM):</strong></p>
+<ul>
+<li>Storage encriptado de secrets</li>
+<li>Access control por RBAC</li>
+<li>Audit log imutável</li>
+<li>CLI + API</li>
+<li>Rotação automática de secrets (configurable)</li>
+</ul>
+<p><strong>Integration:</strong></p>
+<ul>
+<li>API unificada para todas as tools</li>
+<li>Central dashboard com risk score global</li>
+<li>Automated response: block IP no WAF quando SIEM detecta ataque</li>
+</ul>
+<h2>Entregáveis</h2>
+<ul>
+<li><input type="checkbox" disabled="" /> Security suite completa e open-source</li>
+<li><input type="checkbox" disabled="" /> Blog series: uma post por tool</li>
+<li><input type="checkbox" disabled="" /> Video demos individuais</li>
+<li><input type="checkbox" disabled="" /> Security best practices guide (baseada nas lições de construir as tools)</li>
+<li><input type="checkbox" disabled="" /> CTF environment usando as ferramentas para testar</li>
+</ul>
+
+</body>
+</html>

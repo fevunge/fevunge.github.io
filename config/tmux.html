@@ -1,0 +1,320 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <style>body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif;
+  line-height: 1.6;
+  min-width: 1200px;
+  padding: 2rem;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: var(--keyword);
+  margin-top: 1.5em;
+}
+
+h1 {
+  font-size: 2.2em;
+  border-bottom: 2px solid var(--border);
+  padding-bottom: 0.3em;
+}
+
+h2 {
+  font-size: 1.8em;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 0.2em;
+}
+
+h3 {
+  font-size: 1.4em;
+}
+
+h4,
+h5,
+h6 {
+  color: var(--constant);
+}
+
+a {
+  color: #66aaff;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+code {
+  background-color: var(--surface);
+  color: var(--function);
+  padding: 0.2em 0.4em;
+  border-radius: 4px;
+}
+
+pre {
+  background-color: var(--surface);
+  color: var(--foreground);
+  padding: 1em;
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  white-space: pre-wrap;
+  /* Wrap long lines */
+  word-wrap: break-word;
+  overflow-y: hidden;
+  /* Disable vertical scrolling */
+}
+
+pre code {
+  background: none;
+  padding: 0;
+  color: inherit;
+  display: block;
+}
+
+pre::-webkit-scrollbar {
+  display: none;
+  /* Hide scrollbar */
+}
+
+blockquote {
+  border-left: 4px solid var(--type);
+  background-color: var(--surface);
+  padding: 0.8em 1em;
+  color: var(--comment);
+  margin: 1em 0;
+}
+
+ul,
+ol {
+  padding-left: 2em;
+}
+
+li::marker {
+  color: var(--function);
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 1em 0;
+}
+
+th,
+td {
+  border: 1px solid var(--border);
+  padding: 0.6em 1em;
+}
+
+th {
+  background-color: var(--surface);
+  color: var(--function);
+}
+
+tr:nth-child(even) {
+  background-color: var(--surface);
+}
+
+hr {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 2em 0;
+}
+
+
+
+:root {
+  --keyword: #FB4934;
+  --function: #FABD2F;
+  --type: #83A598;
+  --constant: #D3869B;
+  --comment: #928374;
+  --foreground: #EBDBB2;
+  
+  /* UI Colors */
+  --background: #282828;
+  --surface: #3C3836;
+  --border: #665C54;
+}
+</style>
+</head>
+<body>
+  <pre style="background-color:#3c3836;"><code class="language-conf"><span style="color:#ebdbb2;">unbind C-b
+</span><span style="color:#ebdbb2;">set -g prefix C-a
+</span><span style="color:#ebdbb2;">bind C-a send-prefix
+</span><span style="color:#ebdbb2;">
+</span><span style="color:#ebdbb2;"># Lista de plugins
+</span><span style="color:#ebdbb2;">set -g @plugin &#39;tmux-plugins/tpm&#39;
+</span><span style="color:#ebdbb2;">set -g @plugin &#39;tmux-plugins/tmux-resurrect&#39;
+</span><span style="color:#ebdbb2;">set -g @plugin &#39;tmux-plugins/tmux-continuum&#39;
+</span><span style="color:#ebdbb2;">set -g @plugin &#39;tmux-plugins/catppuccin&#39;
+</span><span style="color:#ebdbb2;">set -g @plugin &#39;sainnhe/tmux-fzf&#39;
+</span><span style="color:#ebdbb2;"># Opcional: salvar automaticamente a cada 15 minutos
+</span><span style="color:#ebdbb2;">
+</span><span style="color:#ebdbb2;">set -g @continuum-restore &#39;on&#39;
+</span><span style="color:#ebdbb2;">set -g @continuum-save-interval &#39;15&#39;
+</span><span style="color:#ebdbb2;">run &#39;~/.tmux/plugins/tpm/tpm&#39;
+</span><span style="color:#ebdbb2;">
+</span><span style="color:#ebdbb2;">set -g @catppuccin_flavor &quot;mocha&quot;
+</span><span style="color:#ebdbb2;">set -g @catppuccin_window_status_style &quot;rounded&quot;
+</span><span style="color:#ebdbb2;">
+</span><span style="color:#ebdbb2;">run &#39;~/.config/tmux/plugins/catppuccin/tmux/catppuccin.tmux&#39;
+</span><span style="color:#ebdbb2;">
+</span><span style="color:#ebdbb2;"># Make the status line pretty and add some modules
+</span><span style="color:#ebdbb2;">set -g status-right-length 100
+</span><span style="color:#ebdbb2;">set -g status-left-length 100
+</span><span style="color:#ebdbb2;">set -g status-left &quot;&quot;
+</span><span style="color:#ebdbb2;">set -g status-right &quot;#{E:@catppuccin_status_directory} &quot;
+</span><span style="color:#ebdbb2;">set -ag status-right &quot;#{E:@catppuccin_status_application} &quot;
+</span><span style="color:#ebdbb2;">set -agF status-right &quot;#{E:@catppuccin_status_cpu}&quot;
+</span><span style="color:#ebdbb2;">set -ag status-right &quot;#{E:@catppuccin_status_uptime} &quot;
+</span><span style="color:#ebdbb2;">
+</span><span style="color:#ebdbb2;">run &quot;~/.config/tmux/plugins/tmux-continuum/continuum.tmux&quot;
+</span><span style="color:#ebdbb2;">run &#39;~/.config/tmux/plugins/tmux-cpu/cpu.tmux&#39;
+</span><span style="color:#ebdbb2;">run &#39;~/.config/tmux/plugins/tmux-fzf/main.tmux&#39;
+</span><span style="color:#ebdbb2;">run &#39;~/.config/tmux/plugins/tmux-fzf-url/fzf-url.tmux&#39;
+</span><span style="color:#ebdbb2;">run &#39;~/.config/tmux/plugins/tmux-pomodoro/pomodoro.tmux&#39;
+</span><span style="color:#ebdbb2;">run &#39;~/.config/tmux/plugins/tmux-sensible/sensible.tmux&#39;
+</span><span style="color:#ebdbb2;">
+</span><span style="color:#ebdbb2;"># Suporte a 256 cores
+</span><span style="color:#ebdbb2;">set -g default-terminal &quot;tmux-256color&quot;
+</span><span style="color:#ebdbb2;">set -ga terminal-overrides &quot;,xterm-256color:Tc&quot;
+</span><span style="color:#ebdbb2;">
+</span><span style="color:#ebdbb2;"># Remove delay ao pressionar ESC (importante para Vim/Neovim)
+</span><span style="color:#ebdbb2;">set -s escape-time 0
+</span><span style="color:#ebdbb2;">set -g history-limit 50000
+</span><span style="color:#ebdbb2;">set -g renumber-windows on
+</span><span style="color:#ebdbb2;">set -g mouse on
+</span><span style="color:#ebdbb2;">set -g status-interval 1
+</span><span style="color:#ebdbb2;">
+</span><span style="color:#ebdbb2;"># ────────────────────────────────────────────────────────────────
+</span><span style="color:#ebdbb2;"># KEYBINDINGS
+</span><span style="color:#ebdbb2;"># ────────────────────────────────────────────────────────────────
+</span><span style="color:#ebdbb2;">
+</span><span style="color:#ebdbb2;">bind c new-window -c &quot;#{pane_current_path}&quot; -n &quot;#{b:pane_current_path}&quot; -S
+</span><span style="color:#ebdbb2;">bind | split-window -h -c &quot;#{pane_current_path}&quot;
+</span><span style="color:#ebdbb2;">bind - split-window -v -c &quot;#{pane_current_path}&quot;
+</span><span style="color:#ebdbb2;">unbind &#39;&quot;&#39;
+</span><span style="color:#ebdbb2;">unbind %
+</span><span style="color:#ebdbb2;">
+</span><span style="color:#ebdbb2;">bind R source-file ~/.config/tmux/tmux.conf \; display &quot;config reloaded!&quot;
+</span><span style="color:#ebdbb2;">#bind r detach
+</span><span style="color:#ebdbb2;">
+</span><span style="color:#ebdbb2;"># Navegação entre panes com Alt + setas (sem prefix!)
+</span><span style="color:#ebdbb2;">bind -n M-Left select-pane -L
+</span><span style="color:#ebdbb2;">bind -n M-Right select-pane -R
+</span><span style="color:#ebdbb2;">bind -n M-Up select-pane -U
+</span><span style="color:#ebdbb2;">bind -n M-Down select-pane -D
+</span><span style="color:#ebdbb2;">
+</span><span style="color:#ebdbb2;"># Navegação entre janelas com Shift + setas
+</span><span style="color:#ebdbb2;">bind -n S-Left previous-window
+</span><span style="color:#ebdbb2;">bind -n S-Right next-window
+</span><span style="color:#ebdbb2;">
+</span><span style="color:#ebdbb2;"># Resize de panes com Ctrl + setas
+</span><span style="color:#ebdbb2;">bind -n C-Left resize-pane -L 2
+</span><span style="color:#ebdbb2;">bind -n C-Right resize-pane -R 2
+</span><span style="color:#ebdbb2;">bind -n C-Up resize-pane -U 2
+</span><span style="color:#ebdbb2;">bind -n C-Down resize-pane -D 2
+</span><span style="color:#ebdbb2;">
+</span><span style="color:#ebdbb2;"># ────────────────────────────────────────────────────────────────
+</span><span style="color:#ebdbb2;"># CATPPUCCIN MOCHA COLORS
+</span><span style="color:#ebdbb2;"># ────────────────────────────────────────────────────────────────
+</span><span style="color:#ebdbb2;">
+</span><span style="color:#ebdbb2;">thm_bg=&quot;#1e1e2e&quot;
+</span><span style="color:#ebdbb2;">thm_fg=&quot;#cdd6f4&quot;
+</span><span style="color:#ebdbb2;">thm_cyan=&quot;#89dceb&quot;
+</span><span style="color:#ebdbb2;">thm_black=&quot;#181825&quot;
+</span><span style="color:#ebdbb2;">thm_gray=&quot;#313244&quot;
+</span><span style="color:#ebdbb2;">thm_magenta=&quot;#c29df1&quot;
+</span><span style="color:#ebdbb2;">thm_pink=&quot;#f5c2e7&quot;
+</span><span style="color:#ebdbb2;">thm_red=&quot;#f38ba8&quot;
+</span><span style="color:#ebdbb2;">thm_green=&quot;#a6e3a1&quot;
+</span><span style="color:#ebdbb2;">thm_yellow=&quot;#f9e2af&quot;
+</span><span style="color:#ebdbb2;">thm_blue=&quot;#89b4fa&quot;
+</span><span style="color:#ebdbb2;">thm_orange=&quot;#fab387&quot;
+</span><span style="color:#ebdbb2;">thm_black4=&quot;#585b70&quot;
+</span><span style="color:#ebdbb2;">thm_black0=&quot;#11111b&quot;
+</span><span style="color:#ebdbb2;">thm_white=&quot;#cdd6f4&quot;
+</span><span style="color:#ebdbb2;">
+</span><span style="color:#ebdbb2;">set -g @ctp_bg &quot;#24273a&quot;
+</span><span style="color:#ebdbb2;">set -g @ctp_surface_1 &quot;#494d64&quot;
+</span><span style="color:#ebdbb2;">set -g @ctp_fg &quot;#cad3f5&quot;
+</span><span style="color:#ebdbb2;">set -g @ctp_mauve &quot;#c6a0f6&quot;
+</span><span style="color:#ebdbb2;">set -g @ctp_crust &quot;#181926&quot; 
+</span><span style="color:#ebdbb2;"># ────────────────────────────────────────────────────────────────
+</span><span style="color:#ebdbb2;"># DESIGN DA STATUS BAR
+</span><span style="color:#ebdbb2;"># ────────────────────────────────────────────────────────────────
+</span><span style="color:#ebdbb2;">
+</span><span style="color:#ebdbb2;"># status line
+</span><span style="color:#ebdbb2;">set -gF status-style &quot;bg=#{@ctp_bg},fg=#{@ctp_fg}&quot;
+</span><span style="color:#ebdbb2;">#set -g status-position bottom
+</span><span style="color:#ebdbb2;">#set -g status-style &quot;bg=$thm_bg,fg=$thm_fg&quot; 
+</span><span style="color:#ebdbb2;">
+</span><span style="color:#ebdbb2;"># windows
+</span><span style="color:#ebdbb2;">set -gF window-status-format &quot;#[bg=#{@ctp_surface_1},fg=#{@ctp_fg}] ##I ##W &quot;
+</span><span style="color:#ebdbb2;">set -gF window-status-current-format &quot;#[bg=$thm_black0,fg=$thm_white,bold] ##I ##W &quot;
+</span><span style="color:#ebdbb2;">#set -g status-justify left
+</span><span style="color:#ebdbb2;">set -g window-status-separator &quot;&quot; 
+</span><span style="color:#ebdbb2;">
+</span><span style="color:#ebdbb2;"># Status bar esquerda
+</span><span style="color:#ebdbb2;">#set -g status-left-length 100
+</span><span style="color:#ebdbb2;">set -g status-left &quot;#[bg=$thm_magenta,fg=$thm_bg,bold] 🐑::#S #[bg=$thm_bg,fg=$thm_magenta]&quot;
+</span><span style="color:#ebdbb2;">
+</span><span style="color:#ebdbb2;">
+</span><span style="color:#ebdbb2;"># Status bar direita
+</span><span style="color:#ebdbb2;">set -g status-right-length 200
+</span><span style="color:#ebdbb2;">
+</span><span style="color:#ebdbb2;">
+</span><span style="color:#ebdbb2;"># ────────────────────────────────────────────────────────────────
+</span><span style="color:#ebdbb2;"># DESIGN DOS PANES
+</span><span style="color:#ebdbb2;"># ────────────────────────────────────────────────────────────────
+</span><span style="color:#ebdbb2;">
+</span><span style="color:#ebdbb2;"># Borda dos panes
+</span><span style="color:#ebdbb2;">set -g pane-border-style &quot;fg=$thm_gray&quot;
+</span><span style="color:#ebdbb2;">set -g pane-active-border-style &quot;fg=$thm_magenta&quot;
+</span><span style="color:#ebdbb2;">
+</span><span style="color:#ebdbb2;"># Estilo das mensagens
+</span><span style="color:#ebdbb2;">set -g message-style &quot;bg=$thm_orange,fg=$thm_bg,bold&quot;
+</span><span style="color:#ebdbb2;">set -g message-command-style &quot;bg=$thm_magenta,fg=$thm_bg,bold&quot;
+</span><span style="color:#ebdbb2;">setw -g mode-style &quot;bg=$thm_magenta,fg=$thm_bg&quot;
+</span><span style="color:#ebdbb2;">
+</span><span style="color:#ebdbb2;"># ────────────────────────────────────────────────────────────────
+</span><span style="color:#ebdbb2;"># EXTRAS
+</span><span style="color:#ebdbb2;"># ────────────────────────────────────────────────────────────────
+</span><span style="color:#ebdbb2;">
+</span><span style="color:#ebdbb2;"># Destaca janela com atividade
+</span><span style="color:#ebdbb2;">#setw -g monitor-activity on
+</span><span style="color:#ebdbb2;">#set -g visual-activity on
+</span><span style="color:#ebdbb2;">setw -g window-status-activity-style &quot;fg=$thm_yellow,bg=$thm_bg&quot;
+</span><span style="color:#ebdbb2;">
+</span><span style="color:#ebdbb2;"># Título da janela do terminal
+</span><span style="color:#ebdbb2;">set -g set-titles on
+</span><span style="color:#ebdbb2;">set -g set-titles-string &quot;#S::#W&quot;
+</span><span style="color:#ebdbb2;">
+</span><span style="color:#ebdbb2;"># Display de números ao trocar de pane
+</span><span style="color:#ebdbb2;">set -g display-panes-time 4000
+</span><span style="color:#ebdbb2;">set -g display-panes-colour &quot;$thm_gray&quot;
+</span><span style="color:#ebdbb2;">set -g display-panes-active-colour &quot;$thm_magenta&quot;
+</span><span style="color:#ebdbb2;">
+</span><span style="color:#ebdbb2;">bind t display-popup -E &quot;zsh&quot;
+</span><span style="color:#ebdbb2;">bind d display-popup -E &quot;spf&quot;
+</span><span style="color:#ebdbb2;">
+</span><span style="color:#ebdbb2;"># ────────────────────────────────────────────────────────────────
+</span><span style="color:#ebdbb2;"># PLUGINS
+</span><span style="color:#ebdbb2;"># ────────────────────────────────────────────────────────────────
+</span><span style="color:#ebdbb2;">
+</span><span style="color:#ebdbb2;">set -g @fzf-url-open &quot;chromium&quot;
+</span><span style="color:#ebdbb2;">
+</span></code></pre>
+
+</body>
+</html>

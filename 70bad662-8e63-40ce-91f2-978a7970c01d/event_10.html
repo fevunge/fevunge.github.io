@@ -1,0 +1,240 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <style>body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif;
+  line-height: 1.6;
+  min-width: 1200px;
+  padding: 2rem;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: var(--keyword);
+  margin-top: 1.5em;
+}
+
+h1 {
+  font-size: 2.2em;
+  border-bottom: 2px solid var(--border);
+  padding-bottom: 0.3em;
+}
+
+h2 {
+  font-size: 1.8em;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 0.2em;
+}
+
+h3 {
+  font-size: 1.4em;
+}
+
+h4,
+h5,
+h6 {
+  color: var(--constant);
+}
+
+a {
+  color: #66aaff;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+code {
+  background-color: var(--surface);
+  color: var(--function);
+  padding: 0.2em 0.4em;
+  border-radius: 4px;
+}
+
+pre {
+  background-color: var(--surface);
+  color: var(--foreground);
+  padding: 1em;
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  white-space: pre-wrap;
+  /* Wrap long lines */
+  word-wrap: break-word;
+  overflow-y: hidden;
+  /* Disable vertical scrolling */
+}
+
+pre code {
+  background: none;
+  padding: 0;
+  color: inherit;
+  display: block;
+}
+
+pre::-webkit-scrollbar {
+  display: none;
+  /* Hide scrollbar */
+}
+
+blockquote {
+  border-left: 4px solid var(--type);
+  background-color: var(--surface);
+  padding: 0.8em 1em;
+  color: var(--comment);
+  margin: 1em 0;
+}
+
+ul,
+ol {
+  padding-left: 2em;
+}
+
+li::marker {
+  color: var(--function);
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 1em 0;
+}
+
+th,
+td {
+  border: 1px solid var(--border);
+  padding: 0.6em 1em;
+}
+
+th {
+  background-color: var(--surface);
+  color: var(--function);
+}
+
+tr:nth-child(even) {
+  background-color: var(--surface);
+}
+
+hr {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 2em 0;
+}
+
+
+
+:root {
+  --keyword: #FFB347;
+  --function: #D4FF59;
+  --type: #66E6FF;
+  --constant: #D8A5FF;
+  --comment: #5C6773;
+  --foreground: #FFFFFF;
+  
+  /* UI Colors */
+  --background: #14161f;
+  --surface: #1E2129;
+  --border: #5C6773;
+}
+</style>
+</head>
+<body>
+  <h1> Docker &amp; Containerization</h1>
+<p>#week</p>
+<h2>Objectivos</h2>
+<ul>
+<li>Docker architecture: daemon, containerd, runc — camadas de abstracção</li>
+<li>Dockerfile best practices: multi-stage builds, layer caching, .dockerignore</li>
+<li>Docker Compose v2 — sintaxe moderna e diferenças do v1</li>
+<li>Networking em Docker: bridge, host, overlay — quando usar cada um</li>
+<li>Volumes, bind mounts, tmpfs — persistência e performance</li>
+<li>Container security: rootless containers, capabilities, seccomp profiles</li>
+</ul>
+<h2>Recursos</h2>
+<table>
+<thead>
+<tr>
+<th>Tipo</th>
+<th>Recurso</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Docs</td>
+<td>Docker official documentation — docs.docker.com</td>
+</tr>
+<tr>
+<td>Video</td>
+<td>TechWorld with Nana — Docker Crash Course (YouTube)</td>
+</tr>
+<tr>
+<td>Artigo</td>
+<td>“Docker Security Best Practices” — Snyk blog</td>
+</tr>
+<tr>
+<td>Prática</td>
+<td>Play with Docker — labs.play-with-docker.com (gratuito)</td>
+</tr>
+<tr>
+<td>Tool</td>
+<td>Dive — github.com/wagoodman/dive (analisa layers de imagens)</td>
+</tr>
+</tbody>
+</table>
+<h2>Projeto</h2>
+<h3>Dev Environment Orchestrator CLI</h3>
+<p><strong>Tech Stack</strong>
+Go + Docker SDK + Docker Compose + cobra (CLI framework)</p>
+<p><strong>Overview</strong>
+Uma CLI em Go que cria e gere ambientes de desenvolvimento completos com um único comando — o tipo de ferramenta que toda a equipa usa mas ninguém constrói porque parece demasiado simples até perceberes o que é necessário para funcionar bem. A ferramenta precisa de detectar automaticamente o tipo de projecto (lendo <code>package.json</code>, <code>Cargo.toml</code>, <code>go.mod</code>, <code>pyproject.toml</code>, <code>requirements.txt</code>) e criar o ambiente Docker correspondente sem configuração manual.
+Para um projecto TypeScript, levanta automaticamente Node.js, PostgreSQL e Redis com as versões correctas, healthchecks inteligentes antes de marcar como “ready”, e port collision detection para evitar conflitos com outros projectos que possas ter em execução.
+O sistema de snapshots permite guardar e restaurar o estado da base de dados durante desenvolvimento, e os profiles (dev, test, staging) têm configurações diferentes como volumes, variáveis de ambiente e réplicas.
+A experiência de developer tem de ser tão simples que um colega sem experiência Docker consiga usar a ferramenta sem documentação.</p>
+<p><strong>Core Features</strong></p>
+<ul>
+<li>Templates de projetos (React, Node, Python, etc)</li>
+<li>One-command setup (DB + Cache + App)</li>
+<li>Hot reload configuration</li>
+<li>Logs aggregation</li>
+<li>Backup/restore de volumes</li>
+<li>Network isolation</li>
+<li>Detecção automática do projecto (lê package.json, Cargo.toml, go.mod)</li>
+<li>Health checks inteligentes antes de marcar como “ready”</li>
+<li>Port collision detection automática</li>
+<li>Profiles: <code>dev</code>, <code>test</code>, <code>staging</code> com configs diferentes</li>
+</ul>
+<pre style="background-color:#1e2129;"><code class="language-bash"><span style="color:#d4ff59;">devup</span><span style="color:#ffffff;"> init react-fullstack    </span><span style="color:#5c6773;"># detecta e cria o ambiente
+</span><span style="color:#d4ff59;">devup</span><span style="color:#ffffff;"> start                   </span><span style="color:#5c6773;"># inicia com healthchecks
+</span><span style="color:#d4ff59;">devup</span><span style="color:#ffffff;"> logs api --follow       </span><span style="color:#5c6773;"># logs em tempo real
+</span><span style="color:#d4ff59;">devup</span><span style="color:#ffffff;"> db shell                </span><span style="color:#5c6773;"># psql no container directamente
+</span><span style="color:#d4ff59;">devup</span><span style="color:#ffffff;"> snapshot save backup1   </span><span style="color:#5c6773;"># guarda estado da DB
+</span><span style="color:#d4ff59;">devup</span><span style="color:#ffffff;"> snapshot restore backup1
+</span><span style="color:#d4ff59;">devup</span><span style="color:#ffffff;"> clean --keep-data       </span><span style="color:#5c6773;"># remove containers, preserva dados
+</span></code></pre>
+<p><strong>Requisitos Técnicos(templates)</strong></p>
+<ul>
+<li>TypeScript + Hono + PostgreSQL + Redis</li>
+<li>React + Vite + API backend</li>
+<li>Python + FastAPI + PostgreSQL</li>
+<li>Go microservices (3 serviços + API gateway)</li>
+<li>Rust + Axum + PostgreSQL</li>
+</ul>
+<p><strong>Entregáveis</strong></p>
+<ul>
+<li><input type="checkbox" disabled="" /> CLI com binários para Linux/macOS/Windows via GitHub Releases</li>
+<li><input type="checkbox" disabled="" /> Blog: “Replacing docker-compose run with a Smart CLI in Go”</li>
+<li><input type="checkbox" disabled="" /> YouTube: “Setup a Full Dev Environment in 30 Seconds”</li>
+<li><input type="checkbox" disabled="" /> Collection de templates no repositório</li>
+</ul>
+
+</body>
+</html>

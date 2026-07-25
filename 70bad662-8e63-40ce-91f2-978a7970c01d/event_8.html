@@ -1,0 +1,231 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <style>body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif;
+  line-height: 1.6;
+  min-width: 1200px;
+  padding: 2rem;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: var(--keyword);
+  margin-top: 1.5em;
+}
+
+h1 {
+  font-size: 2.2em;
+  border-bottom: 2px solid var(--border);
+  padding-bottom: 0.3em;
+}
+
+h2 {
+  font-size: 1.8em;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 0.2em;
+}
+
+h3 {
+  font-size: 1.4em;
+}
+
+h4,
+h5,
+h6 {
+  color: var(--constant);
+}
+
+a {
+  color: #66aaff;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+code {
+  background-color: var(--surface);
+  color: var(--function);
+  padding: 0.2em 0.4em;
+  border-radius: 4px;
+}
+
+pre {
+  background-color: var(--surface);
+  color: var(--foreground);
+  padding: 1em;
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  white-space: pre-wrap;
+  /* Wrap long lines */
+  word-wrap: break-word;
+  overflow-y: hidden;
+  /* Disable vertical scrolling */
+}
+
+pre code {
+  background: none;
+  padding: 0;
+  color: inherit;
+  display: block;
+}
+
+pre::-webkit-scrollbar {
+  display: none;
+  /* Hide scrollbar */
+}
+
+blockquote {
+  border-left: 4px solid var(--type);
+  background-color: var(--surface);
+  padding: 0.8em 1em;
+  color: var(--comment);
+  margin: 1em 0;
+}
+
+ul,
+ol {
+  padding-left: 2em;
+}
+
+li::marker {
+  color: var(--function);
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 1em 0;
+}
+
+th,
+td {
+  border: 1px solid var(--border);
+  padding: 0.6em 1em;
+}
+
+th {
+  background-color: var(--surface);
+  color: var(--function);
+}
+
+tr:nth-child(even) {
+  background-color: var(--surface);
+}
+
+hr {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 2em 0;
+}
+
+
+
+:root {
+  --keyword: #FFB347;
+  --function: #D4FF59;
+  --type: #66E6FF;
+  --constant: #D8A5FF;
+  --comment: #5C6773;
+  --foreground: #FFFFFF;
+  
+  /* UI Colors */
+  --background: #14161f;
+  --surface: #1E2129;
+  --border: #5C6773;
+}
+</style>
+</head>
+<body>
+  <h1>C++20 STL &amp; Algorithms + WebAssembly</h1>
+<p>#week</p>
+<h2>Objectivos</h2>
+<ul>
+<li>STL algorithms (<code>&lt;algorithm&gt;</code>, <code>&lt;ranges&gt;</code>, <code>&lt;numeric&gt;</code>) — cada algoritmo e quando usar</li>
+<li>Function objects, lambdas com captures, partial application</li>
+<li>C++20 Ranges e Views — programação funcional em C++ sem overhead</li>
+<li>Concepts — type constraints legíveis que substituem SFINAE</li>
+<li>Complexity analysis real de cada algoritmo STL</li>
+</ul>
+<h2> Recursos</h2>
+<table>
+<thead>
+<tr>
+<th>Tipo</th>
+<th>Recurso</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Livro</td>
+<td><em>Effective STL</em> — Scott Meyers</td>
+</tr>
+<tr>
+<td>Prática</td>
+<td>Codeforces — contests em C++</td>
+</tr>
+<tr>
+<td>Ref</td>
+<td>cppreference.com/w/cpp/algorithm</td>
+</tr>
+<tr>
+<td>Video</td>
+<td>CppCon 2023 — “C++20 Ranges” talks</td>
+</tr>
+<tr>
+<td>Site</td>
+<td>compiler-explorer.com — vê o assembly gerado</td>
+</tr>
+</tbody>
+</table>
+<h2>Projeto</h2>
+<h3>Algorithm Visualizer — C++ compilado para WebAssembly</h3>
+<p><strong>Tech Stack</strong>
+C++20 + Emscripten + React + TypeScript + Canvas API
+<strong>Overview</strong>
+Um visualizador interativo de algoritmos que corre directamente no browser via WebAssembly — o core dos algoritmos está implementado em C++20 e compilado com Emscripten, enquanto o frontend em React com TypeScript faz a visualização via Canvas API.
+A vantagem de usar Wasm em vez de JavaScript puro é real e mensurável: <em>os algoritmos correm à velocidade nativa do C++ no browser, sem servidor, sem instalação.</em>
+O visualizador tem de mostrar, passo a passo com controlo de velocidade, pelo menos 8 algoritmos de sorting, os principais algoritmos de grafos (<em><em>DFS, BFS, Dijkstra, A</em>, Kruskal, Prim</em>*), e operações em árvores (<strong>AVL rotations, Red-Black insertions</strong>).
+Para cada step, mostras o código-fonte real com highlighting sincronizado com o estado actual da estrutura de dados, estatísticas em tempo real (comparações, swaps, memória usada), e comparação side-by-side de dois algoritmos.
+O projecto é publicado como PWA que funciona offline, e exporta animações como GIF para usar em blog posts.</p>
+<p><strong>Core Features:</strong></p>
+<ul>
+<li>Step-by-step com controlo de velocidade</li>
+<li>Comparação side-by-side de dois algoritmos</li>
+<li>Estatísticas em tempo real: comparações, swaps, memória</li>
+<li>Input customizado (array manual ou gerado)</li>
+<li>Code highlighting sincronizado com o step actual</li>
+<li>Export do resultado como GIF (para blog posts)</li>
+<li>Memory usage tracking</li>
+</ul>
+<p><strong>Requisitos Técnicos</strong></p>
+<ul>
+<li>Sorting: Bubble, Selection, Insertion, Quick, Merge, Heap, Radix, Tim</li>
+<li>Graph: DFS, BFS, Dijkstra, A*, Bellman-Ford, Kruskal, Prim</li>
+<li>Trees: AVL rotations, Red-Black insertions, B-tree operations</li>
+<li>Templates para genéricos</li>
+<li>Custom iterators</li>
+<li>Performance benchmarks</li>
+<li>Unit tests (Google Test)</li>
+</ul>
+<p><strong>Entregáveis</strong></p>
+<ul>
+<li><input type="checkbox" disabled="" /> Web app publicada no GitHub Pages (funciona no browser, zero instalação)</li>
+<li><input type="checkbox" disabled="" /> Blog: “Compiling C++20 to WebAssembly — Building an Algorithm Visualizer”</li>
+<li><input type="checkbox" disabled="" /> YouTube: Demo + explicação da arquitectura Wasm</li>
+<li><input type="checkbox" disabled="" /> Artigo comparativo: complexidade dos algoritmos com benchmarks reais</li>
+</ul>
+
+</body>
+</html>

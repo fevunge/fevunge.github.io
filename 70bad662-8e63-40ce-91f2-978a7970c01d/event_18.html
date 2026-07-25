@@ -1,0 +1,256 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <style>body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif;
+  line-height: 1.6;
+  min-width: 1200px;
+  padding: 2rem;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: var(--keyword);
+  margin-top: 1.5em;
+}
+
+h1 {
+  font-size: 2.2em;
+  border-bottom: 2px solid var(--border);
+  padding-bottom: 0.3em;
+}
+
+h2 {
+  font-size: 1.8em;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 0.2em;
+}
+
+h3 {
+  font-size: 1.4em;
+}
+
+h4,
+h5,
+h6 {
+  color: var(--constant);
+}
+
+a {
+  color: #66aaff;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+code {
+  background-color: var(--surface);
+  color: var(--function);
+  padding: 0.2em 0.4em;
+  border-radius: 4px;
+}
+
+pre {
+  background-color: var(--surface);
+  color: var(--foreground);
+  padding: 1em;
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  white-space: pre-wrap;
+  /* Wrap long lines */
+  word-wrap: break-word;
+  overflow-y: hidden;
+  /* Disable vertical scrolling */
+}
+
+pre code {
+  background: none;
+  padding: 0;
+  color: inherit;
+  display: block;
+}
+
+pre::-webkit-scrollbar {
+  display: none;
+  /* Hide scrollbar */
+}
+
+blockquote {
+  border-left: 4px solid var(--type);
+  background-color: var(--surface);
+  padding: 0.8em 1em;
+  color: var(--comment);
+  margin: 1em 0;
+}
+
+ul,
+ol {
+  padding-left: 2em;
+}
+
+li::marker {
+  color: var(--function);
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 1em 0;
+}
+
+th,
+td {
+  border: 1px solid var(--border);
+  padding: 0.6em 1em;
+}
+
+th {
+  background-color: var(--surface);
+  color: var(--function);
+}
+
+tr:nth-child(even) {
+  background-color: var(--surface);
+}
+
+hr {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 2em 0;
+}
+
+
+
+:root {
+  --keyword: #FFB347;
+  --function: #D4FF59;
+  --type: #66E6FF;
+  --constant: #D8A5FF;
+  --comment: #5C6773;
+  --foreground: #FFFFFF;
+  
+  /* UI Colors */
+  --background: #14161f;
+  --surface: #1E2129;
+  --border: #5C6773;
+}
+</style>
+</head>
+<body>
+  <h1>Python Avançado + Data Engineering Moderno</h1>
+<p>#week</p>
+<h2>Objectivos</h2>
+<ul>
+<li>Python avançado: decorators, generators, context managers, descriptors, <code>__slots__</code></li>
+<li>Type system moderno: <code>mypy</code> strict, <code>TypeVar</code>, <code>Protocol</code>, <code>TypedDict</code>, <code>ParamSpec</code></li>
+<li><code>asyncio</code> com <code>TaskGroup</code> (Python 3.11+) e <code>asyncio.timeout</code></li>
+<li>Polars — o substituto de Pandas para performance (10-100x mais rápido)</li>
+<li>DuckDB — SQL analítico em processo, substitui Spark para datasets médios</li>
+</ul>
+<h2>Recursos</h2>
+<table>
+<thead>
+<tr>
+<th>Tipo</th>
+<th>Recurso</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Livro</td>
+<td><em>Fluent Python</em> (2ª edição, 2022) — Luciano Ramalho</td>
+</tr>
+<tr>
+<td>Docs</td>
+<td>Polars user guide — pola.rs</td>
+</tr>
+<tr>
+<td>Docs</td>
+<td>DuckDB documentation — duckdb.org</td>
+</tr>
+<tr>
+<td>Blog</td>
+<td>pythonspeed.com — performance em Python</td>
+</tr>
+<tr>
+<td>Prática</td>
+<td>Python Morsels — morsels.com (free tier)</td>
+</tr>
+</tbody>
+</table>
+<h1>Projeto</h1>
+<h3>Modern ETL Pipeline Framework com Polars + DuckDB</h3>
+<p><strong>Tech Stack</strong>
+Python 3.12 + Polars + DuckDB + Prefect + FastAPI + Pydantic v2</p>
+<p><strong>Overview</strong>
+Um <strong>framework de ETL</strong> moderno e de alta performance que torna o processamento de dados <strong>10-100x</strong> mais rápido que pipelines tradicionais baseados em Pandas.
+O framework tem três camadas:
+- <strong>Extract</strong> suporta REST APIs com rate limiting inteligente e retry automático, ficheiros CSV/Excel/Parquet/JSON via Polars native, bases de dados via DuckDB JDBC, e web scraping assíncrono com <code>httpx</code> e <code>selectolax</code>;
+- <strong>Transform</strong> usa Polars com lazy evaluation para processar milhões de linhas sem carregar tudo em memória, com data quality checks automáticos via Great Expectations e detecção de schema drift;
+- <strong>Load</strong> suporta PostgreSQL com batch inserts optimizados, Parquet columnar, e DuckDB para análise local instantânea.
+A orquestração usa Prefect com retry automático, DAG visualization, e alertas em caso de falha. O projecto inclui benchmarks obrigatórios de Polars vs Pandas em 1M, 10M e 100M rows, lineage tracking para rastrear a origem de cada dado transformado, e publicação como PyPI package. O diferencial prático é um exemplo real: pipeline que processa dados de uma API pública, transforma, e produz um relatório analítico — tudo em segundos onde pandas levaria minutos.</p>
+<p><strong>Core Features</strong></p>
+<ul>
+<li><strong>Extract</strong>
+<ul>
+<li>REST APIs com rate limiting inteligente e retry</li>
+<li>CSV/Excel/Parquet/JSON files (Polars nativo)</li>
+<li>PostgreSQL e SQLite (via DuckDB JDBC)</li>
+<li>Web scraping assíncrono (<code>httpx</code> + <code>selectolax</code>)</li>
+<li>Google Sheets API (gratuita)</li>
+</ul>
+</li>
+</ul>
+<pre style="background-color:#1e2129;"><code class="language-python"><span style="color:#5c6773;"># Exemplo: 1M rows em &lt;1s com Polars lazy evaluation
+</span><span style="color:#ffffff;">df = (
+</span><span style="color:#ffffff;">    pl.</span><span style="color:#d4ff59;">scan_parquet</span><span style="color:#ffffff;">(</span><span style="color:#37dbb5;">&quot;data/*.parquet&quot;</span><span style="color:#ffffff;">)
+</span><span style="color:#ffffff;">    .</span><span style="color:#d4ff59;">filter</span><span style="color:#ffffff;">(pl.</span><span style="color:#d4ff59;">col</span><span style="color:#ffffff;">(</span><span style="color:#37dbb5;">&quot;date&quot;</span><span style="color:#ffffff;">) &gt;= pl.</span><span style="color:#d4ff59;">lit</span><span style="color:#ffffff;">(</span><span style="color:#37dbb5;">&quot;2025-01-01&quot;</span><span style="color:#ffffff;">))
+</span><span style="color:#ffffff;">    .</span><span style="color:#d4ff59;">group_by</span><span style="color:#ffffff;">(</span><span style="color:#37dbb5;">&quot;category&quot;</span><span style="color:#ffffff;">)
+</span><span style="color:#ffffff;">    .</span><span style="color:#d4ff59;">agg</span><span style="color:#ffffff;">([
+</span><span style="color:#ffffff;">        pl.</span><span style="color:#d4ff59;">col</span><span style="color:#ffffff;">(</span><span style="color:#37dbb5;">&quot;revenue&quot;</span><span style="color:#ffffff;">).</span><span style="color:#d4ff59;">sum</span><span style="color:#ffffff;">().</span><span style="color:#d4ff59;">alias</span><span style="color:#ffffff;">(</span><span style="color:#37dbb5;">&quot;total_revenue&quot;</span><span style="color:#ffffff;">),
+</span><span style="color:#ffffff;">        pl.</span><span style="color:#d4ff59;">col</span><span style="color:#ffffff;">(</span><span style="color:#37dbb5;">&quot;user_id&quot;</span><span style="color:#ffffff;">).</span><span style="color:#d4ff59;">n_unique</span><span style="color:#ffffff;">().</span><span style="color:#d4ff59;">alias</span><span style="color:#ffffff;">(</span><span style="color:#37dbb5;">&quot;unique_users&quot;</span><span style="color:#ffffff;">),
+</span><span style="color:#ffffff;">    ])
+</span><span style="color:#ffffff;">    .</span><span style="color:#d4ff59;">sort</span><span style="color:#ffffff;">(</span><span style="color:#37dbb5;">&quot;total_revenue&quot;</span><span style="color:#ffffff;">, descending=</span><span style="color:#d8a5ff;">True</span><span style="color:#ffffff;">)
+</span><span style="color:#ffffff;">    .</span><span style="color:#d4ff59;">collect</span><span style="color:#ffffff;">()
+</span><span style="color:#ffffff;">)
+</span></code></pre>
+<ul>
+<li><strong>Load:</strong>
+<ul>
+<li>PostgreSQL batch inserts optimizados</li>
+<li>Parquet (formato columnar eficiente)</li>
+<li>DuckDB (análise local instantânea)</li>
+</ul>
+</li>
+<li><strong>Orchestration:</strong>
+<ul>
+<li>Prefect flows com retry automático</li>
+<li>DAG visualization</li>
+<li>Alertas em caso de falha (email + webhook)</li>
+</ul>
+</li>
+<li>Data quality checks automáticos (Great Expectations)</li>
+<li>Schema evolution detection</li>
+<li>Lineage tracking (quais dados vieram de onde)</li>
+</ul>
+<h3>Entregáveis</h3>
+<ul>
+<li><input type="checkbox" disabled="" /> PyPI package publicado</li>
+<li><input type="checkbox" disabled="" /> Blog: “Polars + DuckDB — Why Pandas + Spark Is Overkill for Most Teams in 2026”</li>
+<li><input type="checkbox" disabled="" /> Benchmark: Polars vs Pandas em 1M/10M/100M rows (gráfico)</li>
+<li><input type="checkbox" disabled="" /> Video: pipeline completo do zero ao relatório analítico</li>
+</ul>
+
+</body>
+</html>

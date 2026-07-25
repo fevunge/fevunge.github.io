@@ -1,0 +1,228 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <style>body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif;
+  line-height: 1.6;
+  min-width: 1200px;
+  padding: 2rem;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: var(--keyword);
+  margin-top: 1.5em;
+}
+
+h1 {
+  font-size: 2.2em;
+  border-bottom: 2px solid var(--border);
+  padding-bottom: 0.3em;
+}
+
+h2 {
+  font-size: 1.8em;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 0.2em;
+}
+
+h3 {
+  font-size: 1.4em;
+}
+
+h4,
+h5,
+h6 {
+  color: var(--constant);
+}
+
+a {
+  color: #66aaff;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+code {
+  background-color: var(--surface);
+  color: var(--function);
+  padding: 0.2em 0.4em;
+  border-radius: 4px;
+}
+
+pre {
+  background-color: var(--surface);
+  color: var(--foreground);
+  padding: 1em;
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  white-space: pre-wrap;
+  /* Wrap long lines */
+  word-wrap: break-word;
+  overflow-y: hidden;
+  /* Disable vertical scrolling */
+}
+
+pre code {
+  background: none;
+  padding: 0;
+  color: inherit;
+  display: block;
+}
+
+pre::-webkit-scrollbar {
+  display: none;
+  /* Hide scrollbar */
+}
+
+blockquote {
+  border-left: 4px solid var(--type);
+  background-color: var(--surface);
+  padding: 0.8em 1em;
+  color: var(--comment);
+  margin: 1em 0;
+}
+
+ul,
+ol {
+  padding-left: 2em;
+}
+
+li::marker {
+  color: var(--function);
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 1em 0;
+}
+
+th,
+td {
+  border: 1px solid var(--border);
+  padding: 0.6em 1em;
+}
+
+th {
+  background-color: var(--surface);
+  color: var(--function);
+}
+
+tr:nth-child(even) {
+  background-color: var(--surface);
+}
+
+hr {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 2em 0;
+}
+
+
+
+:root {
+  --keyword: #FFB347;
+  --function: #D4FF59;
+  --type: #66E6FF;
+  --constant: #D8A5FF;
+  --comment: #5C6773;
+  --foreground: #FFFFFF;
+  
+  /* UI Colors */
+  --background: #14161f;
+  --surface: #1E2129;
+  --border: #5C6773;
+}
+</style>
+</head>
+<body>
+  <h1>Elixir &amp; Functional Programming — Phoenix LiveView</h1>
+<p>#week</p>
+<h2>Objectivos</h2>
+<ul>
+<li>Elixir: pattern matching, immutability, pipe operator</li>
+<li>OTP: GenServer, Supervisor, Application</li>
+<li>Phoenix: MVC, channels, LiveView</li>
+<li>Ecto: changesets, queries, associations, migrations</li>
+<li>Porque Elixir para real-time: o modelo de actores e BEAM</li>
+</ul>
+<h2>Recursos</h2>
+<table>
+<thead>
+<tr>
+<th>Tipo</th>
+<th>Recurso</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Livro</td>
+<td><em>Programming Elixir 1.6</em> — Dave Thomas</td>
+</tr>
+<tr>
+<td>Course</td>
+<td>Elixir School — elixirschool.com (gratuito)</td>
+</tr>
+<tr>
+<td>Prática</td>
+<td>Exercism Elixir track</td>
+</tr>
+<tr>
+<td>Docs</td>
+<td>Phoenix Guides — phoenixframework.org</td>
+</tr>
+<tr>
+<td>Video</td>
+<td>“Elixir in 100 Seconds” + “Phoenix LiveView” — Fireship</td>
+</tr>
+</tbody>
+</table>
+<h2>Projeto</h2>
+<h3>Collaborative Real-time Document Editor (Google Docs básico)</h3>
+<p><strong>Tech Stack:</strong> Elixir + Phoenix + LiveView + PostgreSQL (Ecto)</p>
+<p><strong>Overview</strong>
+Um editor de documentos colaborativo em tempo real usando Phoenix LiveView — e o que torna este projecto especialmente interessante é que toda a lógica de colaboração em tempo real acontece no servidor em Elixir sem uma linha de JavaScript custom. LiveView mantém o estado do documento no servidor e sincroniza diffs via WebSocket automático, o que significa que cursors de outros utilizadores, inserções e deleções aparecem em tempo real sem implementares um protocolo de sincronização no frontend. A implementação usa Operational Transformation simplificado para lidar com edições concorrentes: quando dois utilizadores editam o mesmo parágrafo em simultâneo, o servidor resolve o conflito e propaga o resultado correcto. Cada documento é um GenServer Elixir com estado próprio supervisionado pela OTP — se um processo crasha, o supervisor reinicia-o com o estado preservado via PostgreSQL. O Phoenix Presence rastreia quais utilizadores estão activos em cada documento, mostrando os seus avatares e cursors em tempo real. O histórico de versões cria snapshots automáticos a cada 5 minutos.</p>
+<p><strong>Core Features</strong></p>
+<ul>
+<li>Edição colaborativa em tempo real (Operational Transformation simplificado)</li>
+<li>Presence: avatares dos utilizadores activos no documento</li>
+<li>Cursor tracking: vês onde cada utilizador está a escrever</li>
+<li>Histórico de versões (snapshots automáticos)</li>
+<li>Comentários inline</li>
+<li>Formatação básica: bold, italic, headings, lists</li>
+<li>Export para Markdown e HTML</li>
+<li>Sharing: público, privado, por link com permissão</li>
+</ul>
+<p><strong>Requisitos</strong></p>
+<ul>
+<li>LiveView faz tudo sem JavaScript custom — o server mantém o estado</li>
+<li>1M conexões concorrentes num único nó Elixir (BEAM)</li>
+</ul>
+<pre style="background-color:#1e2129;"><code><span style="color:#ffffff;">DocumentSupervisor
+</span><span style="color:#ffffff;">├── DocumentServer (GenServer por documento)
+</span><span style="color:#ffffff;">│   ├── State: content, users, cursors
+</span><span style="color:#ffffff;">│   └── OT: aplica e broadcasting de operações
+</span><span style="color:#ffffff;">└── PresenceTracker (Phoenix.Presence)
+</span></code></pre>
+<h2>Entregáveis</h2>
+<ul>
+<li><input type="checkbox" disabled="" /> Editor colaborativo deployado</li>
+<li><input type="checkbox" disabled="" /> Blog: “Why Phoenix LiveView Changes Everything for Real-time Apps”</li>
+<li><input type="checkbox" disabled="" /> Video: Dois browsers a editar o mesmo documento em simultâneo</li>
+<li><input type="checkbox" disabled="" /> Comparison: Elixir/Phoenix vs Node.js/Socket.io para este caso de uso</li>
+</ul>
+
+</body>
+</html>

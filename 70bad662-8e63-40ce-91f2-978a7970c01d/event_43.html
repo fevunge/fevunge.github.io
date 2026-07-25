@@ -1,0 +1,191 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <style>body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif;
+  line-height: 1.6;
+  min-width: 1200px;
+  padding: 2rem;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: var(--keyword);
+  margin-top: 1.5em;
+}
+
+h1 {
+  font-size: 2.2em;
+  border-bottom: 2px solid var(--border);
+  padding-bottom: 0.3em;
+}
+
+h2 {
+  font-size: 1.8em;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 0.2em;
+}
+
+h3 {
+  font-size: 1.4em;
+}
+
+h4,
+h5,
+h6 {
+  color: var(--constant);
+}
+
+a {
+  color: #66aaff;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+code {
+  background-color: var(--surface);
+  color: var(--function);
+  padding: 0.2em 0.4em;
+  border-radius: 4px;
+}
+
+pre {
+  background-color: var(--surface);
+  color: var(--foreground);
+  padding: 1em;
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  white-space: pre-wrap;
+  /* Wrap long lines */
+  word-wrap: break-word;
+  overflow-y: hidden;
+  /* Disable vertical scrolling */
+}
+
+pre code {
+  background: none;
+  padding: 0;
+  color: inherit;
+  display: block;
+}
+
+pre::-webkit-scrollbar {
+  display: none;
+  /* Hide scrollbar */
+}
+
+blockquote {
+  border-left: 4px solid var(--type);
+  background-color: var(--surface);
+  padding: 0.8em 1em;
+  color: var(--comment);
+  margin: 1em 0;
+}
+
+ul,
+ol {
+  padding-left: 2em;
+}
+
+li::marker {
+  color: var(--function);
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 1em 0;
+}
+
+th,
+td {
+  border: 1px solid var(--border);
+  padding: 0.6em 1em;
+}
+
+th {
+  background-color: var(--surface);
+  color: var(--function);
+}
+
+tr:nth-child(even) {
+  background-color: var(--surface);
+}
+
+hr {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 2em 0;
+}
+
+
+
+:root {
+  --keyword: #FFB347;
+  --function: #D4FF59;
+  --type: #66E6FF;
+  --constant: #D8A5FF;
+  --comment: #5C6773;
+  --foreground: #FFFFFF;
+  
+  /* UI Colors */
+  --background: #14161f;
+  --surface: #1E2129;
+  --border: #5C6773;
+}
+</style>
+</head>
+<body>
+  <h1>DevOps Platform — GitOps com ArgoCD</h1>
+<p>#week</p>
+<h3>GitOps CI/CD Platform Completa</h3>
+<p><strong>Tech Stack</strong>
+Kubernetes + Terraform + ArgoCD + Tekton (CI) + Vault</p>
+<p><strong>Overview</strong>
+Vais construir uma pipeline GitOps completa onde o Git é a única fonte de verdade para o estado da infraestrutura e das aplicações — qualquer mudança aprovada num PR é automaticamente aplicada ao cluster sem intervenção manual. O Terraform provisiona o cluster k3d local e configura os recursos necessários. O ArgoCD monitoriza o repositório de manifests e sincroniza automaticamente quando detecta divergência entre o estado desejado no Git e o estado actual do cluster — com rollback automático via health checks se um deployment quebra. O Tekton define pipelines como CRDs Kubernetes: um pipeline de CI corre testes, builda a imagem Docker, faz push para o registry, e actualiza o manifest de deployment no repo de infra (disparando o ArgoCD). O Vault em modo dev gere todos os secrets: zero secrets em YAML ou Git, os pods recebem secrets via Vault Agent Injector como ficheiros em memória. O Cert-Manager gere certificados TLS automaticamente.</p>
+<p><strong>Core Features</strong></p>
+<ul>
+<li><strong>Terraform</strong>: provisiona o cluster K8s local (k3d) e os recursos cloud necessários</li>
+<li><strong>ArgoCD</strong>: GitOps — qualquer commit no repo de infra é aplicado automaticamente</li>
+<li><strong>Tekton</strong>: CI/CD nativo em Kubernetes (pipelines como CRDs)</li>
+<li><strong>Vault</strong>: secrets management (zero secrets em YAML/Git)</li>
+<li><strong>Cert-Manager</strong>: TLS automático</li>
+<li><strong>External-DNS</strong>: DNS automático para Ingresses</li>
+</ul>
+<p><strong>Fluxo GitOps</strong></p>
+<pre style="background-color:#1e2129;"><code><span style="color:#ffffff;">Dev → git push → GitHub Actions (CI: test + build + push image)
+</span><span style="color:#ffffff;">                      ↓
+</span><span style="color:#ffffff;">                 ArgoCD detecta nova imagem
+</span><span style="color:#ffffff;">                      ↓
+</span><span style="color:#ffffff;">                 Sync automático para K8s
+</span><span style="color:#ffffff;">                      ↓
+</span><span style="color:#ffffff;">                 Rollback automático se health checks falham
+</span></code></pre>
+<p><strong>Serviços deployados (projectos anteriores):</strong></p>
+<ul>
+<li>Auth Platform (<a href="week_7" data-wikilink="true">week_7</a>)</li>
+<li>SaaS Platform (<a href="week_13" data-wikilink="true">week_13</a>)</li>
+<li>AI Knowledge Base (<a href="week_38" data-wikilink="true">week_38</a>)</li>
+</ul>
+<h2>Entregáveis</h2>
+<ul>
+<li><input type="checkbox" disabled="" /> IaC repo completo (um <code>terraform apply</code> + ArgoCD sync → tudo a funcionar)</li>
+<li><input type="checkbox" disabled="" /> Blog: “GitOps in 2026 — The Definitive Setup with ArgoCD and Tekton”</li>
+<li><input type="checkbox" disabled="" /> Video: from <code>git push</code> to production em tempo real</li>
+<li><input type="checkbox" disabled="" /> Runbooks completos para operações comuns</li>
+</ul>
+
+</body>
+</html>

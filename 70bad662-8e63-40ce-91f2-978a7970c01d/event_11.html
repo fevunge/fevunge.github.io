@@ -1,0 +1,234 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <style>body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif;
+  line-height: 1.6;
+  min-width: 1200px;
+  padding: 2rem;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: var(--keyword);
+  margin-top: 1.5em;
+}
+
+h1 {
+  font-size: 2.2em;
+  border-bottom: 2px solid var(--border);
+  padding-bottom: 0.3em;
+}
+
+h2 {
+  font-size: 1.8em;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 0.2em;
+}
+
+h3 {
+  font-size: 1.4em;
+}
+
+h4,
+h5,
+h6 {
+  color: var(--constant);
+}
+
+a {
+  color: #66aaff;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+code {
+  background-color: var(--surface);
+  color: var(--function);
+  padding: 0.2em 0.4em;
+  border-radius: 4px;
+}
+
+pre {
+  background-color: var(--surface);
+  color: var(--foreground);
+  padding: 1em;
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  white-space: pre-wrap;
+  /* Wrap long lines */
+  word-wrap: break-word;
+  overflow-y: hidden;
+  /* Disable vertical scrolling */
+}
+
+pre code {
+  background: none;
+  padding: 0;
+  color: inherit;
+  display: block;
+}
+
+pre::-webkit-scrollbar {
+  display: none;
+  /* Hide scrollbar */
+}
+
+blockquote {
+  border-left: 4px solid var(--type);
+  background-color: var(--surface);
+  padding: 0.8em 1em;
+  color: var(--comment);
+  margin: 1em 0;
+}
+
+ul,
+ol {
+  padding-left: 2em;
+}
+
+li::marker {
+  color: var(--function);
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 1em 0;
+}
+
+th,
+td {
+  border: 1px solid var(--border);
+  padding: 0.6em 1em;
+}
+
+th {
+  background-color: var(--surface);
+  color: var(--function);
+}
+
+tr:nth-child(even) {
+  background-color: var(--surface);
+}
+
+hr {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 2em 0;
+}
+
+
+
+:root {
+  --keyword: #FFB347;
+  --function: #D4FF59;
+  --type: #66E6FF;
+  --constant: #D8A5FF;
+  --comment: #5C6773;
+  --foreground: #FFFFFF;
+  
+  /* UI Colors */
+  --background: #14161f;
+  --surface: #1E2129;
+  --border: #5C6773;
+}
+</style>
+</head>
+<body>
+  <h1>Linux Systems &amp; Bash Scripting</h1>
+<p>#week</p>
+<h2>Objectivos</h2>
+<ul>
+<li>Linux internals: processos, threads, signals, file descriptors</li>
+<li>Filesystem hierarchy standard (FHS) e o que está em cada directório</li>
+<li>Bash scripting avançado: arrays, functions, trap, getopts, heredocs</li>
+<li>Process management: <code>systemd</code> units, targets, journald</li>
+<li>System calls fundamentais: <code>fork</code>, <code>exec</code>, <code>wait</code>, <code>pipe</code> — o que cada uma faz</li>
+<li>Log management: <code>journald</code>, <code>logrotate</code></li>
+<li>Cron e <code>systemd</code> timers — quando usar cada um</li>
+</ul>
+<h2>Recursos</h2>
+<table>
+<thead>
+<tr>
+<th>Tipo</th>
+<th>Recurso</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Livro</td>
+<td><em>The Linux Command Line</em> — William Shotts (gratuito em linuxcommand.org)</td>
+</tr>
+<tr>
+<td>Course</td>
+<td>Linux Journey — linuxjourney.com</td>
+</tr>
+<tr>
+<td>Prática</td>
+<td>OverTheWire: Bandit (wargame gratuito, 34 levels)</td>
+</tr>
+<tr>
+<td>Ref</td>
+<td>man pages — <code>man 2 fork</code>, <code>man 7 signal</code>, etc.</td>
+</tr>
+<tr>
+<td>Video</td>
+<td>“Linux Crash Course” — Learn Linux TV (YouTube)</td>
+</tr>
+</tbody>
+</table>
+<h2>Projeto</h2>
+<h3>System Observability Agent + Dashboard em Tempo Real</h3>
+<p><strong>Tech Stack</strong> 
+Python (agente) + Bash (scripts) + Flask (API/SSE) + React (dashboard) + SQLite</p>
+<p><strong>Overview</strong>
+Um agente de monitorização de sistema leve que corre como serviço <code>systemd</code> e expõe as métricas do servidor através de um dashboard web com actualização em tempo real — como um Prometheus node_exporter mais simples, mas construído por ti, o que te permite entender exactamente o que está a ser medido e porquê.
+O agente Python recolhe métricas a cada 5 segundos: CPU por core e load average, memória RSS/VSZ/swap, disk I/O e espaço em todos os pontos de montagem, rede por interface, top-N processos por CPU e por memória, e health checks dos serviços <code>systemd</code> configurados.
+As métricas são persistidas em SQLite para histórico de 30 dias e enviadas via SSE (Server-Sent Events) para o dashboard React com gráficos em tempo real via Chart.js.
+O sistema de alertas configura thresholds por métrica e envia notificações via SMTP local. Para além do agente, produces quatro scripts Bash que mostras a qualidade do trabalho:
+<strong>instalação automatizada</strong>, <strong>backup incremental com rsync</strong>, <strong>auditoria de segurança básica</strong>, e <strong>rotação de logs</strong>.</p>
+<p><strong>Core Features</strong></p>
+<ul>
+<li>CPU per-core + load average</li>
+<li>Memory: RSS, VSZ, swap usage</li>
+<li>Disk: I/O, espaço, inodes</li>
+<li>Network: bytes in/out, conexões activas</li>
+<li>Top-N processos por CPU e memória</li>
+<li>Service health checks via <code>systemd</code> API</li>
+<li>Log pattern detection (regex configurável)</li>
+<li>Gráficos em tempo real (Chart.js via SSE)</li>
+<li>Histórico de 30 dias em SQLite</li>
+<li>Alertas configuráveis (email via SMTP local)</li>
+<li>Exportação de relatório em PDF</li>
+</ul>
+<p><strong>Requisitos Técnicos</strong></p>
+<ul>
+<li><code>install.sh</code> — instalação com <code>systemd</code> service, verifica dependências</li>
+<li><code>backup.sh</code> — backup incremental com rsync + verificação de checksum</li>
+<li><code>security-audit.sh</code> — permissões suspeitas, portas abertas, utilizadores sem password</li>
+<li><code>log-rotate-custom.sh</code> — rotação com compressão e retenção configurável</li>
+</ul>
+<p><strong>Entregáveis</strong></p>
+<ul>
+<li><input type="checkbox" disabled="" /> Agente + dashboard no GitHub com scripts de instalação</li>
+<li><input type="checkbox" disabled="" /> Blog: “Building a System Monitoring Agent from Scratch in Python”</li>
+<li><input type="checkbox" disabled="" /> Video: dashboard em tempo real com alertas a funcionar</li>
+<li><input type="checkbox" disabled="" /> Cheat sheet: “50 Linux Commands Every Developer Must Know” (PDF)</li>
+</ul>
+
+</body>
+</html>

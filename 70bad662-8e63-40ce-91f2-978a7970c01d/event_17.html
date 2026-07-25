@@ -1,0 +1,237 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <style>body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif;
+  line-height: 1.6;
+  min-width: 1200px;
+  padding: 2rem;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: var(--keyword);
+  margin-top: 1.5em;
+}
+
+h1 {
+  font-size: 2.2em;
+  border-bottom: 2px solid var(--border);
+  padding-bottom: 0.3em;
+}
+
+h2 {
+  font-size: 1.8em;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 0.2em;
+}
+
+h3 {
+  font-size: 1.4em;
+}
+
+h4,
+h5,
+h6 {
+  color: var(--constant);
+}
+
+a {
+  color: #66aaff;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+code {
+  background-color: var(--surface);
+  color: var(--function);
+  padding: 0.2em 0.4em;
+  border-radius: 4px;
+}
+
+pre {
+  background-color: var(--surface);
+  color: var(--foreground);
+  padding: 1em;
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  white-space: pre-wrap;
+  /* Wrap long lines */
+  word-wrap: break-word;
+  overflow-y: hidden;
+  /* Disable vertical scrolling */
+}
+
+pre code {
+  background: none;
+  padding: 0;
+  color: inherit;
+  display: block;
+}
+
+pre::-webkit-scrollbar {
+  display: none;
+  /* Hide scrollbar */
+}
+
+blockquote {
+  border-left: 4px solid var(--type);
+  background-color: var(--surface);
+  padding: 0.8em 1em;
+  color: var(--comment);
+  margin: 1em 0;
+}
+
+ul,
+ol {
+  padding-left: 2em;
+}
+
+li::marker {
+  color: var(--function);
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 1em 0;
+}
+
+th,
+td {
+  border: 1px solid var(--border);
+  padding: 0.6em 1em;
+}
+
+th {
+  background-color: var(--surface);
+  color: var(--function);
+}
+
+tr:nth-child(even) {
+  background-color: var(--surface);
+}
+
+hr {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 2em 0;
+}
+
+
+
+:root {
+  --keyword: #FFB347;
+  --function: #D4FF59;
+  --type: #66E6FF;
+  --constant: #D8A5FF;
+  --comment: #5C6773;
+  --foreground: #FFFFFF;
+  
+  /* UI Colors */
+  --background: #14161f;
+  --surface: #1E2129;
+  --border: #5C6773;
+}
+</style>
+</head>
+<body>
+  <h1>Rust Advanced — Async, Tokio &amp; Actor Model</h1>
+<p>#week</p>
+<h2>Objectivos</h2>
+<ul>
+<li><code>async</code>/<code>await</code> — como funciona por baixo: Futures, polling, wakers, executors</li>
+<li>Tokio runtime: tasks, <code>spawn</code>, <code>spawn_blocking</code>, canais typed e untyped</li>
+<li><code>tokio::select!</code> — multiplexing de futures com cancellation</li>
+<li>Actor model com channels Tokio — alternativa sem framework</li>
+<li>Lock-free data structures: <code>DashMap</code>, <code>crossbeam-channel</code></li>
+<li>Backpressure e bounded channels</li>
+</ul>
+<h2>Recursos</h2>
+<table>
+<thead>
+<tr>
+<th>Tipo</th>
+<th>Recurso</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Livro</td>
+<td><em>Async Rust</em> — gratuito em rust-lang.github.io/async-book</td>
+</tr>
+<tr>
+<td>Docs</td>
+<td>Tokio tutorial — tokio.rs/tokio/tutorial</td>
+</tr>
+<tr>
+<td>Video</td>
+<td>Jon Gjengset — “Implementing Futures from Scratch” (YouTube)</td>
+</tr>
+<tr>
+<td>Blog</td>
+<td>fasterthanlime.com — posts sobre async Rust</td>
+</tr>
+<tr>
+<td>Prática</td>
+<td>Tokio exercises — github.com/tokio-rs/tokio/tree/master/examples</td>
+</tr>
+</tbody>
+</table>
+<h2>Projeto</h2>
+<h3>Distributed Task Queue System — Zero-Cost Job Processing</h3>
+<p><strong>Tech Stack</strong> 
+Rust + Tokio + Axum + Redis + PostgreSQL + Prometheus</p>
+<p><strong>Overview</strong>
+Um sistema de filas de tarefas distribuído em Rust usando o modelo de actores — o tipo de sistema que o BullMQ ou o Celery implementam, mas com as garantias de segurança e a performance de Rust. O sistema usa actores Tokio (não o framework Actix — implementas actores com channels e tasks puras) para isolar responsabilidades: um Queue Actor gere o ciclo de vida dos jobs e expõe uma API Axum; Worker Actors processam os jobs em paralelo com pool dinâmico que escala com a carga; um Scheduler Actor gere jobs cron-based e delayed; um Storage Actor abstrai Redis (estado runtime) e PostgreSQL (persistência); e um Metrics Actor exporta métricas Prometheus. O sistema garante at-least-once delivery, suporta idempotency keys para semântica exactly-once quando o worker é idempotente, e faz retry com exponential backoff com jitter. Jobs cancelados têm graceful cancellation via <code>CancellationToken</code>. O benchmarking final compara throughput (jobs/segundo) e latência contra BullMQ em Node.js e Celery em Python nas mesmas condições.</p>
+<p><strong>Core Features</strong></p>
+<ul>
+<li>Job scheduling: imediato, delayed, cron-based</li>
+<li>Priority queues com N prioridades configuráveis</li>
+<li>Retry com exponential backoff + jitter</li>
+<li>Dead letter queue com reprocessamento manual</li>
+<li>Worker pool dinâmico (escala com a carga)</li>
+<li>Job cancellation e timeout</li>
+<li>Progress tracking em tempo real (SSE)</li>
+<li>Rate limiting por job type com token bucket</li>
+<li>Métricas Prometheus: throughput, latência, error rate</li>
+</ul>
+<pre style="background-color:#1e2129;"><code><span style="color:#ffffff;">Client API (Axum)
+</span><span style="color:#ffffff;">     ↓
+</span><span style="color:#ffffff;">Queue Actor (job lifecycle)
+</span><span style="color:#ffffff;">     ↓              ↓
+</span><span style="color:#ffffff;">Worker Actors    Scheduler Actor
+</span><span style="color:#ffffff;">     ↓              ↓
+</span><span style="color:#ffffff;">Storage Actor (Redis hot + PostgreSQL persistence)
+</span><span style="color:#ffffff;">     ↓
+</span><span style="color:#ffffff;">Metrics Actor (Prometheus exporter)
+</span></code></pre>
+<p><strong>Requisitos</strong></p>
+<ul>
+<li>At-least-once delivery</li>
+<li>Idempotency keys para exactly-once semântico</li>
+<li>Graceful shutdown: drain da queue antes de sair</li>
+<li>Error handling robusto</li>
+</ul>
+<h2>Entregáveis</h2>
+<ul>
+<li><input type="checkbox" disabled="" /> Crate no crates.io com documentação completa</li>
+<li><input type="checkbox" disabled="" /> Benchmark: jobs/segundo vs BullMQ vs Celery (gráfico comparativo)</li>
+<li><input type="checkbox" disabled="" /> Blog: “Building a Distributed Task Queue in Rust with the Actor Model”</li>
+<li><input type="checkbox" disabled="" /> Video: arquitectura + demo de workers a processar jobs em paralelo</li>
+</ul>
+
+</body>
+</html>

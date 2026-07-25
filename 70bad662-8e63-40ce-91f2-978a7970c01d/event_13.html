@@ -1,0 +1,249 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <style>body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif;
+  line-height: 1.6;
+  min-width: 1200px;
+  padding: 2rem;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: var(--keyword);
+  margin-top: 1.5em;
+}
+
+h1 {
+  font-size: 2.2em;
+  border-bottom: 2px solid var(--border);
+  padding-bottom: 0.3em;
+}
+
+h2 {
+  font-size: 1.8em;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 0.2em;
+}
+
+h3 {
+  font-size: 1.4em;
+}
+
+h4,
+h5,
+h6 {
+  color: var(--constant);
+}
+
+a {
+  color: #66aaff;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+code {
+  background-color: var(--surface);
+  color: var(--function);
+  padding: 0.2em 0.4em;
+  border-radius: 4px;
+}
+
+pre {
+  background-color: var(--surface);
+  color: var(--foreground);
+  padding: 1em;
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  white-space: pre-wrap;
+  /* Wrap long lines */
+  word-wrap: break-word;
+  overflow-y: hidden;
+  /* Disable vertical scrolling */
+}
+
+pre code {
+  background: none;
+  padding: 0;
+  color: inherit;
+  display: block;
+}
+
+pre::-webkit-scrollbar {
+  display: none;
+  /* Hide scrollbar */
+}
+
+blockquote {
+  border-left: 4px solid var(--type);
+  background-color: var(--surface);
+  padding: 0.8em 1em;
+  color: var(--comment);
+  margin: 1em 0;
+}
+
+ul,
+ol {
+  padding-left: 2em;
+}
+
+li::marker {
+  color: var(--function);
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 1em 0;
+}
+
+th,
+td {
+  border: 1px solid var(--border);
+  padding: 0.6em 1em;
+}
+
+th {
+  background-color: var(--surface);
+  color: var(--function);
+}
+
+tr:nth-child(even) {
+  background-color: var(--surface);
+}
+
+hr {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 2em 0;
+}
+
+
+
+:root {
+  --keyword: #FFB347;
+  --function: #D4FF59;
+  --type: #66E6FF;
+  --constant: #D8A5FF;
+  --comment: #5C6773;
+  --foreground: #FFFFFF;
+  
+  /* UI Colors */
+  --background: #14161f;
+  --surface: #1E2129;
+  --border: #5C6773;
+}
+</style>
+</head>
+<body>
+  <h1>PROJECTO INTEGRADOR — Plataforma SaaS Segura</h1>
+<p>#week</p>
+<h2>Objectivo</h2>
+<p>Integrar TODOS os conhecimentos de Q1 num sistema real de nível production.</p>
+<h1>Recursos</h1>
+<table>
+<thead>
+<tr>
+<th>Tipo</th>
+<th>Recurso</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Livro</td>
+<td><em>Design Patterns: Elements of Reusable Object-Oriented Software</em> — Gang of Four (caps. seleccionados: Factory, Observer, Strategy, Decorator)</td>
+</tr>
+<tr>
+<td>Livro</td>
+<td><em>Domain-Driven Design: Tackling Complexity in the Heart of Software</em> — Eric Evans (Parte 1)</td>
+</tr>
+<tr>
+<td>Vídeo</td>
+<td><a href="https://www.youtube.com/watch?v=U6CeaA-Phqo">“Domain Driven Design: The Good Parts” — Jimmy Bogard (YouTube)</a></td>
+</tr>
+<tr>
+<td>Artigo</td>
+<td>“SOLID Principles” — Robert C. Martin (Wikipedia + blog posts originais)</td>
+</tr>
+<tr>
+<td>Site</td>
+<td><a href="https://refactoring.guru/design-patterns">Refactoring.Guru — Design Patterns</a> — <strong>excelente recurso visual gratuito</strong></td>
+</tr>
+</tbody>
+</table>
+<h1>Projeto</h1>
+<h3>Multi-tenant SaaS Platform — Project Management Tool</h3>
+<p><strong>Tech Stack</strong></p>
+<ul>
+<li><strong>Frontend:</strong> React 19 + TypeScript + Tailwind CSS + TanStack Query</li>
+<li><strong>Backend:</strong> Node.js + Hono + TypeScript(usando a API da <a href="week_2" data-wikilink="true">week_2</a>)</li>
+<li><strong>Auth:</strong> Microservice da <a href="week_7" data-wikilink="true">week_7</a></li>
+<li><strong>Database:</strong> PostgreSQL (row-level security) applicado lições da <a href="week_6" data-wikilink="true">week_6</a></li>
+<li><strong>Cache:</strong> Redis (sessões + rate limiting)</li>
+<li><strong>Storage:</strong> MinIO (local S3-compatible)</li>
+<li><strong>Infra:</strong> Docker Compose (usando orchestrator da <a href="week_10" data-wikilink="true">week_10</a>)</li>
+<li><strong>Monitoring:</strong> Agente da <a href="week_11" data-wikilink="true">week_11</a></li>
+</ul>
+<p><strong>Overview</strong>
+Uma plataforma SaaS de gestão de projectos multi-tenant — tipo um Jira simplificado mas construído com os padrões de qualidade, segurança e observabilidade que aprendeste durante as 12 semanas anteriores.
+Multi-tenant significa que organizações diferentes partilham a mesma infraestrutura mas com isolamento total de dados — implementas isso via row-level security no PostgreSQL onde cada query inclui automaticamente o <code>organization_id</code> via middleware, tornando impossível a um tenant aceder aos dados de outro mesmo que haja um bug na lógica de negócio. A plataforma tem projects, boards e tasks com drag-and-drop, sistema de comentários com menções, file attachments via MinIO (S3-compatible local), notificações em tempo real via Server-Sent Events, e um analytics dashboard com burn-down charts e métricas de velocity. A infra usa o Docker orchestrator que construíste na <a href="week_10" data-wikilink="true">week_10</a>, o auth platform da <a href="week_7" data-wikilink="true">week_7</a> para autenticação, o PostgreSQL optimizado da <a href="week_6" data-wikilink="true">week_6</a> para queries, e o agente de monitoring da <a href="week_11" data-wikilink="true">week_11</a> para observabilidade. O CI/CD corre lint, testes unitários, testes de integração, testes E2E com Playwright, e um OWASP ZAP scan automatizado. O sistema vai para produção no Render free tier com SSL automático.</p>
+<p><strong>Core Features</strong></p>
+<ul>
+<li>Multi-tenancy com row-level security no PostgreSQL</li>
+<li>Projects, Boards, Tasks com drag-and-drop</li>
+<li>Assignments, due dates, priorities, labels</li>
+<li>Comentários, file attachments, notificações em tempo real (SSE)</li>
+<li>Analytics: burn-down charts, velocity, cycle time</li>
+<li>Admin panel com RBAC granular</li>
+<li>Notificações em tempo real (Server-Sent Events)</li>
+<li>Audit log completo de todas as acções</li>
+</ul>
+<p><strong>Requisitos</strong></p>
+<ul>
+<li>Aplica Domain-Driven Design ao domínio desse projeto</li>
+<li>Bounded Contexts</li>
+<li>Entities, Value Objects, Aggregates</li>
+<li>Domain Events</li>
+<li>Context Map com relações entre contextos</li>
+<li>Todas as vulnerabilidades da <a href="week_12" data-wikilink="true">week_12</a> mitigadas</li>
+<li>Tenant isolation: row-level security no PostgreSQL</li>
+<li>Security headers completos</li>
+<li>Rate limiting por utilizador e por organização</li>
+<li>Input validation rigorosa em todos os endpoints</li>
+<li>Audit log imutável</li>
+<li>Unit tests: 90%+ coverage</li>
+<li>Integration tests: todos os endpoints críticos</li>
+<li>E2E: Playwright (login, criar task, assign, comentar)</li>
+<li>Security: OWASP ZAP scan no CI</li>
+<li>Load: k6 simulando 100 utilizadores simultâneos</li>
+<li>Docker Compose para desenvolvimento</li>
+<li>CI/CD com Jenkins lint → test → build → deploy</li>
+<li>Deploy no Render free tier (produção acessível)</li>
+<li>SSL/TLS automático (Let’s Encrypt)</li>
+<li>Monitoring com o agente da <a href="week_11" data-wikilink="true">week_11</a></li>
+</ul>
+<p><strong>Entregáveis</strong></p>
+<ul>
+<li><input type="checkbox" disabled="" /> Sistema completo em produção (URL pública)</li>
+<li><input type="checkbox" disabled="" /> README profissional com arquitectura, setup e decisões</li>
+<li><input type="checkbox" disabled="" /> Architecture Decision Records (3+ ADRs)</li>
+<li><input type="checkbox" disabled="" /> Security audit report</li>
+<li><input type="checkbox" disabled="" /> Blog series (3 posts): Arquitectura / Segurança / Performance</li>
+<li><input type="checkbox" disabled="" /> YouTube: Walkthrough completo (15-20min)</li>
+<li><input type="checkbox" disabled="" /> Pentest report</li>
+</ul>
+
+</body>
+</html>

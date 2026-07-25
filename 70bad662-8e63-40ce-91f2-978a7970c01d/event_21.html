@@ -1,0 +1,237 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <style>body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif;
+  line-height: 1.6;
+  min-width: 1200px;
+  padding: 2rem;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: var(--keyword);
+  margin-top: 1.5em;
+}
+
+h1 {
+  font-size: 2.2em;
+  border-bottom: 2px solid var(--border);
+  padding-bottom: 0.3em;
+}
+
+h2 {
+  font-size: 1.8em;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 0.2em;
+}
+
+h3 {
+  font-size: 1.4em;
+}
+
+h4,
+h5,
+h6 {
+  color: var(--constant);
+}
+
+a {
+  color: #66aaff;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+code {
+  background-color: var(--surface);
+  color: var(--function);
+  padding: 0.2em 0.4em;
+  border-radius: 4px;
+}
+
+pre {
+  background-color: var(--surface);
+  color: var(--foreground);
+  padding: 1em;
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  white-space: pre-wrap;
+  /* Wrap long lines */
+  word-wrap: break-word;
+  overflow-y: hidden;
+  /* Disable vertical scrolling */
+}
+
+pre code {
+  background: none;
+  padding: 0;
+  color: inherit;
+  display: block;
+}
+
+pre::-webkit-scrollbar {
+  display: none;
+  /* Hide scrollbar */
+}
+
+blockquote {
+  border-left: 4px solid var(--type);
+  background-color: var(--surface);
+  padding: 0.8em 1em;
+  color: var(--comment);
+  margin: 1em 0;
+}
+
+ul,
+ol {
+  padding-left: 2em;
+}
+
+li::marker {
+  color: var(--function);
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 1em 0;
+}
+
+th,
+td {
+  border: 1px solid var(--border);
+  padding: 0.6em 1em;
+}
+
+th {
+  background-color: var(--surface);
+  color: var(--function);
+}
+
+tr:nth-child(even) {
+  background-color: var(--surface);
+}
+
+hr {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 2em 0;
+}
+
+
+
+:root {
+  --keyword: #FFB347;
+  --function: #D4FF59;
+  --type: #66E6FF;
+  --constant: #D8A5FF;
+  --comment: #5C6773;
+  --foreground: #FFFFFF;
+  
+  /* UI Colors */
+  --background: #14161f;
+  --surface: #1E2129;
+  --border: #5C6773;
+}
+</style>
+</head>
+<body>
+  <h1>Computer Vision — YOLOv11 &amp; Real-time Object Detection, Tracking &amp; Analytics</h1>
+<p>#week</p>
+<h2>Objectivos</h2>
+<ul>
+<li>Computer vision pipeline: captura → pre-processing → inference → post-processing</li>
+<li>Object detection: YOLO architecture (v8/v11 em 2026)</li>
+<li>Object tracking: SORT, ByteTrack</li>
+<li>Video processing: frame extraction, FPS management, ROI-based inference</li>
+<li>OpenCV: transformações, filtros, morphological operations</li>
+</ul>
+<h2>Recursos</h2>
+<table>
+<thead>
+<tr>
+<th>Tipo</th>
+<th>Recurso</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Docs</td>
+<td>Ultralytics YOLOv11 docs — docs.ultralytics.com</td>
+</tr>
+<tr>
+<td>Course</td>
+<td>OpenCV University — opencv.org/university (gratuito)</td>
+</tr>
+<tr>
+<td>Prática</td>
+<td>Kaggle Computer Vision competitions</td>
+</tr>
+<tr>
+<td>Video</td>
+<td>“YOLOv8/v11 Tutorial” — Nicholas Renotte (YouTube)</td>
+</tr>
+<tr>
+<td>Paper</td>
+<td>ByteTrack paper — arxiv.org</td>
+</tr>
+</tbody>
+</table>
+<h2>Projeto</h2>
+<h3>Real-time Video Analytics Platform</h3>
+<p><strong>Tech Stack</strong>
+Python + YOLOv11 + ByteTrack + ONNX Runtime + FastAPI + React + WebRTC</p>
+<p><strong>Overview</strong>
+Um sistema de análise de vídeo em tempo real com casos de uso práticos e reais: contagem de pessoas numa área, detecção de objectos específicos, análise de fluxo de movimento, e geração de heatmaps de presença. O sistema usa YOLOv11 na variante nano (corre em tempo real em CPU moderno sem GPU), exportado para ONNX Runtime para máxima performance, com ByteTrack a manter IDs consistentes de cada objecto entre frames para que possas calcular trajectórias e tempo de permanência em zonas configuráveis. O backend FastAPI recebe vídeo via WebRTC ou ficheiro, processa frame a frame com a pipeline optimizada (frame skipping inteligente baseado em motion detection, processamento apenas na ROI relevante), e expõe resultados via WebSocket ao dashboard React. O dashboard mostra o vídeo annotated em tempo real, heatmaps de movimento, estatísticas de contagem, e triggers de eventos configuráveis (pessoa parada por mais de X segundos, entrada em zona proibida, contagem acima de threshold). O projecto inclui benchmarks de FPS em diferentes configurações de hardware e um modo de exportação de clips quando eventos são detectados.</p>
+<p><strong>Core Features</strong></p>
+<ul>
+<li>Object detection com YOLOv11 (ONNX export para CPU — sem GPU necessária)</li>
+<li>Multi-object tracking com ByteTrack (IDs consistentes entre frames)</li>
+<li>People counting com zona de interesse configurável</li>
+<li>Heatmap de movimento (densidade de presença)</li>
+<li>Detecção de eventos: pessoa parada &gt;30s, zona proibida, etc.</li>
+<li>Dashboard com estatísticas em tempo real</li>
+<li>Recording de clips quando evento detectado</li>
+<li>Export de relatórios</li>
+</ul>
+<p><strong>Requisitos</strong></p>
+<ul>
+<li><strong>Optimizações para CPU:</strong>
+<ul>
+<li>YOLOv11n (nano) — corre em tempo real em CPU moderno</li>
+<li>Frame skipping inteligente baseado em movimento</li>
+<li>ROI-based inference (só processa zona relevante)</li>
+<li>TensorRT / ONNX Runtime optimizado</li>
+</ul>
+</li>
+<li><strong>Pipeline:</strong>
+<pre style="background-color:#1e2129;"><code><span style="color:#ffffff;"> Webcam/Video → Frame Queue → YOLO Inference
+</span><span style="color:#ffffff;">                                ↓
+</span><span style="color:#ffffff;">                          ByteTrack → Events
+</span><span style="color:#ffffff;">                                ↓
+</span><span style="color:#ffffff;">                       WebSocket → React Dashboard
+</span></code></pre>
+</li>
+</ul>
+<h2>Entregáveis</h2>
+<ul>
+<li><input type="checkbox" disabled="" /> Sistema funcional com webcam ou ficheiro de vídeo</li>
+<li><input type="checkbox" disabled="" /> Blog: “Building a Real-time Video Analytics System in 2026”</li>
+<li><input type="checkbox" disabled="" /> Video: Demo completo do sistema</li>
+<li><input type="checkbox" disabled="" /> Benchmark: FPS em diferentes hardware configs</li>
+</ul>
+
+</body>
+</html>

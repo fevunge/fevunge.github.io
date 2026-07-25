@@ -1,0 +1,262 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <style>body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif;
+  line-height: 1.6;
+  min-width: 1200px;
+  padding: 2rem;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: var(--keyword);
+  margin-top: 1.5em;
+}
+
+h1 {
+  font-size: 2.2em;
+  border-bottom: 2px solid var(--border);
+  padding-bottom: 0.3em;
+}
+
+h2 {
+  font-size: 1.8em;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 0.2em;
+}
+
+h3 {
+  font-size: 1.4em;
+}
+
+h4,
+h5,
+h6 {
+  color: var(--constant);
+}
+
+a {
+  color: #66aaff;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+code {
+  background-color: var(--surface);
+  color: var(--function);
+  padding: 0.2em 0.4em;
+  border-radius: 4px;
+}
+
+pre {
+  background-color: var(--surface);
+  color: var(--foreground);
+  padding: 1em;
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  white-space: pre-wrap;
+  /* Wrap long lines */
+  word-wrap: break-word;
+  overflow-y: hidden;
+  /* Disable vertical scrolling */
+}
+
+pre code {
+  background: none;
+  padding: 0;
+  color: inherit;
+  display: block;
+}
+
+pre::-webkit-scrollbar {
+  display: none;
+  /* Hide scrollbar */
+}
+
+blockquote {
+  border-left: 4px solid var(--type);
+  background-color: var(--surface);
+  padding: 0.8em 1em;
+  color: var(--comment);
+  margin: 1em 0;
+}
+
+ul,
+ol {
+  padding-left: 2em;
+}
+
+li::marker {
+  color: var(--function);
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 1em 0;
+}
+
+th,
+td {
+  border: 1px solid var(--border);
+  padding: 0.6em 1em;
+}
+
+th {
+  background-color: var(--surface);
+  color: var(--function);
+}
+
+tr:nth-child(even) {
+  background-color: var(--surface);
+}
+
+hr {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 2em 0;
+}
+
+
+
+:root {
+  --keyword: #FFB347;
+  --function: #D4FF59;
+  --type: #66E6FF;
+  --constant: #D8A5FF;
+  --comment: #5C6773;
+  --foreground: #FFFFFF;
+  
+  /* UI Colors */
+  --background: #14161f;
+  --surface: #1E2129;
+  --border: #5C6773;
+}
+</style>
+</head>
+<body>
+  <h1>Distributed Systems Avançados — CQRS, Event Sourcing &amp; Sagas</h1>
+<p>#week</p>
+<h2>Objectivos</h2>
+<ul>
+<li>Event sourcing: o estado como sequência de eventos imutáveis</li>
+<li>CQRS: separação de reads e writes — quando faz sentido</li>
+<li>Saga pattern: transacções distribuídas sem 2PC</li>
+<li>Outbox pattern: garantia de entrega de eventos</li>
+<li>Idempotency: processa o mesmo evento múltiplas vezes sem efeitos colaterais</li>
+</ul>
+<h2>Recursos</h2>
+<table>
+<thead>
+<tr>
+<th>Tipo</th>
+<th>Recurso</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Livro</td>
+<td><em>Designing Data-Intensive Applications</em> — Kleppmann (caps. 11-12)</td>
+</tr>
+<tr>
+<td>Artigo</td>
+<td>“Event Sourcing” + “CQRS” — Martin Fowler (martinfowler.com)</td>
+</tr>
+<tr>
+<td>Artigo</td>
+<td>“Saga Pattern” — Chris Richardson (microservices.io)</td>
+</tr>
+<tr>
+<td>Video</td>
+<td>“GOTO 2014: Event Sourcing” — Greg Young (YouTube)</td>
+</tr>
+<tr>
+<td>Course</td>
+<td>MIT 6.824 — lectures gratuitas no YouTube</td>
+</tr>
+</tbody>
+</table>
+<h2>Projeto</h2>
+<h3>E-commerce Backend com Event Sourcing + Saga</h3>
+<p><strong>Tech Stack</strong>
+Go + PostgreSQL + Kafka (ou NATS JetStream — mais leve) + Redis</p>
+<p><strong>Overview</strong>
+O backend de um sistema de e-commerce usando Event Sourcing e Saga pattern — dois dos padrões mais importantes e mal compreendidos de sistemas distribuídos. Event Sourcing significa que o estado de uma encomenda não é guardado directamente; em vez disso, guardas a sequência de eventos que aconteceram (OrderCreated, PaymentConfirmed, OrderShipped, OrderCancelled) e reconstructes o estado actual fazendo replay desses eventos — o que dá auditoria gratuita, time travel para qualquer ponto no histórico, e a capacidade de adicionar novos read models sem migrar dados. O Saga pattern resolve o problema de transacções distribuídas sem Two-Phase Commit: quando uma encomenda é criada, uma série de passos acontecem em serviços diferentes (Order → Inventory → Payment → Notification), e se algum passo falha, as transacções compensadoras desfazem os passos anteriores. O Outbox Pattern garante que eventos são sempre publicados mesmo se o message broker falhar momentaneamente — o evento é escrito na mesma transacção de base de dados e publicado depois. O projecto inclui demonstração obrigatória de uma falha de pagamento e a compensação automática que liberta o stock reservado.</p>
+<p><strong>Core Features</strong></p>
+<ul>
+<li>E-Commerce all features + bônus</li>
+</ul>
+<p><strong>Requisitos:</strong></p>
+<ul>
+<li>
+<p><strong>Order Service</strong>: cria e gere encomendas</p>
+</li>
+<li>
+<p><strong>Inventory Service</strong>: reserva e confirma stock</p>
+</li>
+<li>
+<p><strong>Payment Service</strong>: processa pagamentos (simulado)</p>
+</li>
+<li>
+<p><strong>Notification Service</strong>: envia emails (simulado)</p>
+</li>
+<li>
+<p><strong>Event Sourcing:</strong></p>
+</li>
+</ul>
+<pre style="background-color:#1e2129;"><code class="language-go"><span style="color:#5c6773;">// Todos os estados são derivados de eventos
+</span><span style="color:#ffb347;">type </span><span style="color:#ffffff;">OrderEvent </span><span style="color:#ffb347;">interface</span><span style="color:#ffffff;"> { isOrderEvent() }
+</span><span style="color:#ffffff;">
+</span><span style="color:#ffb347;">type </span><span style="color:#ffffff;">OrderCreated </span><span style="color:#ffb347;">struct </span><span style="color:#ffffff;">{ OrderID, UserID </span><span style="color:#ffb347;">string</span><span style="color:#ffffff;">; Items []Item }
+</span><span style="color:#ffb347;">type </span><span style="color:#ffffff;">PaymentConfirmed </span><span style="color:#ffb347;">struct </span><span style="color:#ffffff;">{ OrderID, PaymentID </span><span style="color:#ffb347;">string </span><span style="color:#ffffff;">}
+</span><span style="color:#ffb347;">type </span><span style="color:#ffffff;">OrderShipped </span><span style="color:#ffb347;">struct </span><span style="color:#ffffff;">{ OrderID, TrackingCode </span><span style="color:#ffb347;">string </span><span style="color:#ffffff;">}
+</span><span style="color:#ffb347;">type </span><span style="color:#ffffff;">OrderCancelled </span><span style="color:#ffb347;">struct </span><span style="color:#ffffff;">{ OrderID, Reason </span><span style="color:#ffb347;">string </span><span style="color:#ffffff;">}
+</span><span style="color:#ffffff;">
+</span><span style="color:#5c6773;">// Estado actual = replay de todos os eventos
+</span><span style="color:#ffb347;">func </span><span style="color:#ffffff;">(o *Order) </span><span style="color:#d4ff59;">Apply</span><span style="color:#ffffff;">(event OrderEvent) {
+</span><span style="color:#ffffff;">    </span><span style="color:#ffb347;">switch </span><span style="color:#ffffff;">e := event.(</span><span style="color:#ffb347;">type</span><span style="color:#ffffff;">) {
+</span><span style="color:#ffffff;">    </span><span style="color:#ffb347;">case</span><span style="color:#ffffff;"> OrderCreated: o.Status = </span><span style="color:#37dbb5;">&quot;pending&quot;</span><span style="color:#ffffff;">; o.Items = e.Items
+</span><span style="color:#ffffff;">    </span><span style="color:#ffb347;">case</span><span style="color:#ffffff;"> PaymentConfirmed: o.Status = </span><span style="color:#37dbb5;">&quot;paid&quot;
+</span><span style="color:#ffffff;">    </span><span style="color:#5c6773;">// ...
+</span><span style="color:#ffffff;">    }
+</span><span style="color:#ffffff;">}
+</span></code></pre>
+<ul>
+<li><strong>Saga (Choreography-based):</strong></li>
+</ul>
+<pre style="background-color:#1e2129;"><code><span style="color:#ffffff;">CreateOrder → OrderCreated event
+</span><span style="color:#ffffff;">                    ↓
+</span><span style="color:#ffffff;">              InventoryService: ReserveStock
+</span><span style="color:#ffffff;">                    ↓ (success)
+</span><span style="color:#ffffff;">              PaymentService: ProcessPayment
+</span><span style="color:#ffffff;">                    ↓ (success)
+</span><span style="color:#ffffff;">              NotificationService: SendConfirmation
+</span><span style="color:#ffffff;">                    ↓ (failure anywhere)
+</span><span style="color:#ffffff;">              Compensating transactions: ReleaseStock, RefundPayment
+</span></code></pre>
+<ul>
+<li><strong>Outbox Pattern:</strong> garante que eventos são publicados mesmo se o broker falhar.</li>
+</ul>
+<h2>Entregáveis</h2>
+<ul>
+<li><input type="checkbox" disabled="" /> Sistema completo funcional com 4 serviços</li>
+<li><input type="checkbox" disabled="" /> Blog: “Event Sourcing and Saga Pattern — When Your Distributed Transaction Goes Wrong”</li>
+<li><input type="checkbox" disabled="" /> Diagram: fluxo completo de uma encomenda com sucesso e com falha</li>
+<li><input type="checkbox" disabled="" /> Video: demonstração de uma falha de pagamento e compensação automática</li>
+</ul>
+
+</body>
+</html>

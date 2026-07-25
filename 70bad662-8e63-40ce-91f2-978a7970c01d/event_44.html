@@ -1,0 +1,185 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <style>body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif;
+  line-height: 1.6;
+  min-width: 1200px;
+  padding: 2rem;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: var(--keyword);
+  margin-top: 1.5em;
+}
+
+h1 {
+  font-size: 2.2em;
+  border-bottom: 2px solid var(--border);
+  padding-bottom: 0.3em;
+}
+
+h2 {
+  font-size: 1.8em;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 0.2em;
+}
+
+h3 {
+  font-size: 1.4em;
+}
+
+h4,
+h5,
+h6 {
+  color: var(--constant);
+}
+
+a {
+  color: #66aaff;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+code {
+  background-color: var(--surface);
+  color: var(--function);
+  padding: 0.2em 0.4em;
+  border-radius: 4px;
+}
+
+pre {
+  background-color: var(--surface);
+  color: var(--foreground);
+  padding: 1em;
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  white-space: pre-wrap;
+  /* Wrap long lines */
+  word-wrap: break-word;
+  overflow-y: hidden;
+  /* Disable vertical scrolling */
+}
+
+pre code {
+  background: none;
+  padding: 0;
+  color: inherit;
+  display: block;
+}
+
+pre::-webkit-scrollbar {
+  display: none;
+  /* Hide scrollbar */
+}
+
+blockquote {
+  border-left: 4px solid var(--type);
+  background-color: var(--surface);
+  padding: 0.8em 1em;
+  color: var(--comment);
+  margin: 1em 0;
+}
+
+ul,
+ol {
+  padding-left: 2em;
+}
+
+li::marker {
+  color: var(--function);
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 1em 0;
+}
+
+th,
+td {
+  border: 1px solid var(--border);
+  padding: 0.6em 1em;
+}
+
+th {
+  background-color: var(--surface);
+  color: var(--function);
+}
+
+tr:nth-child(even) {
+  background-color: var(--surface);
+}
+
+hr {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 2em 0;
+}
+
+
+
+:root {
+  --keyword: #FFB347;
+  --function: #D4FF59;
+  --type: #66E6FF;
+  --constant: #D8A5FF;
+  --comment: #5C6773;
+  --foreground: #FFFFFF;
+  
+  /* UI Colors */
+  --background: #14161f;
+  --surface: #1E2129;
+  --border: #5C6773;
+}
+</style>
+</head>
+<body>
+  <h1>Advanced Ray Tracer + GPU Path Tracing (WebGPU)</h1>
+<p>#week</p>
+<h3>Real-time Path Tracer com WebGPU</h3>
+<p><strong>Tech Stack</strong>
+Rust + <code>wgpu</code> (WebGPU) + WGSL shaders + React (UI)</p>
+<p><strong>Overview</strong>
+Vais evoluir o path tracer da <a href="week_23" data-wikilink="true">week_23</a> para correr na GPU via WebGPU — o que permite renders interactivos em tempo real em vez de esperar minutos por uma imagem. WebGPU é a escolha correcta em 2026 porque corre em qualquer GPU (NVIDIA, AMD, Intel, Apple Silicon) via browser, sem CUDA, sem drivers especiais, e o <code>wgpu</code> de Rust dá acesso type-safe cross-platform. O compute shader em WGSL executa o path tracing com cada thread a calcular um pixel independentemente: para cada frame, acumulas uma nova amostra por pixel e fazes blend com o acumulado anterior — progressive rendering que converge para uma imagem de alta qualidade enquanto a câmera não se move. O BVH é serializado para WebGPU storage buffers para acesso eficiente na GPU. Os materiais usam o Disney BSDF completo. O denoising temporal usa motion vectors para reutilizar amostras de frames anteriores quando a câmera se move, reduzindo o noise percebido. O scene editor React permite modificar objectos, materiais e luzes em tempo real e ver o resultado imediatamente. O projecto é publicado como web app — qualquer pessoa com Chrome ou Firefox moderno pode correr o teu path tracer.</p>
+<p><strong>Features:</strong></p>
+<ul>
+<li>Path tracing completo na GPU (global illumination)</li>
+<li>Denoising temporal (acumula amostras ao longo de frames)</li>
+<li>PBR materials: Disney BSDF</li>
+<li>BVH na GPU (WebGPU storage buffers)</li>
+<li>Real-time preview (1 sample/pixel) + high quality mode (N samples)</li>
+<li>Scene editor React + export de renders</li>
+</ul>
+<p><strong>Pipeline GPU:</strong></p>
+<pre style="background-color:#1e2129;"><code class="language-wgsl"><span style="color:#ffffff;">// Compute shader — cada thread é um pixel
+</span><span style="color:#ffffff;">@compute @workgroup_size(8, 8)
+</span><span style="color:#ffffff;">fn ray_trace(@builtin(global_invocation_id) id: vec3&lt;u32&gt;) {
+</span><span style="color:#ffffff;">    let ray = generate_ray(id.xy, camera);
+</span><span style="color:#ffffff;">    let color = path_trace(ray, scene, 8u);  // 8 bounces
+</span><span style="color:#ffffff;">    atomicAdd(&amp;accumulated[id.xy], color);
+</span><span style="color:#ffffff;">}
+</span></code></pre>
+<h2>Entregáveis</h2>
+<ul>
+<li><input type="checkbox" disabled="" /> Ray tracer funcional no browser (testado em Chrome e Firefox)</li>
+<li><input type="checkbox" disabled="" /> Gallery de renders de alta qualidade</li>
+<li><input type="checkbox" disabled="" /> Blog: “Real-time Path Tracing in the Browser with WebGPU and Rust”</li>
+<li><input type="checkbox" disabled="" /> Video: time-lapse de convergência de uma render</li>
+</ul>
+
+</body>
+</html>

@@ -1,0 +1,229 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <style>body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif;
+  line-height: 1.6;
+  min-width: 1200px;
+  padding: 2rem;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: var(--keyword);
+  margin-top: 1.5em;
+}
+
+h1 {
+  font-size: 2.2em;
+  border-bottom: 2px solid var(--border);
+  padding-bottom: 0.3em;
+}
+
+h2 {
+  font-size: 1.8em;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 0.2em;
+}
+
+h3 {
+  font-size: 1.4em;
+}
+
+h4,
+h5,
+h6 {
+  color: var(--constant);
+}
+
+a {
+  color: #66aaff;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+code {
+  background-color: var(--surface);
+  color: var(--function);
+  padding: 0.2em 0.4em;
+  border-radius: 4px;
+}
+
+pre {
+  background-color: var(--surface);
+  color: var(--foreground);
+  padding: 1em;
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  white-space: pre-wrap;
+  /* Wrap long lines */
+  word-wrap: break-word;
+  overflow-y: hidden;
+  /* Disable vertical scrolling */
+}
+
+pre code {
+  background: none;
+  padding: 0;
+  color: inherit;
+  display: block;
+}
+
+pre::-webkit-scrollbar {
+  display: none;
+  /* Hide scrollbar */
+}
+
+blockquote {
+  border-left: 4px solid var(--type);
+  background-color: var(--surface);
+  padding: 0.8em 1em;
+  color: var(--comment);
+  margin: 1em 0;
+}
+
+ul,
+ol {
+  padding-left: 2em;
+}
+
+li::marker {
+  color: var(--function);
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 1em 0;
+}
+
+th,
+td {
+  border: 1px solid var(--border);
+  padding: 0.6em 1em;
+}
+
+th {
+  background-color: var(--surface);
+  color: var(--function);
+}
+
+tr:nth-child(even) {
+  background-color: var(--surface);
+}
+
+hr {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 2em 0;
+}
+
+
+
+:root {
+  --keyword: #FFB347;
+  --function: #D4FF59;
+  --type: #66E6FF;
+  --constant: #D8A5FF;
+  --comment: #5C6773;
+  --foreground: #FFFFFF;
+  
+  /* UI Colors */
+  --background: #14161f;
+  --surface: #1E2129;
+  --border: #5C6773;
+}
+</style>
+</head>
+<body>
+  <h1>Rust Fundamentals + Memory Safety</h1>
+<p>#week</p>
+<h2>Objectivos</h2>
+<ul>
+<li>Ownership, borrowing, lifetimes — os três pilares; entender o porquê de cada regra</li>
+<li>Error handling idiomático: <code>Result&lt;T, E&gt;</code>, <code>?</code> operator, <code>thiserror</code>, <code>anyhow</code></li>
+<li>Pattern matching exaustivo — mais poderoso que switch em qualquer outra linguagem</li>
+<li>Traits e generics com bounds — como Rust faz polimorfismo sem vtables obrigatórias</li>
+<li>Cargo, crates.io, workspaces — o ecossistema de packages</li>
+</ul>
+<h2> Recursos</h2>
+<table>
+<thead>
+<tr>
+<th>Tipo</th>
+<th>Recurso</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Livro</td>
+<td><em>The Rust Programming Language</em> — gratuito em doc.rust-lang.org/book</td>
+</tr>
+<tr>
+<td>Exercícios</td>
+<td>Rustlings — github.com/rust-lang/rustlings</td>
+</tr>
+<tr>
+<td>Video</td>
+<td>Jon Gjengset — “Rust for Rustaceans” talks no YouTube</td>
+</tr>
+<tr>
+<td>Tool</td>
+<td>rust-analyzer + Clippy com linting agressivo</td>
+</tr>
+<tr>
+<td>Blog</td>
+<td>This Week in Rust — this-week-in-rust.org</td>
+</tr>
+</tbody>
+</table>
+<h2>Projeto</h2>
+<h3>Memory-Safe Terminal Text Editor (Vim-like core)</h3>
+<p><strong>Tech Stack:</strong> 
+Rust + <code>crossterm</code> + <code>tree-sitter</code> + <code>tokio</code></p>
+<p><strong>Overview</strong>
+Um editor de texto para terminal em Rust que usa um <strong>Gap Buffer</strong> como estrutura de dados central.
+O Gap Buffer é o projecto perfeito para aprender Rust a sério porque força-te a lidar com <strong>lifetimes não triviais</strong>, <strong>ownership de blocos de memória mutável</strong>, e a correcta separação entre <strong>lógica de edição</strong> e <strong>I/O</strong>.
+O editor precisa de suportar <strong>modos Normal/Insert/Visual</strong> ao estilo Vi, undo/redo ilimitado via Command Pattern (cada operação é um comando reversível), search e replace com regex, e syntax highlighting para as 5 linguagens mais comuns via integração com <code>tree-sitter</code>.
+O I/O com o terminal usa <code>crossterm</code> para cross-platform compatibility. A parte mais desafiante é integrar o event loop do <code>crossterm</code> com o runtime assíncrono do <code>tokio</code> para file I/O — tens de resolver este problema sem referencias circulares ou deadlocks.
+O projecto é publicado no crates.io com documentação completa e benchmarks de operações de edição.</p>
+<p><strong>Core Features</strong></p>
+<ul>
+<li>Gap buffer para edição eficiente de texto de qualquer tamanho</li>
+<li>Undo/Redo com Command Pattern e histórico ilimitado</li>
+<li>Search &amp; replace com regex (<code>regex</code> crate)</li>
+<li>Syntax highlighting via <code>tree-sitter</code> para Rust, Python, JS, Go, C</li>
+<li>File I/O assíncrono com <code>tokio::fs</code></li>
+<li>Unicode completo: grapheme clusters correctos</li>
+<li>Modo Normal/Insert/Visual (estilo Vi)</li>
+<li>Status bar com nome do ficheiro, linha/coluna, modo actual</li>
+</ul>
+<p><strong>Requisitos Técnicos</strong></p>
+<ul>
+<li>Gap buffer requer lifetimes não triviais</li>
+<li>Tree-sitter bindings via <code>unsafe</code> controlado</li>
+<li><code>crossterm</code> event loop com <code>tokio</code> — integração de runtimes</li>
+<li>Zero cópias desnecessárias nos hot paths</li>
+</ul>
+<p><strong>Entregáveis</strong></p>
+<ul>
+<li><input type="checkbox" disabled="" /> Crate publicado no crates.io</li>
+<li><input type="checkbox" disabled="" /> Benchmark: operações de edição vs nano (usando criterion)</li>
+<li><input type="checkbox" disabled="" /> Blog: “Implementing a Gap Buffer in Rust — Fighting the Borrow Checker”</li>
+<li><input type="checkbox" disabled="" /> Diagrama de ownership e lifetimes das structs principais</li>
+</ul>
+
+</body>
+</html>

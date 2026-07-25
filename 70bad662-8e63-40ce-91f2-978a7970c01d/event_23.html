@@ -1,0 +1,227 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <style>body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif;
+  line-height: 1.6;
+  min-width: 1200px;
+  padding: 2rem;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: var(--keyword);
+  margin-top: 1.5em;
+}
+
+h1 {
+  font-size: 2.2em;
+  border-bottom: 2px solid var(--border);
+  padding-bottom: 0.3em;
+}
+
+h2 {
+  font-size: 1.8em;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 0.2em;
+}
+
+h3 {
+  font-size: 1.4em;
+}
+
+h4,
+h5,
+h6 {
+  color: var(--constant);
+}
+
+a {
+  color: #66aaff;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+code {
+  background-color: var(--surface);
+  color: var(--function);
+  padding: 0.2em 0.4em;
+  border-radius: 4px;
+}
+
+pre {
+  background-color: var(--surface);
+  color: var(--foreground);
+  padding: 1em;
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  white-space: pre-wrap;
+  /* Wrap long lines */
+  word-wrap: break-word;
+  overflow-y: hidden;
+  /* Disable vertical scrolling */
+}
+
+pre code {
+  background: none;
+  padding: 0;
+  color: inherit;
+  display: block;
+}
+
+pre::-webkit-scrollbar {
+  display: none;
+  /* Hide scrollbar */
+}
+
+blockquote {
+  border-left: 4px solid var(--type);
+  background-color: var(--surface);
+  padding: 0.8em 1em;
+  color: var(--comment);
+  margin: 1em 0;
+}
+
+ul,
+ol {
+  padding-left: 2em;
+}
+
+li::marker {
+  color: var(--function);
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 1em 0;
+}
+
+th,
+td {
+  border: 1px solid var(--border);
+  padding: 0.6em 1em;
+}
+
+th {
+  background-color: var(--surface);
+  color: var(--function);
+}
+
+tr:nth-child(even) {
+  background-color: var(--surface);
+}
+
+hr {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 2em 0;
+}
+
+
+
+:root {
+  --keyword: #FFB347;
+  --function: #D4FF59;
+  --type: #66E6FF;
+  --constant: #D8A5FF;
+  --comment: #5C6773;
+  --foreground: #FFFFFF;
+  
+  /* UI Colors */
+  --background: #14161f;
+  --surface: #1E2129;
+  --border: #5C6773;
+}
+</style>
+</head>
+<body>
+  <h1>Ray Tracing — Path Tracer Fisicamente Baseado</h1>
+<p>#week</p>
+<h2>Objectivos</h2>
+<ul>
+<li>Ray-object intersection: raios vs esferas, planos, triângulos, AABBs</li>
+<li>BVH (Bounding Volume Hierarchy): construção com SAH e traversal eficiente</li>
+<li>Path tracing: Monte Carlo integration, importance sampling, Russian Roulette</li>
+<li>Materials físicos: diffuse Lambertian, specular GGX, dielectric (vidro), emissive</li>
+<li>Multi-threading com work-stealing para paralelismo eficiente</li>
+</ul>
+<h2>Recursos</h2>
+<table>
+<thead>
+<tr>
+<th>Tipo</th>
+<th>Recurso</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Livro</td>
+<td><em>Ray Tracing in One Weekend</em> — Peter Shirley (gratuito em raytracing.github.io)</td>
+</tr>
+<tr>
+<td>Livro</td>
+<td><em>Ray Tracing: The Next Week</em> + <em>The Rest of Your Life</em> — mesma série, gratuita</td>
+</tr>
+<tr>
+<td>Paper</td>
+<td>“Physically Based Rendering: From Theory to Implementation” — Pharr, Jakob</td>
+</tr>
+<tr>
+<td>Site</td>
+<td>scratchapixel.com — teoria de CG mais aprofundada</td>
+</tr>
+<tr>
+<td>Video</td>
+<td>“Writing a Ray Tracer” — The Cherno (YouTube)</td>
+</tr>
+</tbody>
+</table>
+<h2>Projeto</h2>
+<h3>Path Tracer em C++20 com BVH e Multi-threading</h3>
+<p><strong>Tech Stack</strong>
+C++20 + <code>std::thread</code> + <code>std::atomic</code> + <code>stb_image_write</code></p>
+<p><strong>Overview</strong>
+Um path tracer fisicamente baseado capaz de produzir renders com global illumination, caustics, subsurface scattering, e materiais PBR realistas, usando apenas a CPU com multi-threading eficiente. O motor de rendering usa um BVH construído com SAH (Surface Area Heuristic) para minimizar o custo de traversal, intersection tests com primitivas como esferas, planos e triangle meshes carregadas de ficheiros OBJ, e um path tracer com Monte Carlo integration onde cada raio bounce amostra materiais via BRDF importance sampling — Lambertian para diffuse, GGX microfacet para specular, Fresnel-Schlick para reflexão/refracção no vidro. O Russian Roulette termina paths com probabilidade proporcional à sua contribuição esperada, evitando bias. O sistema de multi-threading divide a imagem em tiles e usa um <code>std::atomic</code> counter como work queue — cada thread pega o próximo tile disponível, sem lock contention. O progressive rendering mostra a imagem a melhorar em tempo real enquanto acumulas amostras. O projecto termina com o Cornell Box clássico (validação matemática), uma cena com vidro e metais, e benchmarks de speedup linear de 1 a N threads.</p>
+<p><strong>Core Features</strong></p>
+<ul>
+<li>Primitivas: sphere, plane, triangle mesh (OBJ loader)</li>
+<li>BVH acceleration: SAH (Surface Area Heuristic) para construção óptima</li>
+<li>Materials: Lambertian diffuse, Metallic (GGX microfacet), Dielectric, Emissive</li>
+<li>Light sources: area lights, environment map (HDRI)</li>
+<li>Path tracing com Russian Roulette para terminação</li>
+<li>Importance sampling de lights e BRDF</li>
+<li>Anti-aliasing por supersampling (N amostras por pixel)</li>
+<li>Progressive rendering: mostra imagem a melhorar em tempo real</li>
+<li>Multi-threading: tile-based com work queue (<code>std::atomic</code> counter)</li>
+<li>Scene format: JSON legível</li>
+</ul>
+<p><strong>Requisitos</strong></p>
+<ul>
+<li>Cornell Box clássico (validação do algoritmo)</li>
+<li>Cena com vidro, metais e luzes coloridas</li>
+<li>Comparação: 1 thread vs N threads (speedup linear?)</li>
+</ul>
+<h2>Entregáveis</h2>
+<ul>
+<li><input type="checkbox" disabled="" /> Renders de alta qualidade no README</li>
+<li><input type="checkbox" disabled="" /> Blog: “Implementing a Path Tracer — Monte Carlo Integration Explained Visually”</li>
+<li><input type="checkbox" disabled="" /> Video: Time-lapse de uma render de alta qualidade a convergir</li>
+<li><input type="checkbox" disabled="" /> Benchmark: speedup de 1 a 8 threads (gráfico)</li>
+<li><input type="checkbox" disabled="" /> Gallery de renders no GitHub Pages</li>
+</ul>
+
+</body>
+</html>

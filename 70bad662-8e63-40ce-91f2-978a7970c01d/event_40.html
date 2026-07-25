@@ -1,0 +1,256 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <style>body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif;
+  line-height: 1.6;
+  min-width: 1200px;
+  padding: 2rem;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: var(--keyword);
+  margin-top: 1.5em;
+}
+
+h1 {
+  font-size: 2.2em;
+  border-bottom: 2px solid var(--border);
+  padding-bottom: 0.3em;
+}
+
+h2 {
+  font-size: 1.8em;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 0.2em;
+}
+
+h3 {
+  font-size: 1.4em;
+}
+
+h4,
+h5,
+h6 {
+  color: var(--constant);
+}
+
+a {
+  color: #66aaff;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+code {
+  background-color: var(--surface);
+  color: var(--function);
+  padding: 0.2em 0.4em;
+  border-radius: 4px;
+}
+
+pre {
+  background-color: var(--surface);
+  color: var(--foreground);
+  padding: 1em;
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  white-space: pre-wrap;
+  /* Wrap long lines */
+  word-wrap: break-word;
+  overflow-y: hidden;
+  /* Disable vertical scrolling */
+}
+
+pre code {
+  background: none;
+  padding: 0;
+  color: inherit;
+  display: block;
+}
+
+pre::-webkit-scrollbar {
+  display: none;
+  /* Hide scrollbar */
+}
+
+blockquote {
+  border-left: 4px solid var(--type);
+  background-color: var(--surface);
+  padding: 0.8em 1em;
+  color: var(--comment);
+  margin: 1em 0;
+}
+
+ul,
+ol {
+  padding-left: 2em;
+}
+
+li::marker {
+  color: var(--function);
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 1em 0;
+}
+
+th,
+td {
+  border: 1px solid var(--border);
+  padding: 0.6em 1em;
+}
+
+th {
+  background-color: var(--surface);
+  color: var(--function);
+}
+
+tr:nth-child(even) {
+  background-color: var(--surface);
+}
+
+hr {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 2em 0;
+}
+
+
+
+:root {
+  --keyword: #FFB347;
+  --function: #D4FF59;
+  --type: #66E6FF;
+  --constant: #D8A5FF;
+  --comment: #5C6773;
+  --foreground: #FFFFFF;
+  
+  /* UI Colors */
+  --background: #14161f;
+  --surface: #1E2129;
+  --border: #5C6773;
+}
+</style>
+</head>
+<body>
+  <h1>System Design — URL Shortener Production-Grade</h1>
+<p>#s_week</p>
+<h2>URL Shortener com Analytics em Tempo Real</h2>
+<p><strong>Tech Stack</strong>
+Go + PostgreSQL + Redis + ClickHouse + Kafka + CDN</p>
+<p><strong>Overview</strong>
+Vais construir um URL shortener com analytics completo desenhado para escalar a 10 bilhões de clicks por mês — e o que torna este projecto interessante não é a feature de shortening em si (trivial) mas o capacity planning rigoroso e as decisões de arquitectura que tens de justificar.
+O sistema usa Base62 com Bloom Filter para collision detection durante geração de IDs, CDN com cache de 24h para redirects de links populares (eliminando 99%+ dos hits ao servidor), e Kafka como buffer entre os click events e o ClickHouse (base de dados colunar) onde os analytics ficam disponíveis em menos de 30 segundos.
+O sistema suporta custom slugs com reserva de namespace, QR codes gerados server-side com <code>go-qrcode</code>, link expiration, password protection, e edição de links existentes.
+O capacity planning documentado responde:
+<strong>quantos servidores para 10k writes/segundo?</strong>
+<strong>Quanto storage para 100M URLs?</strong>
+<strong>Qual cache hit rate necessária para o p99 &lt; 5ms nos redirects?</strong>
+O load test com k6 valida as estimativas contra a realidade.</p>
+<p><strong>Core Features</strong></p>
+<ul>
+<li>Shortening com Base62 + collision detection via Bloom filter</li>
+<li>Analytics em tempo real: clicks, geo, devices, referrers</li>
+<li>Custom slugs com reserva de namespace</li>
+<li>QR codes gerados server-side</li>
+<li>Link expiration, password protection, editing</li>
+<li>Bulk import/export via CSV</li>
+<li>API + Dashboard</li>
+</ul>
+<p><strong>Arquitectura para escala:</strong></p>
+<pre style="background-color:#1e2129;"><code><span style="color:#ffffff;">Client → CDN (cache de redirects quentes)
+</span><span style="color:#ffffff;">           ↓ (cache miss)
+</span><span style="color:#ffffff;">        Load Balancer
+</span><span style="color:#ffffff;">           ↓
+</span><span style="color:#ffffff;">        API Servers (Go, stateless)
+</span><span style="color:#ffffff;">           ↓           ↓
+</span><span style="color:#ffffff;">        Redis       PostgreSQL
+</span><span style="color:#ffffff;">        (cache)     (source of truth)
+</span><span style="color:#ffffff;">           ↓
+</span><span style="color:#ffffff;">        Kafka → ClickHouse (analytics)
+</span></code></pre>
+<p><strong>Requisitos de performance:</strong></p>
+<ul>
+<li>Redirects: &lt;5ms p99 (com cache CDN)</li>
+<li>Writes: 10k+/segundo</li>
+<li>Analytics: dados disponíveis em &lt;30s após click</li>
+</ul>
+<p><strong>Capacity Planning obrigatório:</strong></p>
+<ul>
+<li>100M URLs: quanto storage?</li>
+<li>10B clicks/mês: quanto throughput no Kafka?</li>
+<li>Cache hit rate target: &gt;99%</li>
+</ul>
+<h2>Entregáveis</h2>
+<ul>
+<li><input type="checkbox" disabled="" /> Sistema em produção com URL pública</li>
+<li><input type="checkbox" disabled="" /> Design doc completo (ADRs, capacity planning, trade-offs)</li>
+<li><input type="checkbox" disabled="" /> Load test results (k6 — 10k requests/segundo)</li>
+<li><input type="checkbox" disabled="" /> Blog: “Scaling a URL Shortener to 10B Clicks”</li>
+</ul>
+<hr />
+<h1><strong><em>Bônus [10]</em></strong></h1>
+<p>API Design &amp; Integration Patterns</p>
+<p><strong>Objectivo</strong>
+Dominar o design de APIs e padrões de integração entre sistemas.</p>
+<h3>Recursos Obrigatórios</h3>
+<table>
+<thead>
+<tr>
+<th>Tipo</th>
+<th>Recurso</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Livro</td>
+<td><em>Enterprise Integration Patterns</em> — Hohpe &amp; Woolf (caps. seleccionados: Messaging, Routing, Transformation) — <strong>clássico absoluto</strong></td>
+</tr>
+<tr>
+<td>Artigo</td>
+<td>“REST API Design Best Practices” — Microsoft API Guidelines (GitHub, gratuito)</td>
+</tr>
+<tr>
+<td>Artigo</td>
+<td>“Understanding gRPC” — grpc.io (documentação oficial)</td>
+</tr>
+<tr>
+<td>Artigo</td>
+<td>“GraphQL vs REST vs gRPC” — comparações em posts de engenharia</td>
+</tr>
+<tr>
+<td>Site</td>
+<td><a href="https://learning.postman.com/">Postman Learning Center</a> — gratuito</td>
+</tr>
+</tbody>
+</table>
+<h3>PROJECTO : <em>“API Gateway &amp; Integration Design”</em></h3>
+<p><strong>Overview</strong>
+Desenha a estratégia de API para uma empresa com 5 sistemas legados que precisam de ser integrados com uma nova aplicação mobile. Inclui:</p>
+<ul>
+<li>Escolha de padrão de integração (REST, GraphQL, gRPC, eventos)</li>
+<li>Design do API Gateway</li>
+<li>Padrões: Circuit Breaker, Retry, Rate Limiting</li>
+<li>Versionamento de APIs</li>
+<li>Documentação OpenAPI (Swagger) — pelo menos 1 endpoint documentado</li>
+</ul>
+<p><strong>Entrega:</strong>
+Documento LaTeX + especificação OpenAPI em YAML + diagramas de integração</p>
+
+</body>
+</html>

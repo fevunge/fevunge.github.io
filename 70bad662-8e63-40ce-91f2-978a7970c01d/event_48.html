@@ -1,0 +1,212 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <style>body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif;
+  line-height: 1.6;
+  min-width: 1200px;
+  padding: 2rem;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: var(--keyword);
+  margin-top: 1.5em;
+}
+
+h1 {
+  font-size: 2.2em;
+  border-bottom: 2px solid var(--border);
+  padding-bottom: 0.3em;
+}
+
+h2 {
+  font-size: 1.8em;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 0.2em;
+}
+
+h3 {
+  font-size: 1.4em;
+}
+
+h4,
+h5,
+h6 {
+  color: var(--constant);
+}
+
+a {
+  color: #66aaff;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+code {
+  background-color: var(--surface);
+  color: var(--function);
+  padding: 0.2em 0.4em;
+  border-radius: 4px;
+}
+
+pre {
+  background-color: var(--surface);
+  color: var(--foreground);
+  padding: 1em;
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  white-space: pre-wrap;
+  /* Wrap long lines */
+  word-wrap: break-word;
+  overflow-y: hidden;
+  /* Disable vertical scrolling */
+}
+
+pre code {
+  background: none;
+  padding: 0;
+  color: inherit;
+  display: block;
+}
+
+pre::-webkit-scrollbar {
+  display: none;
+  /* Hide scrollbar */
+}
+
+blockquote {
+  border-left: 4px solid var(--type);
+  background-color: var(--surface);
+  padding: 0.8em 1em;
+  color: var(--comment);
+  margin: 1em 0;
+}
+
+ul,
+ol {
+  padding-left: 2em;
+}
+
+li::marker {
+  color: var(--function);
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 1em 0;
+}
+
+th,
+td {
+  border: 1px solid var(--border);
+  padding: 0.6em 1em;
+}
+
+th {
+  background-color: var(--surface);
+  color: var(--function);
+}
+
+tr:nth-child(even) {
+  background-color: var(--surface);
+}
+
+hr {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 2em 0;
+}
+
+
+
+:root {
+  --keyword: #FFB347;
+  --function: #D4FF59;
+  --type: #66E6FF;
+  --constant: #D8A5FF;
+  --comment: #5C6773;
+  --foreground: #FFFFFF;
+  
+  /* UI Colors */
+  --background: #14161f;
+  --surface: #1E2129;
+  --border: #5C6773;
+}
+</style>
+</head>
+<body>
+  <h1>Portfolio Website &amp; Personal Brand</h1>
+<p>#week</p>
+<h2>Objectivo</h2>
+<p>Portfolio profissional que se destaca entre 1000 candidatos.</p>
+<h3>Portfolio Website</h3>
+<p><strong>Tech Stack:</strong> Next.js 15 + TypeScript + Tailwind CSS + MDX + Framer Motion</p>
+<p><strong>Overview</strong>
+Vais construir o portfolio que te representa como engineer e que convence um hiring manager em 2 minutos que és alguém que constrói coisas reais. A diferença entre um portfolio mediano e um excelente não é o design — é os case studies: cada projecto não tem apenas screenshots e um link GitHub, mas um documento estruturado que explica o problema que resolveste, as decisões técnicas que tomaste e porquê, os desafios que encontraste e como os superaste, e os resultados mensuráveis. O site é construído com Next.js 15 com full SSG para performance máxima, blog integrado via MDX local ou DEV.to API, e um mapa visual interactivo das skills em vez de uma lista estática. O Lighthouse tem de ser 100/100 em todas as categorias — é um sinal de qualidade e atenção ao detalhe. O dark/light mode com transição suave, command palette (⌘K) para navegação, e reading time estimado em cada post são os detalhes que mostram que te preocupas com a experiência do utilizador.</p>
+<p><strong>Sections:</strong></p>
+<ul>
+<li><strong>Hero:</strong> headline forte + CTA claro + animação subtil</li>
+<li><strong>About:</strong> a tua história em 3 parágrafos — o porquê, o percurso, o agora</li>
+<li><strong>Projects:</strong> 10-15 melhores com case studies individuais</li>
+<li><strong>Blog:</strong> integrado via DEV.to API ou MDX local</li>
+<li><strong>Skills:</strong> mapa visual interactivo (não uma lista chata)</li>
+<li><strong>Timeline:</strong> o teu percurso de aprendizagem</li>
+<li><strong>Contact:</strong> formulário + links</li>
+</ul>
+<p><strong>Performance targets:</strong></p>
+<ul>
+<li>Lighthouse: 100/100/100/100 (Performance/Accessibility/Best Practices/SEO)</li>
+<li>LCP &lt; 1.2s</li>
+<li>CLS = 0</li>
+<li>Funciona sem JavaScript (SSG + SSR)</li>
+</ul>
+<p><strong>Case Studies (top 5 projectos):</strong></p>
+<pre style="background-color:#1e2129;"><code class="language-markdown"><span style="color:#ffffff;">## [Nome do Projecto]
+</span><span style="color:#ffffff;">Problema → Solução → Decisões Técnicas → Desafios → Métricas → Learnings
+</span></code></pre>
+<ul>
+<li>Dark/Light mode com transição suave</li>
+<li>Command palette (⌘K) para navegação rápida</li>
+<li>Blog com table of contents + tempo de leitura</li>
+<li>Analytics: Plausible (privacy-first, gratuito self-hosted)</li>
+</ul>
+<h3>Personal Branding Completo</h3>
+<p><strong>LinkedIn:</strong></p>
+<ul>
+<li>Headline: <code>[Role] | [Specialization] | Building [X]</code></li>
+<li>About: hook forte + percurso + expertise + CTA</li>
+<li>Featured: top 3 projectos com screenshots</li>
+<li>Skills: 50+ endorsements nos skills core</li>
+<li>Recomendações: pede a 3-5 pessoas da comunidade</li>
+</ul>
+<p><strong>GitHub Profile README:</strong></p>
+<ul>
+<li>Stats dinâmicos (GitHub Actions atualiza automaticamente)</li>
+<li>“Currently building” — actualiza semanalmente</li>
+<li>Lista dos 5 melhores projectos com 1 linha cada</li>
+<li>Contribution graph activo há 365 dias</li>
+</ul>
+<h2>Entregáveis</h2>
+<ul>
+<li><input type="checkbox" disabled="" /> Portfolio live com domínio próprio (Cloudflare Pages — gratuito)</li>
+<li><input type="checkbox" disabled="" /> 5+ case studies completos e detalhados</li>
+<li><input type="checkbox" disabled="" /> LinkedIn totalmente optimizado</li>
+<li><input type="checkbox" disabled="" /> GitHub profile polished</li>
+<li><input type="checkbox" disabled="" /> Blog: “How to Build a Developer Portfolio That Gets Interviews”</li>
+</ul>
+
+</body>
+</html>

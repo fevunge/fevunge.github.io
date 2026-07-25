@@ -1,0 +1,253 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <style>body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif;
+  line-height: 1.6;
+  min-width: 1200px;
+  padding: 2rem;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: var(--keyword);
+  margin-top: 1.5em;
+}
+
+h1 {
+  font-size: 2.2em;
+  border-bottom: 2px solid var(--border);
+  padding-bottom: 0.3em;
+}
+
+h2 {
+  font-size: 1.8em;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 0.2em;
+}
+
+h3 {
+  font-size: 1.4em;
+}
+
+h4,
+h5,
+h6 {
+  color: var(--constant);
+}
+
+a {
+  color: #66aaff;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+code {
+  background-color: var(--surface);
+  color: var(--function);
+  padding: 0.2em 0.4em;
+  border-radius: 4px;
+}
+
+pre {
+  background-color: var(--surface);
+  color: var(--foreground);
+  padding: 1em;
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  white-space: pre-wrap;
+  /* Wrap long lines */
+  word-wrap: break-word;
+  overflow-y: hidden;
+  /* Disable vertical scrolling */
+}
+
+pre code {
+  background: none;
+  padding: 0;
+  color: inherit;
+  display: block;
+}
+
+pre::-webkit-scrollbar {
+  display: none;
+  /* Hide scrollbar */
+}
+
+blockquote {
+  border-left: 4px solid var(--type);
+  background-color: var(--surface);
+  padding: 0.8em 1em;
+  color: var(--comment);
+  margin: 1em 0;
+}
+
+ul,
+ol {
+  padding-left: 2em;
+}
+
+li::marker {
+  color: var(--function);
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 1em 0;
+}
+
+th,
+td {
+  border: 1px solid var(--border);
+  padding: 0.6em 1em;
+}
+
+th {
+  background-color: var(--surface);
+  color: var(--function);
+}
+
+tr:nth-child(even) {
+  background-color: var(--surface);
+}
+
+hr {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 2em 0;
+}
+
+
+
+:root {
+  --keyword: #FFB347;
+  --function: #D4FF59;
+  --type: #66E6FF;
+  --constant: #D8A5FF;
+  --comment: #5C6773;
+  --foreground: #FFFFFF;
+  
+  /* UI Colors */
+  --background: #14161f;
+  --surface: #1E2129;
+  --border: #5C6773;
+}
+</style>
+</head>
+<body>
+  <h1>Sistemas Embarcados Simulados — RTOS &amp; IoT</h1>
+<p>#week</p>
+<h2>Objectivos</h2>
+<ul>
+<li>RTOS concepts: tasks, scheduler preemptivo, priorities, context switching</li>
+<li>FreeRTOS: tasks, queues, semaphores, mutexes, software timers</li>
+<li>MQTT protocol: publish/subscribe, QoS levels, retained messages, LWT</li>
+<li>Power management: sleep modes, wake-up triggers</li>
+<li>Watchdog timers e fault handling em sistemas críticos</li>
+</ul>
+<h2>Recursos</h2>
+<table>
+<thead>
+<tr>
+<th>Tipo</th>
+<th>Recurso</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Docs</td>
+<td>FreeRTOS documentation — freertos.org</td>
+</tr>
+<tr>
+<td>Sim</td>
+<td>Wokwi ESP32 Simulator — wokwi.com (gratuito)</td>
+</tr>
+<tr>
+<td>Livro</td>
+<td><em>Real-Time Concepts for Embedded Systems</em> — Qing Li</td>
+</tr>
+<tr>
+<td>Video</td>
+<td>“FreeRTOS from Scratch” — Jacob Beningo (YouTube)</td>
+</tr>
+<tr>
+<td>Artigo</td>
+<td>“MQTT Essentials” — HiveMQ blog</td>
+</tr>
+</tbody>
+</table>
+<h2>Projeto</h2>
+<h3>IoT Data Pipeline Completo — RTOS + Backend + Dashboard</h3>
+<p><strong>Tech Stack</strong> 
+C++ com FreeRTOS (Wokwi) + Node.js + MQTT + TimescaleDB + React
+<strong>Hardware simulado no Wokwi:</strong> DHT22, PIR, LDR, OLED SSD1306, LED RGB</p>
+<p><strong>Overview</strong>
+Um sistema IoT completo e funcionalmente realista, simulado no Wokwi: firmware para ESP32 com FreeRTOS a gerir múltiplas tasks concorrentes.
+Um backend Node.js como MQTT broker gateway, armazenamento de séries temporais em TimescaleDB, e um dashboard React com gráficos em tempo real.
+O firmware usa cinco tasks FreeRTOS com prioridades distintas
+<strong>SensorTask</strong> lê temperatura, humidade, luminosidade e movimento a cada 500ms e publica numa fila interna; <strong>ProcessingTask</strong> valida e normaliza as leituras descartando outliers;
+<strong>MQTTTask</strong> consome a fila interna e publica os dados via MQTT com QoS 1 (acknowledged delivery);
+<strong>DisplayTask</strong> actualiza o OLED SSD1306 com as leituras mais recentes;
+<strong>WatchdogTask</strong> reseta o sistema se qualquer task ficar bloqueada por mais de 5 segundos.
+O backend processa os eventos MQTT, armazena em TimescaleDB com particionamento automático por tempo, e expõe uma API WebSocket para o dashboard.
+O sistema de alertas detecta leituras fora de threshold e envia notificações. O projecto inclui OTA update simulation — como um sistema embarcado actualiza o firmware remotamente sem intervenção física.</p>
+<p><strong>Core Features</strong></p>
+<ul>
+<li>Leituras em tempo real</li>
+<li>Alertas configuráveis</li>
+<li>Data logging (TimescaleDB)</li>
+<li>Gráficos históricos</li>
+<li>Automações (rules engine)</li>
+<li>Over-the-air (OTA) updates</li>
+</ul>
+<p><strong>Requisitos</strong></p>
+<ul>
+<li><strong>Hardware simulado no Wokwi:</strong>
+<ul>
+<li>DHT22 (temperatura + humidade)</li>
+<li>PIR (movimento)</li>
+<li>LDR (luminosidade)</li>
+<li>OLED SSD1306 (display de status)</li>
+<li>LED RGB (indicador de alertas)</li>
+</ul>
+</li>
+<li><strong>Backend Node.js:</strong>
+<ul>
+<li>MQTT broker (Mosquitto em Docker)</li>
+<li>WebSocket gateway (tempo real para o frontend)</li>
+<li>TimescaleDB (PostgreSQL com extensão time-series)</li>
+<li>Alerting engine com regras configuráveis</li>
+</ul>
+</li>
+<li><strong>Dashboard React:</strong>
+<ul>
+<li>Gráficos em tempo real (Recharts)</li>
+<li>Histórico com zoom</li>
+<li>Gestão de alertas</li>
+<li>OTA update simulation</li>
+</ul>
+</li>
+</ul>
+<p><strong>Entregáveis</strong></p>
+<ul>
+<li><input type="checkbox" disabled="" /> Firmware + backend + dashboard no GitHub</li>
+<li><input type="checkbox" disabled="" /> Link da simulação Wokwi partilhável (funciona no browser)</li>
+<li><input type="checkbox" disabled="" /> Blog: “Building an IoT Data Pipeline with FreeRTOS and MQTT — No Hardware Needed”</li>
+<li><input type="checkbox" disabled="" /> Video: demo da simulação completa a correr em tempo real</li>
+</ul>
+
+</body>
+</html>

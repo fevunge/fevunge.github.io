@@ -1,0 +1,236 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <style>body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif;
+  line-height: 1.6;
+  min-width: 1200px;
+  padding: 2rem;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: var(--keyword);
+  margin-top: 1.5em;
+}
+
+h1 {
+  font-size: 2.2em;
+  border-bottom: 2px solid var(--border);
+  padding-bottom: 0.3em;
+}
+
+h2 {
+  font-size: 1.8em;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 0.2em;
+}
+
+h3 {
+  font-size: 1.4em;
+}
+
+h4,
+h5,
+h6 {
+  color: var(--constant);
+}
+
+a {
+  color: #66aaff;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+code {
+  background-color: var(--surface);
+  color: var(--function);
+  padding: 0.2em 0.4em;
+  border-radius: 4px;
+}
+
+pre {
+  background-color: var(--surface);
+  color: var(--foreground);
+  padding: 1em;
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  white-space: pre-wrap;
+  /* Wrap long lines */
+  word-wrap: break-word;
+  overflow-y: hidden;
+  /* Disable vertical scrolling */
+}
+
+pre code {
+  background: none;
+  padding: 0;
+  color: inherit;
+  display: block;
+}
+
+pre::-webkit-scrollbar {
+  display: none;
+  /* Hide scrollbar */
+}
+
+blockquote {
+  border-left: 4px solid var(--type);
+  background-color: var(--surface);
+  padding: 0.8em 1em;
+  color: var(--comment);
+  margin: 1em 0;
+}
+
+ul,
+ol {
+  padding-left: 2em;
+}
+
+li::marker {
+  color: var(--function);
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 1em 0;
+}
+
+th,
+td {
+  border: 1px solid var(--border);
+  padding: 0.6em 1em;
+}
+
+th {
+  background-color: var(--surface);
+  color: var(--function);
+}
+
+tr:nth-child(even) {
+  background-color: var(--surface);
+}
+
+hr {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 2em 0;
+}
+
+
+
+:root {
+  --keyword: #FFB347;
+  --function: #D4FF59;
+  --type: #66E6FF;
+  --constant: #D8A5FF;
+  --comment: #5C6773;
+  --foreground: #FFFFFF;
+  
+  /* UI Colors */
+  --background: #14161f;
+  --surface: #1E2129;
+  --border: #5C6773;
+}
+</style>
+</head>
+<body>
+  <h1>Network Security Fundamentals + API Hardening</h1>
+<p>#week</p>
+<h2>Objectivos</h2>
+<ul>
+<li>OWASP Top 10 (2021) em profundidade — ataque e defesa de cada item</li>
+<li>HTTP security headers e o que cada um faz na prática</li>
+<li>Rate limiting: sliding window vs token bucket vs leaky bucket</li>
+<li>Input validation, sanitização e output encoding contextual</li>
+<li>JWT: anatomia, ataques comuns (algorithm confusion, none algorithm), mitigações</li>
+<li>SQL Injection, XSS, CSRF — vector de ataque completo + defesa</li>
+</ul>
+<h2>Recursos</h2>
+<table>
+<thead>
+<tr>
+<th>Tipo</th>
+<th>Recurso</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Plataforma</td>
+<td>PortSwigger Web Security Academy — 100% gratuito, melhor recurso do mundo em web security</td>
+</tr>
+<tr>
+<td>Livro</td>
+<td><em>Web Application Security</em> — Andrew Hoffman (O’Reilly)</td>
+</tr>
+<tr>
+<td>Docs</td>
+<td>OWASP Cheat Sheet Series (cheatsheetseries.owasp.org)</td>
+</tr>
+<tr>
+<td>Prática</td>
+<td>HackTheBox — free tier (máquinas web)</td>
+</tr>
+<tr>
+<td>Video</td>
+<td>LiveOverflow — YouTube (web hacking explicado)</td>
+</tr>
+</tbody>
+</table>
+<h2>Projeto</h2>
+<h3>Secure API Framework &amp; Security Middleware Library</h3>
+<p><strong>Tech Stack</strong>
+Node.js + Hono + TypeScript + PostgreSQL + Redis + <code>@simplewebauthn/server</code></p>
+<p><strong>Overview</strong>
+Um Framework de API seguro e reutilizável — <em>o tipo de biblioteca que qualquer empresa séria deveria ter mas raramente constrói porque normalmente junta middlewares de segurança de forma ad-hoc.</em>
+O teu Framework precisa de ser uma camada de segurança compulsável que qualquer projeto Node.js pode adotar: <strong>middlewares encadeáveis</strong>, <strong>configuração declarativa</strong>, e <strong>zero decisões de segurança deixadas ao desenolvedor</strong> de aplicação.
+O projecto usa Hono e implementa de raiz rate limiting via Redis com fallback in-memory, <strong>rotação automática de JWT com revogação</strong>, <strong>prevenção de XSS contextual</strong>, <strong>CSRF com double submit cookie</strong>, <strong>suporte completo a Passkeys (WebAuthn)</strong> como alternativa às passwords.</p>
+<p><strong>Core Features</strong></p>
+<ul>
+<li>Middleware chain de segurança compulsável e declarativa</li>
+<li>Rate limiting: sliding window com Redis, fallback in-memory automático</li>
+<li>JWT com refresh tokens — rotação automática, revogação via Redis</li>
+<li>Input validation automática via Zod schemas declarativos no router</li>
+<li>Parameterized queries obrigatórios via wrapper tipado (impossível fazer SQL injection)</li>
+<li>XSS prevention: sanitização de output contextual (HTML, JS, CSS, URL)</li>
+<li>CSRF tokens: double submit cookie pattern</li>
+<li>Security headers completos (CSP, HSTS, X-Frame-Options, Permissions-Policy)</li>
+<li>Logging de tentativas maliciosas com fingerprinting de attackers</li>
+<li>IP allowlist/blocklist dinâmica com Redis</li>
+<li>2FA com TOTP (Google Authenticator compatível)</li>
+<li>Passkeys support (WebAuthn) — o padrão que está a substituir passwords</li>
+<li>API key management com escopos, expiração e rotação</li>
+<li>Request signing via HMAC para webhooks</li>
+<li>Audit log imutável com hash chaining</li>
+</ul>
+<p><strong>Testing:</strong></p>
+<ul>
+<li>Unit tests (segurança de cada middleware isolado)</li>
+<li>Integration tests de fluxos de autenticação</li>
+<li>OWASP ZAP automated scan no CI</li>
+<li>Relatório de penetration test próprio</li>
+</ul>
+<p><strong>Entregáveis</strong></p>
+<ul>
+<li><input type="checkbox" disabled="" /> NPM package publicado com documentação completa</li>
+<li><input type="checkbox" disabled="" /> Security audit report em PDF\</li>
+<li><input type="checkbox" disabled="" /> Blog: “Building a Production-Grade API Security Layer in 2026”</li>
+<li><input type="checkbox" disabled="" /> Post LinkedIn sobre OWASP Top 10 com exemplos visuais</li>
+</ul>
+<hr />
+
+</body>
+</html>

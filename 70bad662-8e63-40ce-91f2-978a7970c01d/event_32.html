@@ -1,0 +1,235 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <style>body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif;
+  line-height: 1.6;
+  min-width: 1200px;
+  padding: 2rem;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: var(--keyword);
+  margin-top: 1.5em;
+}
+
+h1 {
+  font-size: 2.2em;
+  border-bottom: 2px solid var(--border);
+  padding-bottom: 0.3em;
+}
+
+h2 {
+  font-size: 1.8em;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 0.2em;
+}
+
+h3 {
+  font-size: 1.4em;
+}
+
+h4,
+h5,
+h6 {
+  color: var(--constant);
+}
+
+a {
+  color: #66aaff;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+code {
+  background-color: var(--surface);
+  color: var(--function);
+  padding: 0.2em 0.4em;
+  border-radius: 4px;
+}
+
+pre {
+  background-color: var(--surface);
+  color: var(--foreground);
+  padding: 1em;
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  white-space: pre-wrap;
+  /* Wrap long lines */
+  word-wrap: break-word;
+  overflow-y: hidden;
+  /* Disable vertical scrolling */
+}
+
+pre code {
+  background: none;
+  padding: 0;
+  color: inherit;
+  display: block;
+}
+
+pre::-webkit-scrollbar {
+  display: none;
+  /* Hide scrollbar */
+}
+
+blockquote {
+  border-left: 4px solid var(--type);
+  background-color: var(--surface);
+  padding: 0.8em 1em;
+  color: var(--comment);
+  margin: 1em 0;
+}
+
+ul,
+ol {
+  padding-left: 2em;
+}
+
+li::marker {
+  color: var(--function);
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 1em 0;
+}
+
+th,
+td {
+  border: 1px solid var(--border);
+  padding: 0.6em 1em;
+}
+
+th {
+  background-color: var(--surface);
+  color: var(--function);
+}
+
+tr:nth-child(even) {
+  background-color: var(--surface);
+}
+
+hr {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 2em 0;
+}
+
+
+
+:root {
+  --keyword: #FFB347;
+  --function: #D4FF59;
+  --type: #66E6FF;
+  --constant: #D8A5FF;
+  --comment: #5C6773;
+  --foreground: #FFFFFF;
+  
+  /* UI Colors */
+  --background: #14161f;
+  --surface: #1E2129;
+  --border: #5C6773;
+}
+</style>
+</head>
+<body>
+  <h1>Compiler Design — Interpreter + Language Server Protocol</h1>
+<p>#week</p>
+<h2>Objectivos</h2>
+<ul>
+<li>Lexical analysis: tokenização, DFAs</li>
+<li>Parsing: recursive descent, Pratt parsing para expressões</li>
+<li>AST: design, visitor pattern</li>
+<li>Type checking: type inference básica</li>
+<li>Code generation: bytecode ou LLVM IR</li>
+<li>Language Server Protocol (LSP): como funciona o autocomplete do VS Code</li>
+</ul>
+<h2>Recursos</h2>
+<table>
+<thead>
+<tr>
+<th>Tipo</th>
+<th>Recurso</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Livro</td>
+<td><em>Crafting Interpreters</em> — Bob Nystrom (gratuito em craftinginterpreters.com)</td>
+</tr>
+<tr>
+<td>Docs</td>
+<td>LLVM Tutorial — llvm.org/docs/tutorial</td>
+</tr>
+<tr>
+<td>Spec</td>
+<td>Language Server Protocol — microsoft.github.io/language-server-protocol</td>
+</tr>
+<tr>
+<td>Video</td>
+<td>“Writing an Interpreter in Go” — Thorsten Ball book walkthrough</td>
+</tr>
+<tr>
+<td>Prática</td>
+<td>Implement cada capítulo de Crafting Interpreters</td>
+</tr>
+</tbody>
+</table>
+<h2>Projeto</h2>
+<h3>Linguagem de Programação + LSP Server</h3>
+<p><strong>Tech Stack</strong>
+Rust ou C++ (interpretador) + TypeScript (LSP extension VS Code)</p>
+<p><strong>Overview</strong>
+uma linguagem de programação completa com interpretador e um language server que se integra com o VS Code — o projecto que te faz perceber como o teu editor funciona por dentro quando sublinha erros em tempo real, oferece autocomplete, e navega para definições. A linguagem tem tipagem estática com inferência (não precisas de declarar o tipo de tudo), funções de primeira classe, pattern matching, e um sistema de módulos simples. O pipeline de compilação segue as fases canónicas: Lexer transforma o source em tokens com error recovery (não para no primeiro erro), Parser usa Pratt parsing para lidar com precedência de operadores de forma elegante, o Type Checker faz inferência de tipos e produz erros detalhados com sugestões, e a Bytecode VM executa o código compilado numa stack-based virtual machine. O LSP server implementa os endpoints mais importantes: textDocument/hover (mostra o tipo de uma expressão), textDocument/diagnostic (erros em tempo real enquanto escreves), textDocument/completion (autocomplete de variáveis e funções no scope), e textDocument/definition (go-to-definition). A VS Code extension empacota o LSP server e activa-o para ficheiros <code>.tualnguagem</code>. O REPL permite experimentar interactivamente.</p>
+<p><strong>Core Feature</strong></p>
+<ul>
+<li>Variables e tipos (int, float, string, bool)</li>
+<li>Control flow (if, while)</li>
+<li>Functions</li>
+<li>Arrays/Lists</li>
+<li>Hash maps</li>
+<li>Standard library</li>
+</ul>
+<p><strong>Requisitos</strong></p>
+<ul>
+<li>Lexer: tokenização com error recovery</li>
+<li>Parser: recursive descent com Pratt parsing para precedência de operadores</li>
+<li>AST: nodes tipados, visitor pattern</li>
+<li>Type checker: inferência de tipos básica</li>
+<li>Bytecode VM: stack-based virtual machine</li>
+<li>REPL interactivo</li>
+<li>**LSP Server **
+<ul>
+<li>Hover: mostra tipo de variáveis</li>
+<li>Diagnostics: erros de tipo em tempo real</li>
+<li>Completion: sugestões de variáveis e funções</li>
+<li>Go to definition</li>
+<li>VS Code extension que usa o LSP</li>
+</ul>
+</li>
+</ul>
+<h2>Entregáveis</h2>
+<ul>
+<li><input type="checkbox" disabled="" /> Interpretador funcional + VS Code extension</li>
+<li><input type="checkbox" disabled="" /> Language specification em Markdown</li>
+<li><input type="checkbox" disabled="" /> Blog series (4 partes): Lexer / Parser / Type System / LSP</li>
+<li><input type="checkbox" disabled="" /> Video: Escrever código na linguagem própria com autocomplete no VS Code</li>
+</ul>
+
+</body>
+</html>

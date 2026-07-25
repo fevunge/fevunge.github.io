@@ -1,0 +1,223 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <style>body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif;
+  line-height: 1.6;
+  min-width: 1200px;
+  padding: 2rem;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: var(--keyword);
+  margin-top: 1.5em;
+}
+
+h1 {
+  font-size: 2.2em;
+  border-bottom: 2px solid var(--border);
+  padding-bottom: 0.3em;
+}
+
+h2 {
+  font-size: 1.8em;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 0.2em;
+}
+
+h3 {
+  font-size: 1.4em;
+}
+
+h4,
+h5,
+h6 {
+  color: var(--constant);
+}
+
+a {
+  color: #66aaff;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+code {
+  background-color: var(--surface);
+  color: var(--function);
+  padding: 0.2em 0.4em;
+  border-radius: 4px;
+}
+
+pre {
+  background-color: var(--surface);
+  color: var(--foreground);
+  padding: 1em;
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  white-space: pre-wrap;
+  /* Wrap long lines */
+  word-wrap: break-word;
+  overflow-y: hidden;
+  /* Disable vertical scrolling */
+}
+
+pre code {
+  background: none;
+  padding: 0;
+  color: inherit;
+  display: block;
+}
+
+pre::-webkit-scrollbar {
+  display: none;
+  /* Hide scrollbar */
+}
+
+blockquote {
+  border-left: 4px solid var(--type);
+  background-color: var(--surface);
+  padding: 0.8em 1em;
+  color: var(--comment);
+  margin: 1em 0;
+}
+
+ul,
+ol {
+  padding-left: 2em;
+}
+
+li::marker {
+  color: var(--function);
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 1em 0;
+}
+
+th,
+td {
+  border: 1px solid var(--border);
+  padding: 0.6em 1em;
+}
+
+th {
+  background-color: var(--surface);
+  color: var(--function);
+}
+
+tr:nth-child(even) {
+  background-color: var(--surface);
+}
+
+hr {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 2em 0;
+}
+
+
+
+:root {
+  --keyword: #FFB347;
+  --function: #D4FF59;
+  --type: #66E6FF;
+  --constant: #D8A5FF;
+  --comment: #5C6773;
+  --foreground: #FFFFFF;
+  
+  /* UI Colors */
+  --background: #14161f;
+  --surface: #1E2129;
+  --border: #5C6773;
+}
+</style>
+</head>
+<body>
+  <h1>Operating Systems — Kernel do Zero</h1>
+<p>#week</p>
+<h2>Objectivos</h2>
+<ul>
+<li>Boot process: BIOS/UEFI → bootloader → kernel</li>
+<li>x86 protected mode, GDT, IDT</li>
+<li>Memory management: physical memory, virtual memory, paging</li>
+<li>Process scheduling: round-robin, CFS (Completely Fair Scheduler)</li>
+<li>Synchronization: spinlocks, mutexes, semaphores no kernel</li>
+<li>System calls: user mode → kernel mode transition</li>
+</ul>
+<h2>Recursos</h2>
+<table>
+<thead>
+<tr>
+<th>Tipo</th>
+<th>Recurso</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Livro</td>
+<td><em>Operating Systems: Three Easy Pieces</em> — gratuito em ostep.org</td>
+</tr>
+<tr>
+<td>Guide</td>
+<td>OSDev Wiki — wiki.osdev.org (a referência)</td>
+</tr>
+<tr>
+<td>Código</td>
+<td>xv6 — github.com/mit-pdos/xv6-riscv (kernel didáctico do MIT)</td>
+</tr>
+<tr>
+<td>Video</td>
+<td>“Writing an OS in Rust” — Philipp Oppermann (blog + YouTube)</td>
+</tr>
+<tr>
+<td>Sim</td>
+<td>QEMU — emulador gratuito para testar o kernel</td>
+</tr>
+</tbody>
+</table>
+<h2>Projeto</h2>
+<h3>Mini Kernel Bootável (x86 ou RISC-V via QEMU)</h3>
+<p><strong>Tech Stack:</strong> C + Assembly (x86 ou RISC-V) + QEMU</p>
+<p><strong>Overview</strong>
+Um kernel operativo do zero que arranca via GRUB, tem um shell básico onde podes escrever comandos, e consegue fazer fork de processos simples — tudo emulado no QEMU sem necessitar de hardware. O boot process começa com o GRUB a carregar o kernel em modo protegido x86, inicializas a GDT (Global Descriptor Table) e IDT (Interrupt Descriptor Table) para gerir interrupts, e o primeiro output é “Hello from the kernel” via driver VGA básico. O memory manager usa um bitmap allocator para páginas físicas de 4KB e activa a paginação via page tables para isolamento de processos. O heap do kernel implementa <code>kmalloc</code> e <code>kfree</code> com um free list simples. O scheduler usa round-robin com fixed timeslice via timer interrupt (IRQ0). As syscalls básicas — <code>write</code> para output, <code>exit</code> para terminar um processo, e <code>fork</code> para duplicar um processo — ensinam a transição entre user mode e kernel mode via <code>int 0x80</code>. O shell lê do teclado via keyboard interrupt handler, parseia comandos simples, e executa programs em memória. Um in-memory filesystem (ramfs) permite “carregar” programas. Cada milestone tem testes automáticos via QEMU scripting</p>
+<p><strong>Milestones obrigatórios:</strong></p>
+<ol>
+<li><strong>Boot:</strong> GRUB carrega o kernel, imprime “Hello Kernel” via VGA</li>
+<li><strong>Interrupts:</strong> IDT configurada, keyboard interrupt handler</li>
+<li><strong>Memory:</strong> physical memory manager (bitmap allocator), paging com 4KB pages</li>
+<li><strong>Heap:</strong> <code>kmalloc</code> e <code>kfree</code> simples</li>
+<li><strong>Scheduling:</strong> múltiplos processos com round-robin</li>
+<li><strong>Syscalls:</strong> <code>write</code>, <code>exit</code>, <code>fork</code> (básico)</li>
+<li><strong>Shell:</strong> lê comandos do teclado, executa programas simples</li>
+<li><strong>Filesystem:</strong> in-memory FS (ramfs) simples</li>
+</ol>
+<p><strong>Processo de aprendizagem:</strong></p>
+<ul>
+<li>Cada milestone tem testes automáticos (via QEMU + scripts)</li>
+<li>Documenta cada decisão: “Porque GDT? O que é um segment descriptor?”</li>
+</ul>
+<h2>Entregáveis</h2>
+<ul>
+<li><input type="checkbox" disabled="" /> Kernel bootável em QEMU (ISO)</li>
+<li><input type="checkbox" disabled="" /> Blog: “Writing an OS From Scratch in C — Bootloader to Scheduler”</li>
+<li><input type="checkbox" disabled="" /> Video: boot ao vivo no QEMU, com shell e fork a funcionar</li>
+<li><input type="checkbox" disabled="" /> Documentação: diagrama de arquitectura do kernel</li>
+</ul>
+
+</body>
+</html>

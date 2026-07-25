@@ -1,0 +1,233 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <style>body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif;
+  line-height: 1.6;
+  min-width: 1200px;
+  padding: 2rem;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: var(--keyword);
+  margin-top: 1.5em;
+}
+
+h1 {
+  font-size: 2.2em;
+  border-bottom: 2px solid var(--border);
+  padding-bottom: 0.3em;
+}
+
+h2 {
+  font-size: 1.8em;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 0.2em;
+}
+
+h3 {
+  font-size: 1.4em;
+}
+
+h4,
+h5,
+h6 {
+  color: var(--constant);
+}
+
+a {
+  color: #66aaff;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+code {
+  background-color: var(--surface);
+  color: var(--function);
+  padding: 0.2em 0.4em;
+  border-radius: 4px;
+}
+
+pre {
+  background-color: var(--surface);
+  color: var(--foreground);
+  padding: 1em;
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  white-space: pre-wrap;
+  /* Wrap long lines */
+  word-wrap: break-word;
+  overflow-y: hidden;
+  /* Disable vertical scrolling */
+}
+
+pre code {
+  background: none;
+  padding: 0;
+  color: inherit;
+  display: block;
+}
+
+pre::-webkit-scrollbar {
+  display: none;
+  /* Hide scrollbar */
+}
+
+blockquote {
+  border-left: 4px solid var(--type);
+  background-color: var(--surface);
+  padding: 0.8em 1em;
+  color: var(--comment);
+  margin: 1em 0;
+}
+
+ul,
+ol {
+  padding-left: 2em;
+}
+
+li::marker {
+  color: var(--function);
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 1em 0;
+}
+
+th,
+td {
+  border: 1px solid var(--border);
+  padding: 0.6em 1em;
+}
+
+th {
+  background-color: var(--surface);
+  color: var(--function);
+}
+
+tr:nth-child(even) {
+  background-color: var(--surface);
+}
+
+hr {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 2em 0;
+}
+
+
+
+:root {
+  --keyword: #FFB347;
+  --function: #D4FF59;
+  --type: #66E6FF;
+  --constant: #D8A5FF;
+  --comment: #5C6773;
+  --foreground: #FFFFFF;
+  
+  /* UI Colors */
+  --background: #14161f;
+  --surface: #1E2129;
+  --border: #5C6773;
+}
+</style>
+</head>
+<body>
+  <h1>Performance Engineering — Profiling &amp; Optimization</h1>
+<p>#week</p>
+<h2>Objectivos</h2>
+<ul>
+<li>Profiling: flame graphs, CPU profiling, memory profiling</li>
+<li>CPU architecture: cache hierarchy, branch prediction, SIMD</li>
+<li>Micro-benchmarking correcto: evitar pitfalls do benchmarking</li>
+<li>Memory optimization: cache-friendly data structures, pool allocation</li>
+<li>Concurrency performance: amdahl’s law, false sharing, lock contention</li>
+</ul>
+<h2>Recursos</h2>
+<table>
+<thead>
+<tr>
+<th>Tipo</th>
+<th>Recurso</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Livro</td>
+<td><em>Systems Performance</em> — Brendan Gregg (2ª edição)</td>
+</tr>
+<tr>
+<td>Site</td>
+<td>brendangregg.com — flame graphs e performance tools</td>
+</tr>
+<tr>
+<td>Video</td>
+<td>“Performance Matters” — Emery Berger (Strange Loop 2019 — YouTube)</td>
+</tr>
+<tr>
+<td>Tools</td>
+<td>perf (Linux), pprof (Go), flamegraph.pl, valgrind –callgrind</td>
+</tr>
+<tr>
+<td>Blog</td>
+<td>“What scientists must know about hardware to write fast code” — Jakob Nybo Nissen</td>
+</tr>
+</tbody>
+</table>
+<h2>Projeto</h2>
+<h3>Performance Optimization Case Studies</h3>
+<p><strong>Overview</strong>
+Vais pegar em três projectos anteriores e optimizá-los sistematicamente usando uma metodologia rigorosa de profiling — não por intuição, mas por dados. Este é o projecto que separa engineers que “acham que o código é lento” de engineers que “sabem exactamente onde e porquê e em quanto” antes de escrever uma linha. Para cada projecto: estabeleces um baseline benchmark antes de qualquer mudança; profiles com as ferramentas correctas (pprof para Go, perf + flamegraph para C++, cProfile + py-spy para Python); formulas uma hipótese específica sobre o gargalo; fazes a menor mudança possível que testa essa hipótese; e medes novamente comparando com o baseline.</p>
+<p><strong>Caso 1 — Web Crawler (<a href="week_4" data-wikilink="true">week_4</a>):</strong></p>
+<ul>
+<li>Profile com pprof</li>
+<li>Identifica gargalo (suspeita: JSON parsing, DB writes)</li>
+<li>Optimiza: batch writes, buffer pool, zero-copy parsing</li>
+<li>Meta: 2x throughput</li>
+</ul>
+<p><strong>Caso 2 — Path Tracer (<a href="week_23" data-wikilink="true">week_23</a>):</strong></p>
+<ul>
+<li>Profile com perf + flamegraph</li>
+<li>Identifica: BVH traversal hot path</li>
+<li>Optimiza: SIMD para ray-AABB intersection, cache-friendly BVH layout</li>
+<li>Meta: 1.5x speedup</li>
+</ul>
+<p><strong>Caso 3 — Storage Engine (<a href="week_35" data-wikilink="true">week_35</a>):</strong></p>
+<ul>
+<li>Profile: onde vai o tempo em writes sequenciais?</li>
+<li>Optimiza: batch WAL writes, mmap reads, Bloom filter SIMD</li>
+<li>Meta: 30% throughput improvement</li>
+</ul>
+<p><strong>Metodologia obrigatória para cada caso</strong></p>
+<pre style="background-color:#1e2129;"><code><span style="color:#ffffff;">1. Baseline measurement (benchmark antes)
+</span><span style="color:#ffffff;">2. Profile (não adivinhar)
+</span><span style="color:#ffffff;">3. Hypothesis (o que vai melhorar e porquê)
+</span><span style="color:#ffffff;">4. Change (mínimo possível)
+</span><span style="color:#ffffff;">5. Measure (comparar com baseline)
+</span><span style="color:#ffffff;">6. Document
+</span></code></pre>
+<h2>Entregáveis</h2>
+<ul>
+<li><input type="checkbox" disabled="" /> Repositório de cada optimização com before/after benchmarks</li>
+<li><input type="checkbox" disabled="" /> Blog: “The Art of Performance Optimization — A Systematic Approach”</li>
+<li><input type="checkbox" disabled="" /> Flame graphs gerados e anotados</li>
+<li><input type="checkbox" disabled="" /> Video: ao vivo de uma sessão de profiling e optimização</li>
+</ul>
+
+</body>
+</html>

@@ -1,0 +1,298 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <style>body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif;
+  line-height: 1.6;
+  min-width: 1200px;
+  padding: 2rem;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: var(--keyword);
+  margin-top: 1.5em;
+}
+
+h1 {
+  font-size: 2.2em;
+  border-bottom: 2px solid var(--border);
+  padding-bottom: 0.3em;
+}
+
+h2 {
+  font-size: 1.8em;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 0.2em;
+}
+
+h3 {
+  font-size: 1.4em;
+}
+
+h4,
+h5,
+h6 {
+  color: var(--constant);
+}
+
+a {
+  color: #66aaff;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+code {
+  background-color: var(--surface);
+  color: var(--function);
+  padding: 0.2em 0.4em;
+  border-radius: 4px;
+}
+
+pre {
+  background-color: var(--surface);
+  color: var(--foreground);
+  padding: 1em;
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  white-space: pre-wrap;
+  /* Wrap long lines */
+  word-wrap: break-word;
+  overflow-y: hidden;
+  /* Disable vertical scrolling */
+}
+
+pre code {
+  background: none;
+  padding: 0;
+  color: inherit;
+  display: block;
+}
+
+pre::-webkit-scrollbar {
+  display: none;
+  /* Hide scrollbar */
+}
+
+blockquote {
+  border-left: 4px solid var(--type);
+  background-color: var(--surface);
+  padding: 0.8em 1em;
+  color: var(--comment);
+  margin: 1em 0;
+}
+
+ul,
+ol {
+  padding-left: 2em;
+}
+
+li::marker {
+  color: var(--function);
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 1em 0;
+}
+
+th,
+td {
+  border: 1px solid var(--border);
+  padding: 0.6em 1em;
+}
+
+th {
+  background-color: var(--surface);
+  color: var(--function);
+}
+
+tr:nth-child(even) {
+  background-color: var(--surface);
+}
+
+hr {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 2em 0;
+}
+
+
+
+:root {
+  --keyword: #FFB347;
+  --function: #D4FF59;
+  --type: #66E6FF;
+  --constant: #D8A5FF;
+  --comment: #5C6773;
+  --foreground: #FFFFFF;
+  
+  /* UI Colors */
+  --background: #14161f;
+  --surface: #1E2129;
+  --border: #5C6773;
+}
+</style>
+</head>
+<body>
+    <a href="./index.html"> <code>the::index::render()</code> </a>
+  <table>
+<thead>
+<tr>
+<th>#</th>
+<th>Book</th>
+<th>Author</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td><em>Designing Data-Intensive Applications</em></td>
+<td>Kleppmann</td>
+<td>Part Free</td>
+</tr>
+<tr>
+<td>2</td>
+<td><em>Database Internals</em></td>
+<td>Alex Petrov</td>
+<td>Not Free</td>
+</tr>
+<tr>
+<td>3</td>
+<td><em>The Rust Programming Language</em></td>
+<td>Klabnik &amp; Nichols</td>
+<td>Free</td>
+</tr>
+<tr>
+<td>4</td>
+<td><em>Concurrency in Go</em></td>
+<td>Cox-Buday</td>
+<td>Not Free</td>
+</tr>
+<tr>
+<td>5</td>
+<td><em>A Tour of C++</em> (3ª ed.)</td>
+<td>Stroustrup</td>
+<td>Not Free</td>
+</tr>
+<tr>
+<td>6</td>
+<td><em>Fluent Python</em> (2ª ed.)</td>
+<td>Ramalho</td>
+<td>Not Free</td>
+</tr>
+<tr>
+<td>7</td>
+<td><em>Operating Systems: Three Easy Pieces</em></td>
+<td>Arpaci-Dusseau</td>
+<td>Free (ostep.org)</td>
+</tr>
+<tr>
+<td>8</td>
+<td><em>Crafting Interpreters</em></td>
+<td>Nystrom</td>
+<td>Free</td>
+</tr>
+<tr>
+<td>9</td>
+<td><em>Ray Tracing in One Weekend</em></td>
+<td>Shirley</td>
+<td>Free</td>
+</tr>
+<tr>
+<td>10</td>
+<td><em>The Pragmatic Programmer</em> (20th ed.)</td>
+<td>Hunt &amp; Thomas</td>
+<td>Not Free</td>
+</tr>
+<tr>
+<td>11</td>
+<td><em>Fundamentals of Software Architecture</em></td>
+<td>Richards &amp; Ford</td>
+<td>Obrigatório</td>
+</tr>
+<tr>
+<td>12</td>
+<td><em>Designing Data-Intensive Applications</em></td>
+<td>Kleppmann</td>
+<td>Obrigatório</td>
+</tr>
+<tr>
+<td>13</td>
+<td><em>Building Microservices</em></td>
+<td>Sam Newman</td>
+<td>Obrigatório</td>
+</tr>
+<tr>
+<td>14</td>
+<td><em>Domain-Driven Design</em></td>
+<td>Eric Evans</td>
+<td>Obrigatório</td>
+</tr>
+<tr>
+<td>15</td>
+<td><em>The Phoenix Project</em></td>
+<td>Gene Kim</td>
+<td>Obrigatório</td>
+</tr>
+<tr>
+<td>16</td>
+<td><em>Software Architecture: The Hard Parts</em></td>
+<td>Ford, Richards et al.</td>
+<td>Alta Prioridade</td>
+</tr>
+<tr>
+<td>17</td>
+<td><em>Thinking in Systems</em></td>
+<td>Donella Meadows</td>
+<td>Alta Prioridade</td>
+</tr>
+<tr>
+<td>18</td>
+<td><em>Enterprise Integration Patterns</em></td>
+<td>Hohpe &amp; Woolf</td>
+<td>Alta Prioridade</td>
+</tr>
+<tr>
+<td>19</td>
+<td><em>Accelerate</em></td>
+<td>Forsgren, Humble &amp; Kim</td>
+<td>Alta Prioridade</td>
+</tr>
+<tr>
+<td>20</td>
+<td><em>Clean Architecture</em></td>
+<td>Robert C. Martin</td>
+<td>Complementar</td>
+</tr>
+<tr>
+<td>21</td>
+<td><em>Just Enough Software Architecture</em></td>
+<td>George Fairbanks</td>
+<td>Complementar</td>
+</tr>
+<tr>
+<td>22</td>
+<td><em>Cloud Native Patterns</em></td>
+<td>Cornelia Davis</td>
+<td>Complementar</td>
+</tr>
+</tbody>
+</table>
+
+</body>
+</html>

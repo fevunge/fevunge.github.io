@@ -1,0 +1,192 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <style>body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif;
+  line-height: 1.6;
+  min-width: 1200px;
+  padding: 2rem;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: var(--keyword);
+  margin-top: 1.5em;
+}
+
+h1 {
+  font-size: 2.2em;
+  border-bottom: 2px solid var(--border);
+  padding-bottom: 0.3em;
+}
+
+h2 {
+  font-size: 1.8em;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 0.2em;
+}
+
+h3 {
+  font-size: 1.4em;
+}
+
+h4,
+h5,
+h6 {
+  color: var(--constant);
+}
+
+a {
+  color: #66aaff;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+code {
+  background-color: var(--surface);
+  color: var(--function);
+  padding: 0.2em 0.4em;
+  border-radius: 4px;
+}
+
+pre {
+  background-color: var(--surface);
+  color: var(--foreground);
+  padding: 1em;
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  white-space: pre-wrap;
+  /* Wrap long lines */
+  word-wrap: break-word;
+  overflow-y: hidden;
+  /* Disable vertical scrolling */
+}
+
+pre code {
+  background: none;
+  padding: 0;
+  color: inherit;
+  display: block;
+}
+
+pre::-webkit-scrollbar {
+  display: none;
+  /* Hide scrollbar */
+}
+
+blockquote {
+  border-left: 4px solid var(--type);
+  background-color: var(--surface);
+  padding: 0.8em 1em;
+  color: var(--comment);
+  margin: 1em 0;
+}
+
+ul,
+ol {
+  padding-left: 2em;
+}
+
+li::marker {
+  color: var(--function);
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 1em 0;
+}
+
+th,
+td {
+  border: 1px solid var(--border);
+  padding: 0.6em 1em;
+}
+
+th {
+  background-color: var(--surface);
+  color: var(--function);
+}
+
+tr:nth-child(even) {
+  background-color: var(--surface);
+}
+
+hr {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 2em 0;
+}
+
+
+
+:root {
+  --keyword: #FFB347;
+  --function: #D4FF59;
+  --type: #66E6FF;
+  --constant: #D8A5FF;
+  --comment: #5C6773;
+  --foreground: #FFFFFF;
+  
+  /* UI Colors */
+  --background: #14161f;
+  --surface: #1E2129;
+  --border: #5C6773;
+}
+</style>
+</head>
+<body>
+  <h1>PROJECTO SHOWCASE #2 — MLOps Platform</h1>
+<p>#week</p>
+<h2>End-to-End MLOps Platform (Open-source)</h2>
+<p><strong>Tech Stack</strong>
+Python + Go + Ray + MLflow + FastAPI + Prometheus + Grafana</p>
+<p><strong>Overview</strong>
+Vais construir uma plataforma MLOps completa que cobre todo o ciclo de vida de modelos de machine learning — da ingestão de dados ao deployment em produção com monitoring de data drift. O Data Pipeline em Python com Prefect gere ingestão de múltiplas fontes com data quality checks automáticos usando Great Expectations. O Feature Store em Redis e PostgreSQL persiste features computadas que podem ser reutilizadas por múltiplos modelos sem recomputação. A Training Platform usa Ray para distributed training em CPU (sem GPU necessária) e gere o ciclo completo: treina, avalia, regista no MLflow, e promove automaticamente se superar o modelo em produção no metric target. O Model Serving com Ray Serve e FastAPI expõe endpoints de inferência com batching automático para throughput máximo, versionamento por modelo, e canary deployments. O Monitoring detecta data drift comparando distribuições de features em produção vs distribuição de treino, e dispara alertas quando o drift excede thresholds configuráveis — o que aciona um auto-retrain com os dados recentes. Os modelos de exemplo usam os modelos que fine-tunaste na <a href="week_20" data-wikilink="true">week_20</a>.</p>
+<p><strong>Core Features</strong></p>
+<ol>
+<li><strong>Data Pipeline</strong> (Python + Prefect): ingestão, transformação, validação</li>
+<li><strong>Feature Store</strong> (Python + Redis + PostgreSQL): features reutilizáveis</li>
+<li><strong>Training Platform</strong> (Python + Ray): distributed training em CPU (sem GPU necessária)</li>
+<li><strong>Experiment Tracking</strong> (MLflow self-hosted): runs, metrics, artefacts</li>
+<li><strong>Model Registry</strong> (MLflow + MinIO): versionamento e staging</li>
+<li><strong>Model Serving</strong> (Python + FastAPI + Ray Serve): inference API escalável</li>
+<li><strong>Monitoring</strong> (Python + Prometheus + Grafana): data drift, prediction quality</li>
+</ol>
+<ul>
+<li>Classificação de sentimento (BERT fine-tuned via Projecto 20)</li>
+<li>Document extraction (LayoutLM via Projecto 20)</li>
+<li>Recommendation system (collaborative filtering)</li>
+<li>Time series forecasting (N-BEATS)</li>
+</ul>
+<p><strong>Pipeline completo:</strong></p>
+<pre style="background-color:#1e2129;"><code><span style="color:#ffffff;">Raw Data → Feature Store → Model Training → Registry
+</span><span style="color:#ffffff;">                                               ↓
+</span><span style="color:#ffffff;">                                     Model Serving (API)
+</span><span style="color:#ffffff;">                                               ↓
+</span><span style="color:#ffffff;">                                     Monitoring (drift alert)
+</span><span style="color:#ffffff;">                                               ↓
+</span><span style="color:#ffffff;">                                     Auto-retrain trigger
+</span></code></pre>
+<h2>Entregáveis</h2>
+<ul>
+<li><input type="checkbox" disabled="" /> Platform completa e funcional</li>
+<li><input type="checkbox" disabled="" /> Blog series (4 posts)</li>
+<li><input type="checkbox" disabled="" /> Video: workflow completo do dado ao model serving</li>
+<li><input type="checkbox" disabled="" /> Comparison: self-hosted MLOps vs Vertex AI vs SageMaker (custo e features)</li>
+</ul>
+
+</body>
+</html>

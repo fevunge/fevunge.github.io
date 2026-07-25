@@ -1,0 +1,306 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <style>body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif;
+  line-height: 1.6;
+  min-width: 1200px;
+  padding: 2rem;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: var(--keyword);
+  margin-top: 1.5em;
+}
+
+h1 {
+  font-size: 2.2em;
+  border-bottom: 2px solid var(--border);
+  padding-bottom: 0.3em;
+}
+
+h2 {
+  font-size: 1.8em;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 0.2em;
+}
+
+h3 {
+  font-size: 1.4em;
+}
+
+h4,
+h5,
+h6 {
+  color: var(--constant);
+}
+
+a {
+  color: #66aaff;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+code {
+  background-color: var(--surface);
+  color: var(--function);
+  padding: 0.2em 0.4em;
+  border-radius: 4px;
+}
+
+pre {
+  background-color: var(--surface);
+  color: var(--foreground);
+  padding: 1em;
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  white-space: pre-wrap;
+  /* Wrap long lines */
+  word-wrap: break-word;
+  overflow-y: hidden;
+  /* Disable vertical scrolling */
+}
+
+pre code {
+  background: none;
+  padding: 0;
+  color: inherit;
+  display: block;
+}
+
+pre::-webkit-scrollbar {
+  display: none;
+  /* Hide scrollbar */
+}
+
+blockquote {
+  border-left: 4px solid var(--type);
+  background-color: var(--surface);
+  padding: 0.8em 1em;
+  color: var(--comment);
+  margin: 1em 0;
+}
+
+ul,
+ol {
+  padding-left: 2em;
+}
+
+li::marker {
+  color: var(--function);
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 1em 0;
+}
+
+th,
+td {
+  border: 1px solid var(--border);
+  padding: 0.6em 1em;
+}
+
+th {
+  background-color: var(--surface);
+  color: var(--function);
+}
+
+tr:nth-child(even) {
+  background-color: var(--surface);
+}
+
+hr {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 2em 0;
+}
+
+
+
+:root {
+  --keyword: #CBA6F7;
+  --function: #89B4FA;
+  --type: #89DCEB;
+  --constant: #F38BA8;
+  --comment: #7F849C;
+  --foreground: #CDD6F4;
+  
+  /* UI Colors */
+  --background: #1E1E2E;
+  --surface: #2A2A3A;
+  --border: #45475A;
+}
+</style>
+</head>
+<body>
+  <h1>TypeScript Avançado + System Design Basics</h1>
+<p>#s_week</p>
+<h2>Objectivos</h2>
+<ul>
+<li><strong>TypeScript avançado</strong>: Generics, Conditional Types, Mapped Types, Template Literal Types</li>
+<li><strong>Design Patterns</strong>: Factory, Singleton, Observer, Strategy</li>
+<li><strong>SOLID principles</strong> — teoria + aplicação prática</li>
+<li><strong>Git workflow profissional</strong>: conventional commits, semantic versioning, branching strategy</li>
+</ul>
+<h2>Recursos</h2>
+<table>
+<thead>
+<tr>
+<th>Tipo</th>
+<th>Recurso</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Docs</td>
+<td>TypeScript Handbook — Advanced Types (typescriptlang.org)</td>
+</tr>
+<tr>
+<td>Livro</td>
+<td><em>Design Patterns</em> — Gang of Four (caps. 1–3)</td>
+</tr>
+<tr>
+<td>Video</td>
+<td>freeCodeCamp — TypeScript Full Course (YouTube)</td>
+</tr>
+<tr>
+<td>Prática</td>
+<td>github.com/typescript-exercises</td>
+</tr>
+<tr>
+<td>Artigo</td>
+<td>patterns.dev — Lydia Hallie &amp; Addy Osmani (gratuito)</td>
+</tr>
+</tbody>
+</table>
+<h2>Projeto  [Tache]</h2>
+<h3>CLI Task Management System com AI Local</h3>
+<p><strong>Oveview</strong>
+Sistema de gestão de tarefas de linha de comando com qualidade enterprise — uma developer usaria no dia-a-dia a sério.
+O sistema precisa de <strong>gerir tarefas com prioridades</strong>, <strong>datas</strong>, <strong>tags</strong> e dependências entre si, com persistência em SQLite através do Drizzle ORM.
+A parte que o diferencia: <em>integração com Ollama para sugestões inteligentes de priorização baseadas nos padrões históricos do utilizador</em> — sem custo de API, tudo corre localmente.</p>
+<p><strong>Tech Stack</strong>
+TypeScript + Node.js + SQLite(via Drizzle ORM) + Ollama + Vitest + Commander.js</p>
+<p><strong>Core Features</strong></p>
+<ul>
+<li>CRUD completo com validação via Zod e schemas tipados</li>
+<li>Task scheduling com cron jobs nativos do Node.js</li>
+<li>Real-time notifications via EventEmitter pattern</li>
+<li>Export/Import em JSON, CSV e Markdown</li>
+<li>Full-text search com índices SQLite FTS5</li>
+<li>Undo/Redo via Command Pattern com histórico ilimitado</li>
+<li>Sugestões de priorização via Ollama (llama3 local — sem API key)</li>
+<li>Métricas de produtividade: tasks/dia, streaks, tempo médio</li>
+</ul>
+<p><strong>Requisitos Técnicos:</strong></p>
+<ul>
+<li>Clean Architecture rigorosa</li>
+<li>90%+ test coverage (Vitest — mais rápido que Jest em 2026)</li>
+<li>CI/CD com GitHub Actions</li>
+<li>Semantic versioning + CHANGELOG automático</li>
+<li>Published no NPM como package</li>
+</ul>
+<p><strong>Arquitectura:</strong></p>
+<pre style="background-color:#2a2a3a;"><code><span style="color:#cdd6f4;">src/
+</span><span style="color:#cdd6f4;">├── domain/          # Entities, Value Objects
+</span><span style="color:#cdd6f4;">├── application/     # Use Cases (CQRS básico)
+</span><span style="color:#cdd6f4;">├── infrastructure/  # SQLite, FileSystem, Ollama client
+</span><span style="color:#cdd6f4;">├── presentation/    # CLI Interface (commander.js)
+</span><span style="color:#cdd6f4;">└── shared/          # Utilities, Types
+</span></code></pre>
+<p><strong>Entregáveis</strong></p>
+<ul>
+<li><input type="checkbox" disabled="" /> Package publicado no NPM funcional</li>
+<li><input type="checkbox" disabled="" /> README profissional com badges de CI, cobertura, versão</li>
+<li><input type="checkbox" disabled="" /> Blog post no DEV.to explicando arquitectura e decisões</li>
+<li><input type="checkbox" disabled="" /> Video demo (5min) no YouTube</li>
+<li><input type="checkbox" disabled="" /> LinkedIn post sobre aprendizados</li>
+</ul>
+<p><strong>Bonús</strong></p>
+<ul>
+<li>Linter custom (regras de estilo próprias via ESLint plugin)</li>
+<li>Logging estruturado (pino) com níveis configuráveis</li>
+</ul>
+<hr />
+<h1><em><strong>Bônus [01]</strong></em></h1>
+<h2>Pensamento de Sistemas &amp; Mindset do Arquitecto</h2>
+<p><strong>Objectivo</strong>
+Mudar o chip de “programador que resolve problemas de código” para “arquitecto que resolve problemas de negócio com tecnologia.”</p>
+<h3>Recursos</h3>
+<table>
+<thead>
+<tr>
+<th>Tipo</th>
+<th>Recurso</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Livro</td>
+<td><em>Thinking in Systems</em> — Donella Meadows (caps. 1–4)</td>
+</tr>
+<tr>
+<td>Livro</td>
+<td><em>The Art of Systems Thinking</em> — Joseph O’Connor &amp; Ian McDermott (caps. 1–3)</td>
+</tr>
+<tr>
+<td>Vídeo</td>
+<td><a href="https://ocw.mit.edu/courses/15-988-system-dynamics-self-study-fall-1998-spring-1999/">Systems Thinking Introduction — MIT OpenCourseWare</a></td>
+</tr>
+<tr>
+<td>Artigo</td>
+<td>“Who Needs an Architect?” — Martin Fowler (martinfowler.com)</td>
+</tr>
+<tr>
+<td>Artigo</td>
+<td>“Making Architecture Matter” — Martin Fowler (IEEE Software)</td>
+</tr>
+<tr>
+<td>Canal</td>
+<td><a href="https://www.youtube.com/@markrichards5765">Mark Richards — YouTube (Software Architecture Monday)</a></td>
+</tr>
+</tbody>
+</table>
+<h3>Prática</h3>
+<ul>
+<li>Lê <em>Thinking in Systems</em> + cria flashcards Anki dos conceitos-chave (feedback loops, stocks, flows)</li>
+<li>Lê artigos do Fowler + esboça num papel: “Como funciona um sistema que do <strong>projeto</strong> feito e outros parecidos?”</li>
+<li>Analisa 2 arquitecturas reais documentadas publicamente (Netflix Tech Blog, Uber Engineering)</li>
+<li>Trabalha no projecto</li>
+</ul>
+<h3>PROJECTO: <em>“Autopsia de Sistema”</em></h3>
+<p><strong>Overview</strong>
+Escolhe um sistema real e público (ex: Twitter/X, Spotify, YouTube). Pesquisa a sua arquitectura através de posts de engenharia, talks e artigos públicos. Documenta:</p>
+<ul>
+<li>Que problema de negócio resolve?</li>
+<li>Que decisões de arquitectura foram feitas e porquê?</li>
+<li>Que trade-offs existem?</li>
+<li>Que mudarias com o conhecimento de hoje?</li>
+</ul>
+<p><strong>Entrega</strong>
+Documento LaTeX (5–8 páginas) + 1 diagrama de alto nível no draw.io</p>
+<p><strong>Fontes para pesquisa:</strong></p>
+<ul>
+<li><a href="http://highscalability.com/">High Scalability Blog</a></li>
+<li><a href="https://netflixtechblog.com/">The Netflix Tech Blog</a></li>
+<li><a href="https://www.uber.com/en-US/blog/engineering/">Uber Engineering Blog</a></li>
+</ul>
+<hr />
+
+</body>
+</html>

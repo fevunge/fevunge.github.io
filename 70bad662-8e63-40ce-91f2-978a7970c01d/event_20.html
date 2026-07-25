@@ -1,0 +1,261 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <style>body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif;
+  line-height: 1.6;
+  min-width: 1200px;
+  padding: 2rem;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: var(--keyword);
+  margin-top: 1.5em;
+}
+
+h1 {
+  font-size: 2.2em;
+  border-bottom: 2px solid var(--border);
+  padding-bottom: 0.3em;
+}
+
+h2 {
+  font-size: 1.8em;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 0.2em;
+}
+
+h3 {
+  font-size: 1.4em;
+}
+
+h4,
+h5,
+h6 {
+  color: var(--constant);
+}
+
+a {
+  color: #66aaff;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+code {
+  background-color: var(--surface);
+  color: var(--function);
+  padding: 0.2em 0.4em;
+  border-radius: 4px;
+}
+
+pre {
+  background-color: var(--surface);
+  color: var(--foreground);
+  padding: 1em;
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  white-space: pre-wrap;
+  /* Wrap long lines */
+  word-wrap: break-word;
+  overflow-y: hidden;
+  /* Disable vertical scrolling */
+}
+
+pre code {
+  background: none;
+  padding: 0;
+  color: inherit;
+  display: block;
+}
+
+pre::-webkit-scrollbar {
+  display: none;
+  /* Hide scrollbar */
+}
+
+blockquote {
+  border-left: 4px solid var(--type);
+  background-color: var(--surface);
+  padding: 0.8em 1em;
+  color: var(--comment);
+  margin: 1em 0;
+}
+
+ul,
+ol {
+  padding-left: 2em;
+}
+
+li::marker {
+  color: var(--function);
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 1em 0;
+}
+
+th,
+td {
+  border: 1px solid var(--border);
+  padding: 0.6em 1em;
+}
+
+th {
+  background-color: var(--surface);
+  color: var(--function);
+}
+
+tr:nth-child(even) {
+  background-color: var(--surface);
+}
+
+hr {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 2em 0;
+}
+
+
+
+:root {
+  --keyword: #FFB347;
+  --function: #D4FF59;
+  --type: #66E6FF;
+  --constant: #D8A5FF;
+  --comment: #5C6773;
+  --foreground: #FFFFFF;
+  
+  /* UI Colors */
+  --background: #14161f;
+  --surface: #1E2129;
+  --border: #5C6773;
+}
+</style>
+</head>
+<body>
+  <h1>Deep Learning + Fine-tuning de Modelos Modernos</h1>
+<p>#week</p>
+<h2>Objectivos</h2>
+<ul>
+<li>Neural networks: forward pass, backpropagation, gradients — matemática visual</li>
+<li>PyTorch: tensors, autograd, <code>nn.Module</code>, optimizers, learning rate schedulers</li>
+<li>Transfer learning: porque funciona e como aplicar correctamente</li>
+<li>Fine-tuning vs feature extraction — quando usar cada abordagem</li>
+<li>LoRA/QLoRA: fine-tuning eficiente de LLMs sem GPU cara</li>
+<li>Fine-tuning de LLMs pequenos com LoRA/QLoRA (gratuito no Colab)</li>
+</ul>
+<h2>Recursos</h2>
+<table>
+<thead>
+<tr>
+<th>Tipo</th>
+<th>Recurso</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Course</td>
+<td>fast.ai Deep Learning — gratuito</td>
+</tr>
+<tr>
+<td>Docs</td>
+<td>PyTorch tutorials — pytorch.org/tutorials</td>
+</tr>
+<tr>
+<td>Plataforma</td>
+<td>Kaggle Notebooks com GPU — gratuito (30h/semana)</td>
+</tr>
+<tr>
+<td>Plataforma</td>
+<td>Google Colab Pro substituto: Kaggle é melhor em 2026</td>
+</tr>
+<tr>
+<td>Blog</td>
+<td>Sebastian Raschka — “LLM Fine-tuning” series (newsletter gratuita)</td>
+</tr>
+</tbody>
+</table>
+<h2>Projeto</h2>
+<h3>Document Intelligence System com Fine-tuned Model</h3>
+<p><strong>Tech Stack</strong>
+Python + PyTorch + Hugging Face Transformers + LoRA + FastAPI + React</p>
+<p><strong>Overview</strong>
+Um sistema que extrai informação estruturada de documentos não-estruturados (PDFs de recibos, contratos, formulários, facturas) através de fine-tuning de um modelo de document understanding — o tipo de sistema que empresas de automação documental vendem por centenas de milhares. O pipeline começa com pré-processamento de documentos (PDF → imagem → normalização), passa por um modelo LayoutLMv3 ou Donut fine-tuned com LoRA em datasets públicos (CORD para recibos, FUNSD para formulários) no Kaggle gratuito com GPU, e produz JSON estruturado com os campos extraídos e as suas bounding boxes no documento original. O fine-tuning usa QLoRA para caber na GPU gratuita do Kaggle (30h/semana), alcança &gt;85% de accuracy em field extraction, e o modelo treinado é publicado no Hugging Face Hub. A interface web React permite upload de documentos, mostra as bounding boxes coloridas sobre o documento, e o JSON editável. O sistema está desenhado para ser extensível: podes adicionar novos tipos de documento treinando com mais exemplos sem alterar o código.</p>
+<p><strong>Core Features</strong></p>
+<ul>
+<li>Train custom models</li>
+<li>Transfer learning (ResNet, EfficientNet)</li>
+<li>Data augmentation</li>
+<li>Model fine-tuning</li>
+<li>Web interface para upload</li>
+<li>Real-time prediction API</li>
+<li>Batch processing</li>
+<li>Confidence scores</li>
+<li>Grad-CAM visualization</li>
+<li>Model comparison</li>
+<li><strong>Pipeline</strong>
+<ol>
+<li>Documento (PDF/imagem) → pré-processamento</li>
+<li>Fine-tuned LayoutLM ou Donut model → extracção de campos</li>
+<li>Post-processamento → JSON estruturado</li>
+<li>API endpoint → integração com outros sistemas</li>
+</ol>
+</li>
+<li><strong>Datasets</strong>
+<ul>
+<li>CIFAR-10 (baseline)</li>
+<li>Custom dataset (scraping + labeling)</li>
+<li>Data augmentation pipeline</li>
+</ul>
+</li>
+<li><strong>Fine-tuning (Colab gratuito)</strong>
+<ul>
+<li>Dataset: CORD (receipts), FUNSD (formulários) — datasets públicos</li>
+<li>Modelo base: microsoft/layoutlmv3-base ou naver-clova-ix/donut-base</li>
+<li>LoRA para reduzir memória necessária (cabe no Colab gratuito)</li>
+<li>Accuracy target: &gt;85% em field extraction</li>
+</ul>
+</li>
+<li><strong>Web Interface</strong>
+<ul>
+<li>Upload de documento</li>
+<li>Visualização das bounding boxes extraídas</li>
+<li>JSON output editável</li>
+<li>Export para Excel/CSV</li>
+</ul>
+</li>
+<li><strong>Deployment</strong>
+<ul>
+<li>ONNX export</li>
+<li>TorchScript optimization</li>
+<li>API com FastAPI</li>
+<li>Docker container</li>
+</ul>
+</li>
+</ul>
+<h2>Entregáveis</h2>
+<ul>
+<li><input type="checkbox" disabled="" /> Modelo fine-tuned publicado no Hugging Face Hub (gratuito)</li>
+<li><input type="checkbox" disabled="" /> API + Web interface deployada</li>
+<li><input type="checkbox" disabled="" /> Blog: “Fine-tuning Document AI Models with LoRA — A Practical Guide”</li>
+<li><input type="checkbox" disabled="" /> Video: Do PDF ao JSON estruturado em segundos</li>
+<li><input type="checkbox" disabled="" /> Kaggle notebook público com o processo de fine-tuning</li>
+</ul>
+
+</body>
+</html>

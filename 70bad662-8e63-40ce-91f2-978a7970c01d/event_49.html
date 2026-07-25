@@ -1,0 +1,194 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <style>body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif;
+  line-height: 1.6;
+  min-width: 1200px;
+  padding: 2rem;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: var(--keyword);
+  margin-top: 1.5em;
+}
+
+h1 {
+  font-size: 2.2em;
+  border-bottom: 2px solid var(--border);
+  padding-bottom: 0.3em;
+}
+
+h2 {
+  font-size: 1.8em;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 0.2em;
+}
+
+h3 {
+  font-size: 1.4em;
+}
+
+h4,
+h5,
+h6 {
+  color: var(--constant);
+}
+
+a {
+  color: #66aaff;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+code {
+  background-color: var(--surface);
+  color: var(--function);
+  padding: 0.2em 0.4em;
+  border-radius: 4px;
+}
+
+pre {
+  background-color: var(--surface);
+  color: var(--foreground);
+  padding: 1em;
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  white-space: pre-wrap;
+  /* Wrap long lines */
+  word-wrap: break-word;
+  overflow-y: hidden;
+  /* Disable vertical scrolling */
+}
+
+pre code {
+  background: none;
+  padding: 0;
+  color: inherit;
+  display: block;
+}
+
+pre::-webkit-scrollbar {
+  display: none;
+  /* Hide scrollbar */
+}
+
+blockquote {
+  border-left: 4px solid var(--type);
+  background-color: var(--surface);
+  padding: 0.8em 1em;
+  color: var(--comment);
+  margin: 1em 0;
+}
+
+ul,
+ol {
+  padding-left: 2em;
+}
+
+li::marker {
+  color: var(--function);
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 1em 0;
+}
+
+th,
+td {
+  border: 1px solid var(--border);
+  padding: 0.6em 1em;
+}
+
+th {
+  background-color: var(--surface);
+  color: var(--function);
+}
+
+tr:nth-child(even) {
+  background-color: var(--surface);
+}
+
+hr {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 2em 0;
+}
+
+
+
+:root {
+  --keyword: #FFB347;
+  --function: #D4FF59;
+  --type: #66E6FF;
+  --constant: #D8A5FF;
+  --comment: #5C6773;
+  --foreground: #FFFFFF;
+  
+  /* UI Colors */
+  --background: #14161f;
+  --surface: #1E2129;
+  --border: #5C6773;
+}
+</style>
+</head>
+<body>
+  <h1>PROJECTO SHOWCASE #1 — Cloud-Native Platform</h1>
+<p>#week</p>
+<h2>Self-Hosted Cloud Platform (Mini Fly.io)</h2>
+<p><strong>Descrição:</strong> Plataforma de deployment self-hosted — tipo Fly.io ou Render mas construído por ti.</p>
+<p><strong>Tech Stack</strong>
+Go + Rust + Kubernetes + Buildpacks + React</p>
+<p><strong>Overview</strong>
+Vais construir uma plataforma de deployment self-hosted que permite a qualquer developer fazer deploy de aplicações com um único comando — o tipo de produto que o Fly.io, Render e Railway constroem como negócio, mas que tu vais implementar do zero para entender exactamente como funciona. O API Gateway em Go gere autenticação, routing e rate limiting para todos os serviços da plataforma. O Build Service usa Cloud Native Buildpacks para detectar automaticamente a linguagem do projecto, instalar dependências e produzir uma imagem Docker sem que o developer escreva um Dockerfile. O Deploy Service usa o Kubernetes API para criar Deployments, Services e Ingresses automaticamente com naming conventions consistentes. O Storage Service em Rust implementa uma API S3-compatible (subset do S3) sobre o filesystem local com SHA-256 integrity checking. O Database Service provisiona instâncias PostgreSQL e Redis isoladas por utilizador com credentials geradas automaticamente. O Billing Service calcula uso por CPU-second e GB-month mesmo que não cobres (é a estrutura que precisas de ter). A CLI experience é o que um developer vê: <code>platform deploy</code> detecta a linguagem, builda, deploya, e devolve a URL em 60 segundos.</p>
+<p><strong>Core Features</strong></p>
+<ol>
+<li><strong>API Gateway</strong> (Go + Hono): routing, auth, rate limiting</li>
+<li><strong>Build Service</strong> (Go): recebe código, usa Buildpacks para criar imagens</li>
+<li><strong>Deploy Service</strong> (Go + K8s API): deploy de imagens para o cluster</li>
+<li><strong>Storage Service</strong> (Rust): object storage compatível com S3 API (MinIO wrapper)</li>
+<li><strong>Database Service</strong> (Go): provisiona PostgreSQL e Redis isolados por utilizador</li>
+<li><strong>Monitoring Service</strong> (Go): expõe métricas OTel dos deployments</li>
+<li><strong>Billing Service</strong> (Go): tracking de uso e cálculo de custo</li>
+</ol>
+<p><strong>Developer Experience:</strong></p>
+<pre style="background-color:#1e2129;"><code class="language-bash"><span style="color:#d4ff59;">platform</span><span style="color:#ffffff;"> login
+</span><span style="color:#d4ff59;">platform</span><span style="color:#ffffff;"> deploy --app myapp --region us-east   </span><span style="color:#5c6773;"># detecta linguagem, builda, deploya
+</span><span style="color:#d4ff59;">platform</span><span style="color:#ffffff;"> logs myapp
+</span><span style="color:#d4ff59;">platform</span><span style="color:#ffffff;"> scale myapp --instances 3
+</span><span style="color:#d4ff59;">platform</span><span style="color:#ffffff;"> db create myapp --type postgres
+</span><span style="color:#d4ff59;">platform</span><span style="color:#ffffff;"> domain add myapp api.example.com
+</span></code></pre>
+<p><strong>Security:</strong></p>
+<ul>
+<li>mTLS entre todos os serviços (cert-manager)</li>
+<li>Secrets encriptados em Vault</li>
+<li>Tenant isolation: namespace K8s por utilizador</li>
+<li>Network policies para zero trust</li>
+</ul>
+<h2>Entregáveis</h2>
+<ul>
+<li><input type="checkbox" disabled="" /> Platform funcional (self-hosted num cluster local)</li>
+<li><input type="checkbox" disabled="" /> Whitepaper técnico: arquitectura e decisões (20+ páginas)</li>
+<li><input type="checkbox" disabled="" /> Video demo: deploy de uma app real em 60 segundos</li>
+<li><input type="checkbox" disabled="" /> Blog series (5 posts)</li>
+<li><input type="checkbox" disabled="" /> Open-source release com documentação</li>
+</ul>
+
+</body>
+</html>

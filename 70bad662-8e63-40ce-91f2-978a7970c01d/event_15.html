@@ -1,0 +1,241 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <style>body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif;
+  line-height: 1.6;
+  min-width: 1200px;
+  padding: 2rem;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: var(--keyword);
+  margin-top: 1.5em;
+}
+
+h1 {
+  font-size: 2.2em;
+  border-bottom: 2px solid var(--border);
+  padding-bottom: 0.3em;
+}
+
+h2 {
+  font-size: 1.8em;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 0.2em;
+}
+
+h3 {
+  font-size: 1.4em;
+}
+
+h4,
+h5,
+h6 {
+  color: var(--constant);
+}
+
+a {
+  color: #66aaff;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+code {
+  background-color: var(--surface);
+  color: var(--function);
+  padding: 0.2em 0.4em;
+  border-radius: 4px;
+}
+
+pre {
+  background-color: var(--surface);
+  color: var(--foreground);
+  padding: 1em;
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  white-space: pre-wrap;
+  /* Wrap long lines */
+  word-wrap: break-word;
+  overflow-y: hidden;
+  /* Disable vertical scrolling */
+}
+
+pre code {
+  background: none;
+  padding: 0;
+  color: inherit;
+  display: block;
+}
+
+pre::-webkit-scrollbar {
+  display: none;
+  /* Hide scrollbar */
+}
+
+blockquote {
+  border-left: 4px solid var(--type);
+  background-color: var(--surface);
+  padding: 0.8em 1em;
+  color: var(--comment);
+  margin: 1em 0;
+}
+
+ul,
+ol {
+  padding-left: 2em;
+}
+
+li::marker {
+  color: var(--function);
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 1em 0;
+}
+
+th,
+td {
+  border: 1px solid var(--border);
+  padding: 0.6em 1em;
+}
+
+th {
+  background-color: var(--surface);
+  color: var(--function);
+}
+
+tr:nth-child(even) {
+  background-color: var(--surface);
+}
+
+hr {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 2em 0;
+}
+
+
+
+:root {
+  --keyword: #FFB347;
+  --function: #D4FF59;
+  --type: #66E6FF;
+  --constant: #D8A5FF;
+  --comment: #5C6773;
+  --foreground: #FFFFFF;
+  
+  /* UI Colors */
+  --background: #14161f;
+  --surface: #1E2129;
+  --border: #5C6773;
+}
+</style>
+</head>
+<body>
+  <h1>Network Programming em C — HTTP Server do Zero</h1>
+<p>#week</p>
+<h2>Objectivos</h2>
+<ul>
+<li>Berkeley sockets API: <code>socket</code>, <code>bind</code>, <code>listen</code>, <code>accept</code>, <code>connect</code></li>
+<li>I/O multiplexing: <code>select</code>, <code>poll</code>, <code>epoll</code> — diferenças de performance</li>
+<li>Non-blocking I/O e event loops — como nginx e Node.js funcionam por baixo</li>
+<li>HTTP/1.1: método, headers, body, status codes, keep-alive, chunked encoding</li>
+<li>Protocol design: framing de mensagens binárias</li>
+<li>Serialização: big-endian vs little-endian, length-prefixed vs delimitado</li>
+</ul>
+<h2>Recursos</h2>
+<table>
+<thead>
+<tr>
+<th>Tipo</th>
+<th>Recurso</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Livro</td>
+<td><em>Beej’s Guide to Network Programming</em> — gratuito em beej.us</td>
+</tr>
+<tr>
+<td>Docs</td>
+<td>RFC 9110 — HTTP Semantics (o RFC actual do HTTP)</td>
+</tr>
+<tr>
+<td>Tool</td>
+<td>Wireshark — análise de pacotes real</td>
+</tr>
+<tr>
+<td>Site</td>
+<td>man7.org — man pages Linux online</td>
+</tr>
+<tr>
+<td>Video</td>
+<td>“TCP/IP Explained” — Practical Networking (YouTube)</td>
+</tr>
+</tbody>
+</table>
+<h2>Projeto</h2>
+<h3>HTTP/1.1 Server em C Puro + WebSocket Support</h3>
+<p><strong>Tech Stack</strong>
+C11 puro + sockets POSIX</p>
+<p><strong>Overview</strong>
+Um web server completo em C11 puro usando apenas a API de sockets POSIX — sem frameworks, sem bibliotecas de HTTP, sem abstrações.
+Este é o projecto que prova definitivamente que entendes o que acontece por baixo de qualquer framework web que uses. O servidor precisa de lidar com 10.000+ conexões simultâneas usando <code>epoll</code> (o mecanismo que o Linux usa internamente para I/O assíncrono de alta performance), processar todas as 6 methods HTTP mais comuns, servir ficheiros estáticos com MIME type detection, suportar virtual hosts configuráveis via ficheiro de configuração estilo nginx, e implementar todas as features que os clientes HTTP modernos esperam: keep-alive connections, chunked transfer encoding, range requests para streaming de ficheiros grandes.
+O diferencial adicional é o upgrade HTTP → WebSocket (RFC 6455) — o protocolo que os browsers usam para comunicação bidireccional em tempo real.
+O projecto termina com benchmarks rigorosos comparando o teu servidor contra nginx nas mesmas condições de hardware, com análise de Wireshark mostrando os packets HTTP reais.</p>
+<p><strong>Core Features</strong></p>
+<ul>
+<li><code>GET</code>, <code>POST</code>, <code>PUT</code>, <code>DELETE</code>, <code>HEAD</code>, <code>OPTIONS</code></li>
+<li>Static file serving com MIME type detection</li>
+<li>CGI support (executa Python/Bash scripts)</li>
+<li>Virtual hosts configuráveis</li>
+<li>Keep-alive connections (persistent connections)</li>
+<li>Chunked Transfer Encoding</li>
+<li>Range requests (streaming de ficheiros grandes)</li>
+<li>Error pages customizáveis</li>
+<li>Access log em formato CLF (Common Log Format)</li>
+<li>Ficheiro de configuração estilo nginx</li>
+<li>HTTP → WebSocket upgrade (RFC 6455)</li>
+<li>Framing, masking, ping/pong</li>
+<li>Echo server demo em WebSocket</li>
+</ul>
+<p><strong>Requisitos</strong></p>
+<ul>
+<li><code>epoll</code> para I/O multiplexing (handle 10k+ conexões)</li>
+<li>Thread pool para CGI (não bloqueia o event loop)</li>
+<li>Connection state machine (parsing do HTTP request)</li>
+<li>Memory pool para requests (sem malloc por request)</li>
+<li>Graceful shutdown</li>
+<li>Handle 10k+ concurrent connections</li>
+<li>Benchmark vs nginx (simple cases)</li>
+<li>Memory efficiency</li>
+</ul>
+<pre style="background-color:#1e2129;"><code class="language-bash"><span style="color:#d4ff59;">wrk</span><span style="color:#ffffff;"> -t4 -c100 -d30s http://localhost:8080/static/index.html
+</span><span style="color:#5c6773;"># Meta: &gt;50% da performance do nginx para ficheiros estáticos no mesmo hardware
+</span></code></pre>
+<p><strong>Entregáveis</strong></p>
+<ul>
+<li><input type="checkbox" disabled="" /> Servidor compilável com Makefile, zero warnings com <code>-Wall -Wextra -Werror</code></li>
+<li><input type="checkbox" disabled="" /> Benchmark report vs nginx com análise de onde está a diferença</li>
+<li><input type="checkbox" disabled="" /> Blog: “Building an HTTP Server from Scratch in C — How nginx Works Under the Hood”</li>
+<li><input type="checkbox" disabled="" /> Video: arquitectura explicada com Wireshark ao vivo</li>
+</ul>
+
+</body>
+</html>

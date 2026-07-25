@@ -1,0 +1,211 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <style>body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif;
+  line-height: 1.6;
+  min-width: 1200px;
+  padding: 2rem;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: var(--keyword);
+  margin-top: 1.5em;
+}
+
+h1 {
+  font-size: 2.2em;
+  border-bottom: 2px solid var(--border);
+  padding-bottom: 0.3em;
+}
+
+h2 {
+  font-size: 1.8em;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 0.2em;
+}
+
+h3 {
+  font-size: 1.4em;
+}
+
+h4,
+h5,
+h6 {
+  color: var(--constant);
+}
+
+a {
+  color: #66aaff;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+code {
+  background-color: var(--surface);
+  color: var(--function);
+  padding: 0.2em 0.4em;
+  border-radius: 4px;
+}
+
+pre {
+  background-color: var(--surface);
+  color: var(--foreground);
+  padding: 1em;
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  white-space: pre-wrap;
+  /* Wrap long lines */
+  word-wrap: break-word;
+  overflow-y: hidden;
+  /* Disable vertical scrolling */
+}
+
+pre code {
+  background: none;
+  padding: 0;
+  color: inherit;
+  display: block;
+}
+
+pre::-webkit-scrollbar {
+  display: none;
+  /* Hide scrollbar */
+}
+
+blockquote {
+  border-left: 4px solid var(--type);
+  background-color: var(--surface);
+  padding: 0.8em 1em;
+  color: var(--comment);
+  margin: 1em 0;
+}
+
+ul,
+ol {
+  padding-left: 2em;
+}
+
+li::marker {
+  color: var(--function);
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 1em 0;
+}
+
+th,
+td {
+  border: 1px solid var(--border);
+  padding: 0.6em 1em;
+}
+
+th {
+  background-color: var(--surface);
+  color: var(--function);
+}
+
+tr:nth-child(even) {
+  background-color: var(--surface);
+}
+
+hr {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 2em 0;
+}
+
+
+
+:root {
+  --keyword: #FFB347;
+  --function: #D4FF59;
+  --type: #66E6FF;
+  --constant: #D8A5FF;
+  --comment: #5C6773;
+  --foreground: #FFFFFF;
+  
+  /* UI Colors */
+  --background: #14161f;
+  --surface: #1E2129;
+  --border: #5C6773;
+}
+</style>
+</head>
+<body>
+  <h1>PROJECTO INTEGRADOR — Multiplayer Game Platform</h1>
+<p>#s_week</p>
+<h2>Projeto</h2>
+<h3>Real-time Multiplayer Gaming Platform</h3>
+<p><strong>Tech Stack</strong></p>
+<ul>
+<li><strong>Engine:</strong> C++20 + raylib (<a href="week_24" data-wikilink="true">week_24</a>) → compilado para Wasm com Emscripten</li>
+<li><strong>Backend:</strong> Rust + Axum + WebSocket (<a href="week_17" data-wikilink="true">week_17</a>)</li>
+<li><strong>Auth:</strong> Sistema da <a href="week_7" data-wikilink="true">week_7</a> (Passkeys + OAuth)</li>
+<li><strong>DB:</strong> PostgreSQL + Redis</li>
+<li><strong>Frontend:</strong> React (lobby, perfil, leaderboard — a engine corre no Canvas)</li>
+</ul>
+<p><strong>Overview</strong>
+Uma plataforma completa de jogos multiplayer em tempo real onde o código dos jogos corre no browser via WebAssembly (compilado de C++) e o servidor autoritativo está em Rust com WebSocket — a arquitectura que plataformas de jogos reais usam.
+A engine C++ da <a href="week_24" data-wikilink="true">week_24</a> é compilada para Wasm com Emscripten e corre no browser Canvas, enquanto o servidor Rust com Axum mantém o estado autoritativo de cada partida e faz broadcast para todos os clientes.
+O protocolo de rede usa client-side prediction — o cliente executa a lógica localmente para resposta imediata — e server reconciliation para corrigir divergências.
+Implementas três jogos: <strong>Pong Multiplayer</strong> (2 jogadores, física simples), <strong>Snake Battle</strong> (até 4 jogadores com power-ups), e <strong>Tetris Attack</strong> (manda linhas para o adversário).
+A plataforma inclui um sistema de matchmaking com ELO rating por jogo, lobby com chat em tempo real, spectator mode via WebTC data channels, replay system que guarda os inputs e reproduz no cliente, leaderboard global e por amigos, e um sistema de achievements com critérios configuráveis. O desafio técnico mais interessante é o lag compensation: o servidor mantém um histórico de estados para fazer hit detection justo quando há latência.</p>
+<p><strong>Jogos:</strong></p>
+<ol>
+<li><strong>Pong Multiplayer</strong> — clássico, 2 jogadores</li>
+<li><strong>Snake Battle</strong> — até 4 jogadores, power-ups</li>
+<li><strong>Tetris Attack</strong> — manda linhas para o adversário</li>
+</ol>
+<p><strong>Arquitectura de Rede (Authoritative Server):</strong></p>
+<pre style="background-color:#1e2129;"><code><span style="color:#ffffff;">Client (Wasm) → WebSocket → Game Server (Rust)
+</span><span style="color:#ffffff;">                                  ↓
+</span><span style="color:#ffffff;">                          State Broadcast
+</span><span style="color:#ffffff;">                                  ↓
+</span><span style="color:#ffffff;">                     Client-side Prediction + Reconciliation
+</span></code></pre>
+<p><strong>Core Features</strong></p>
+<ul>
+<li>Matchmaking com ELO rating por jogo</li>
+<li>Spectator mode</li>
+<li>Chat em tempo real (durante o jogo e no lobby)</li>
+<li>Replay system (guarda inputs, reproduz no cliente)</li>
+<li>Leaderboard global e por amigos</li>
+<li>Achievements com critérios configuráveis</li>
+<li>Torneiro system: brackets automáticos</li>
+</ul>
+<p><strong>Requisitos</strong></p>
+<ul>
+<li>Client-side prediction: o cliente antecipa o servidor</li>
+<li>Server reconciliation: corrige o estado do cliente quando diverge</li>
+<li>Lag compensation: histórico de estados para hit detection justo</li>
+<li>UDP-like sobre WebSocket: mensagens não críticas sem ACK</li>
+</ul>
+<h2>Entregáveis</h2>
+<ul>
+<li><input type="checkbox" disabled="" /> Platform completa e jogável (URL pública)</li>
+<li><input type="checkbox" disabled="" /> Blog series (4 posts): Network Protocol / Client Prediction / Engine Architecture / Optimization</li>
+<li><input type="checkbox" disabled="" /> YouTube: Gameplay demo + code review do sistema de rede</li>
+<li><input type="checkbox" disabled="" /> itch.io: release pública dos jogos</li>
+<li><input type="checkbox" disabled="" /> Whitepaper técnico: decisões de arquitectura</li>
+</ul>
+<hr />
+<h1><em><strong>Bônus [06]</strong></em></h1>
+
+</body>
+</html>

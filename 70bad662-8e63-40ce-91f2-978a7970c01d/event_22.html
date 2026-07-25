@@ -1,0 +1,232 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <style>body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif;
+  line-height: 1.6;
+  min-width: 1200px;
+  padding: 2rem;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: var(--keyword);
+  margin-top: 1.5em;
+}
+
+h1 {
+  font-size: 2.2em;
+  border-bottom: 2px solid var(--border);
+  padding-bottom: 0.3em;
+}
+
+h2 {
+  font-size: 1.8em;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 0.2em;
+}
+
+h3 {
+  font-size: 1.4em;
+}
+
+h4,
+h5,
+h6 {
+  color: var(--constant);
+}
+
+a {
+  color: #66aaff;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+code {
+  background-color: var(--surface);
+  color: var(--function);
+  padding: 0.2em 0.4em;
+  border-radius: 4px;
+}
+
+pre {
+  background-color: var(--surface);
+  color: var(--foreground);
+  padding: 1em;
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  white-space: pre-wrap;
+  /* Wrap long lines */
+  word-wrap: break-word;
+  overflow-y: hidden;
+  /* Disable vertical scrolling */
+}
+
+pre code {
+  background: none;
+  padding: 0;
+  color: inherit;
+  display: block;
+}
+
+pre::-webkit-scrollbar {
+  display: none;
+  /* Hide scrollbar */
+}
+
+blockquote {
+  border-left: 4px solid var(--type);
+  background-color: var(--surface);
+  padding: 0.8em 1em;
+  color: var(--comment);
+  margin: 1em 0;
+}
+
+ul,
+ol {
+  padding-left: 2em;
+}
+
+li::marker {
+  color: var(--function);
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 1em 0;
+}
+
+th,
+td {
+  border: 1px solid var(--border);
+  padding: 0.6em 1em;
+}
+
+th {
+  background-color: var(--surface);
+  color: var(--function);
+}
+
+tr:nth-child(even) {
+  background-color: var(--surface);
+}
+
+hr {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 2em 0;
+}
+
+
+
+:root {
+  --keyword: #FFB347;
+  --function: #D4FF59;
+  --type: #66E6FF;
+  --constant: #D8A5FF;
+  --comment: #5C6773;
+  --foreground: #FFFFFF;
+  
+  /* UI Colors */
+  --background: #14161f;
+  --surface: #1E2129;
+  --border: #5C6773;
+}
+</style>
+</head>
+<body>
+  <h1>Computação Gráfica — OpenGL + Shaders Modernos</h1>
+<p>#week</p>
+<h2>Objectivos</h2>
+<ul>
+<li>OpenGL pipeline: VAO, VBO, EBO, shaders, framebuffers</li>
+<li>GLSL: vertex shader, fragment shader, uniforms, varyings</li>
+<li>Transformações: Model, View, Projection matrices (MVP)</li>
+<li>Lighting: Phong shading, normal mapping, shadow mapping</li>
+<li>MVP matrices: Model, View, Projection — a matemática que move objectos 3D</li>
+<li>Physically Based Rendering: Cook-Torrance BRDF, metallic/roughness workflow</li>
+<li>IBL (Image-Based Lighting): environment maps para reflexos realistas</li>
+</ul>
+<h2>Recursos</h2>
+<table>
+<thead>
+<tr>
+<th>Tipo</th>
+<th>Recurso</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Site</td>
+<td>learnopengl.com — o melhor tutorial de OpenGL, completamente gratuito</td>
+</tr>
+<tr>
+<td>Livro</td>
+<td><em>Real-Time Rendering</em> (4ª edição) — Akenine-Möller et al.</td>
+</tr>
+<tr>
+<td>Tool</td>
+<td>RenderDoc — frame debugger gratuito</td>
+</tr>
+<tr>
+<td>Site</td>
+<td>shadertoy.com — experimentos com GLSL</td>
+</tr>
+<tr>
+<td>Video</td>
+<td>The Cherno — OpenGL series (YouTube)</td>
+</tr>
+</tbody>
+</table>
+<h2>Projeto</h2>
+<h3>PBR 3D Model Viewer</h3>
+<p><strong>Tech Stack</strong>
+C++20 + OpenGL 4.6 + GLFW + GLM + Dear ImGui + stb_image</p>
+<p><strong>Overview</strong>
+Um visualizador de modelos 3D com Physically Based Rendering — o pipeline de rendering que todos os jogos modernos e ferramentas de visualização 3D usam. O viewer importa modelos no formato glTF 2.0 (o formato standard moderno que substituiu OBJ) incluindo os seus materiais PBR (albedo, metallic, roughness, occlusion, normal maps, emissive), e renderiza-os com um fragment shader Cook-Torrance completo com Fresnel, GGX distribution e Smith geometry masking. O Image-Based Lighting usa HDR environment maps para iluminação indirecta realista — specular via cubemap pré-filtrado e difuse via irradiance map pré-calculado — o que dá aos materiais metálicos aquele reflexo environment característico dos renders de qualidade. Shadow mapping com PCF elimina o aliasing das sombras duras. O Dear ImGui panel permite ajustar os parâmetros de material em tempo real (metallic, roughness, albedo), fazer switch de environment maps, e visualizar os diferentes channels dos materiais (normal, metallic, roughness separados). O projecto termina com uma galeria de renders antes/depois de activar PBR para mostrar a diferença.</p>
+<p><strong>Core Features</strong></p>
+<ul>
+<li>Import de modelos glTF 2.0 (formato padrão moderno — substitui OBJ)</li>
+<li>PBR materials: albedo, metallic, roughness, AO, normal maps</li>
+<li>IBL (Image-Based Lighting): HDR environment maps para reflexos realistas</li>
+<li>Multiple light types: directional, point, spot</li>
+<li>Shadow mapping com PCF (Percentage Closer Filtering)</li>
+<li>Camera: orbit, pan, zoom com damping suave</li>
+<li>Wireframe, normals, tangent space visualization</li>
+<li>Dear ImGui panel para ajustar materiais em tempo real</li>
+<li>Export de screenshots</li>
+</ul>
+<p><strong>Requisitos</strong></p>
+<pre style="background-color:#1e2129;"><code class="language-glsl"><span style="color:#ffffff;">// PBR fragment shader core
+</span><span style="color:#ffffff;">vec3 Lo = vec3(0.0);
+</span><span style="color:#ffffff;">for(int i = 0; i &lt; NUM_LIGHTS; ++i) {
+</span><span style="color:#ffffff;">    // Cook-Torrance BRDF
+</span><span style="color:#ffffff;">    vec3 F = fresnelSchlick(max(dot(H, V), 0.0), F0);
+</span><span style="color:#ffffff;">    float NDF = DistributionGGX(N, H, roughness);
+</span><span style="color:#ffffff;">    float G = GeometrySmith(N, V, L, roughness);
+</span><span style="color:#ffffff;">    // ...
+</span><span style="color:#ffffff;">}
+</span></code></pre>
+<h2>Entregáveis</h2>
+<ul>
+<li><input type="checkbox" disabled="" /> Desktop app compilada (CMake) com modelos de exemplo</li>
+<li><input type="checkbox" disabled="" /> Blog: “Implementing PBR Shading from Scratch — The Math Behind Modern Game Graphics”</li>
+<li><input type="checkbox" disabled="" /> Video: Antes/depois com PBR activo</li>
+<li><input type="checkbox" disabled="" /> Shader collection no GitHub (comentados e educativos)</li>
+</ul>
+
+</body>
+</html>

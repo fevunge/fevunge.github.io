@@ -1,0 +1,224 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <style>body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif;
+  line-height: 1.6;
+  min-width: 1200px;
+  padding: 2rem;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: var(--keyword);
+  margin-top: 1.5em;
+}
+
+h1 {
+  font-size: 2.2em;
+  border-bottom: 2px solid var(--border);
+  padding-bottom: 0.3em;
+}
+
+h2 {
+  font-size: 1.8em;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 0.2em;
+}
+
+h3 {
+  font-size: 1.4em;
+}
+
+h4,
+h5,
+h6 {
+  color: var(--constant);
+}
+
+a {
+  color: #66aaff;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+code {
+  background-color: var(--surface);
+  color: var(--function);
+  padding: 0.2em 0.4em;
+  border-radius: 4px;
+}
+
+pre {
+  background-color: var(--surface);
+  color: var(--foreground);
+  padding: 1em;
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  white-space: pre-wrap;
+  /* Wrap long lines */
+  word-wrap: break-word;
+  overflow-y: hidden;
+  /* Disable vertical scrolling */
+}
+
+pre code {
+  background: none;
+  padding: 0;
+  color: inherit;
+  display: block;
+}
+
+pre::-webkit-scrollbar {
+  display: none;
+  /* Hide scrollbar */
+}
+
+blockquote {
+  border-left: 4px solid var(--type);
+  background-color: var(--surface);
+  padding: 0.8em 1em;
+  color: var(--comment);
+  margin: 1em 0;
+}
+
+ul,
+ol {
+  padding-left: 2em;
+}
+
+li::marker {
+  color: var(--function);
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 1em 0;
+}
+
+th,
+td {
+  border: 1px solid var(--border);
+  padding: 0.6em 1em;
+}
+
+th {
+  background-color: var(--surface);
+  color: var(--function);
+}
+
+tr:nth-child(even) {
+  background-color: var(--surface);
+}
+
+hr {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 2em 0;
+}
+
+
+
+:root {
+  --keyword: #FFB347;
+  --function: #D4FF59;
+  --type: #66E6FF;
+  --constant: #D8A5FF;
+  --comment: #5C6773;
+  --foreground: #FFFFFF;
+  
+  /* UI Colors */
+  --background: #14161f;
+  --surface: #1E2129;
+  --border: #5C6773;
+}
+</style>
+</head>
+<body>
+  <h1>Cybersecurity — Penetration Testing Fundamentals</h1>
+<p>#week</p>
+<h2>Objectivos</h2>
+<ul>
+<li>Reconnaissance: passive (OSINT tools) e active (port scanning com nmap)</li>
+<li>Metodologia de penetration testing: fases, scope, regras de engagement</li>
+<li>Web app pentesting: SQL injection, XSS, IDOR, SSRF, business logic flaws</li>
+<li>Report writing profissional: findings, risk rating CVSS, passos de reprodução, remediação</li>
+<li>Ferramentas: Burp Suite Community, nmap, gobuster, sqlmap</li>
+</ul>
+<h2> Recursos</h2>
+<table>
+<thead>
+<tr>
+<th>Tipo</th>
+<th>Recurso</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Plataforma</td>
+<td>TryHackMe — free paths (OWASP Top 10, Jr Penetration Tester)</td>
+</tr>
+<tr>
+<td>Plataforma</td>
+<td>HackTheBox — free tier (Starting Point machines)</td>
+</tr>
+<tr>
+<td>Livro</td>
+<td><em>The Web Application Hacker’s Handbook</em> — Stuttard &amp; Pinto</td>
+</tr>
+<tr>
+<td>Tools</td>
+<td>Kali Linux (VM), Burp Suite Community, nmap, gobuster</td>
+</tr>
+<tr>
+<td>Plataforma</td>
+<td>PortSwigger Academy — todos os labs de SQL injection e XSS</td>
+</tr>
+</tbody>
+</table>
+<h2>Projeto</h2>
+<h3>Vulnerable Lab App + Pentest Report Profissional</h3>
+<p><strong>Overview</strong>
+Dois sistemas:
+- primeiro, uma aplicação web intencionalmente vulnerável que implementa exactamente as vulnerabilidades do OWASP Top 10 de forma controlada e pedagógica;
+- segundo, a versão corrigida dessa mesma aplicação com todas as vulnerabilidades mitigadas.
+Entre os dois sistemas, produzes um relatório de penetration testing completo no formato que uma empresa de segurança real usaria com um cliente.
+A aplicação vulnerável é uma plataforma de blog simples onde cada feature esconde uma vulnerabilidade: <em>o sistema de login tem SQL injection no campo de utilizador</em>, <em>os comentários têm XSS stored</em>, o sistema de upload de avatares aceita ficheiros PHP, os endpoints da API têm IDOR (qualquer utilizador consegue ler os dados de qualquer outro), e o painel admin está acessível sem autenticação se souberes o path. Para cada vulnerabilidade: documenta o vector de ataque com request/response reais capturados no Burp Suite, o código vulnerável, o CVSS score calculado, e o código corrigido com explicação da mitigação. O relatório final tem de ser profissional o suficiente para incluir no portfolio como demonstração de security mindset.</p>
+<p><strong>Tech Stack:</strong> Node.js + React (app vulnerável) + Kali Linux (pentesting)</p>
+<p><strong>Core Features</strong></p>
+<ul>
+<li>Vulnerable app (modo lab)</li>
+<li>Pentest report completo (formato OWASP)</li>
+<li>Fixes implementation</li>
+<li>Before/after comparison</li>
+<li>A01 - Broken Access Control: IDOR em <code>/api/users/:id</code>, admin path disclosure</li>
+<li>A02 - Cryptographic Failures: passwords em MD5, dados sensíveis sem encryption</li>
+<li>A03 - SQL Injection: query string concatenation directa no login</li>
+<li>A07 - XSS: Stored em comentários, Reflected em search, DOM-based em hash</li>
+<li>A08 - CSRF: formulários sem token</li>
+<li>A09 - Security Misconfiguration: stack traces em produção, debug mode activo</li>
+<li>Broken Authentication: sem brute force protection, JWT <code>alg: none</code></li>
+</ul>
+<p><strong>Entregáveis</strong></p>
+<ul>
+<li><input type="checkbox" disabled="" /> App vulnerável + versão corrigida no GitHub (branches separadas)</li>
+<li><input type="checkbox" disabled="" /> Pentest report profissional em PDF</li>
+<li><input type="checkbox" disabled="" /> Blog: “OWASP Top 10 Explained With Real Code — Attack and Fix”</li>
+<li><input type="checkbox" disabled="" /> Video: Demo ao vivo de SQL injection + fix + antes/depois</li>
+</ul>
+
+</body>
+</html>

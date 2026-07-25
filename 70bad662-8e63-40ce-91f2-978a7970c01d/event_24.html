@@ -1,0 +1,277 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <style>body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif;
+  line-height: 1.6;
+  min-width: 1200px;
+  padding: 2rem;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: var(--keyword);
+  margin-top: 1.5em;
+}
+
+h1 {
+  font-size: 2.2em;
+  border-bottom: 2px solid var(--border);
+  padding-bottom: 0.3em;
+}
+
+h2 {
+  font-size: 1.8em;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 0.2em;
+}
+
+h3 {
+  font-size: 1.4em;
+}
+
+h4,
+h5,
+h6 {
+  color: var(--constant);
+}
+
+a {
+  color: #66aaff;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+code {
+  background-color: var(--surface);
+  color: var(--function);
+  padding: 0.2em 0.4em;
+  border-radius: 4px;
+}
+
+pre {
+  background-color: var(--surface);
+  color: var(--foreground);
+  padding: 1em;
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  white-space: pre-wrap;
+  /* Wrap long lines */
+  word-wrap: break-word;
+  overflow-y: hidden;
+  /* Disable vertical scrolling */
+}
+
+pre code {
+  background: none;
+  padding: 0;
+  color: inherit;
+  display: block;
+}
+
+pre::-webkit-scrollbar {
+  display: none;
+  /* Hide scrollbar */
+}
+
+blockquote {
+  border-left: 4px solid var(--type);
+  background-color: var(--surface);
+  padding: 0.8em 1em;
+  color: var(--comment);
+  margin: 1em 0;
+}
+
+ul,
+ol {
+  padding-left: 2em;
+}
+
+li::marker {
+  color: var(--function);
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 1em 0;
+}
+
+th,
+td {
+  border: 1px solid var(--border);
+  padding: 0.6em 1em;
+}
+
+th {
+  background-color: var(--surface);
+  color: var(--function);
+}
+
+tr:nth-child(even) {
+  background-color: var(--surface);
+}
+
+hr {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 2em 0;
+}
+
+
+
+:root {
+  --keyword: #FFB347;
+  --function: #D4FF59;
+  --type: #66E6FF;
+  --constant: #D8A5FF;
+  --comment: #5C6773;
+  --foreground: #FFFFFF;
+  
+  /* UI Colors */
+  --background: #14161f;
+  --surface: #1E2129;
+  --border: #5C6773;
+}
+</style>
+</head>
+<body>
+  <h1>Game Engine — ECS Architecture &amp; 2D Engine</h1>
+<p>#s_week</p>
+<h2>Objectivos</h2>
+<ul>
+<li>Game loop: fixed timestep vs variable timestep — porquê o fixed timestep é obrigatório para física</li>
+<li>Entity-Component-System (ECS): data-oriented design vs object-oriented — performance implications</li>
+<li>Physics 2D: integração de Verlet, detecção de colisões AABB, collision response</li>
+<li>Spatial partitioning: quadtrees e spatial hashing para broad phase</li>
+<li>Asset pipeline: loading, caching com reference counting, hot-reload em debug</li>
+</ul>
+<h2>Recursos</h2>
+<table>
+<thead>
+<tr>
+<th>Tipo</th>
+<th>Recurso</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Livro</td>
+<td><em>Game Engine Architecture</em> (3ª edição) — Jason Gregory</td>
+</tr>
+<tr>
+<td>Series</td>
+<td>The Cherno — “Game Engine” series (YouTube)</td>
+</tr>
+<tr>
+<td>Lib</td>
+<td>raylib.com — biblioteca C simples, ideal para aprender</td>
+</tr>
+<tr>
+<td>Artigo</td>
+<td>“ECS Back and Forth” — skypjack.github.io (entt author)</td>
+</tr>
+<tr>
+<td>Código</td>
+<td>github.com/skypjack/entt — ler o código é educativo</td>
+</tr>
+</tbody>
+</table>
+<h2>Projeto</h2>
+<h3>2D Game Engine com ECS + Roguelite Demo Game</h3>
+<p><strong>Tech Stack</strong>
+C++20 + raylib + Box2D 3.0 + entt</p>
+<p><strong>Overview</strong>
+Um game engine 2D com arquitectura ECS e um jogo demo completo e jogável que prova que a engine funciona para um jogo real — não apenas um demo técnico vazio. A engine usa entt como biblioteca ECS (ler o código do entt é por si só educativo) e expõe sistemas bem definidos: Rendering System para sprites, tilemaps animados e particle systems; Physics System com Box2D 3.0 para collision detection e response realista; Input System com abstracção que suporta teclado, rato e gamepad; Audio System com pool de sons; Animation System com sprite sheet state machine; AI System com behaviour trees básicas para inimigos; e Resource System com hot-reload em modo debug para iterar sem reiniciar o jogo. O jogo demo é um roguelite 2D: dungeons geradas proceduralmente via BSP (Binary Space Partitioning), player com dash e ataque melee/ranged, 3 tipos de inimigos com AI diferente (melee agressivo, ranged que mantém distância, suicida), sistema de loot com raridades, câmera com screen shake e zoom dinâmico, e UI com health bar, inventory e minimap. O jogo é publicado no itch.io via export Emscripten para o browser.</p>
+<p><strong>Core Features</strong></p>
+<ul>
+<li>Rendering System   → draw sprites, tilemaps, particles</li>
+<li>Physics System     → Box2D integration, collision callbacks</li>
+<li>Input System       → keyboard, mouse, gamepad abstraction</li>
+<li>Audio System       → raylib audio + pool de sons</li>
+<li>Animation System   → sprite sheet animation, state machine</li>
+<li>AI System          → behaviour trees básicas (para enemies)</li>
+<li>Scene System       → load/unload scenes, entity spawning</li>
+<li>Resource System    → asset cache com hot-reload em debug</li>
+<li><strong>Demo Game — Roguelite 2D:</strong>
+<ul>
+<li>Geração procedural de dungeons (BSP rooms)</li>
+<li>Player com dash, ataque melee, ranged</li>
+<li>3 tipos de inimigos com AI diferente</li>
+<li>Sistema de loot</li>
+<li>Câmera com shake e zoom dinâmico</li>
+<li>UI: health bar, inventory, minimap</li>
+</ul>
+</li>
+</ul>
+<p><strong>Requisitos</strong></p>
+<ul>
+<li>Hot-reload de assets sem reiniciar o jogo (produtividade de desenvolvimento)</li>
+<li>Profiler integrado (frame time, system times)</li>
+</ul>
+<h2>Entregáveis</h2>
+<ul>
+<li><input type="checkbox" disabled="" /> Engine + jogo compilável com CMake</li>
+<li><input type="checkbox" disabled="" /> Jogo publicado no itch.io (export para browser via Emscripten)</li>
+<li><input type="checkbox" disabled="" /> Blog: “Building a 2D Game Engine with ECS in C++20”</li>
+<li><input type="checkbox" disabled="" /> Video: Engine architecture + gameplay demo</li>
+</ul>
+<hr />
+<h1><em><strong>Bônus [09]</strong></em></h1>
+<h2>Enterprise Architecture &amp; TOGAF (Conceitos)</h2>
+<p><strong>Objectivo</strong>
+Compreender como arquitectura de software se enquadra na arquitectura empresarial.</p>
+<h3>Recursos Obrigatórios</h3>
+<table>
+<thead>
+<tr>
+<th>Tipo</th>
+<th>Recurso</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Livro</td>
+<td><em>Enterprise Architecture as Strategy</em> — Ross, Weill &amp; Robertson (caps. 1–4)</td>
+</tr>
+<tr>
+<td>Artigo</td>
+<td>TOGAF Standard Overview — The Open Group (gratuito online)</td>
+</tr>
+<tr>
+<td>Vídeo</td>
+<td><a href="https://www.youtube.com/results?search_query=what+is+enterprise+architecture+TOGAF">“What is Enterprise Architecture?” — The Open Group (YouTube)</a></td>
+</tr>
+<tr>
+<td>Livro</td>
+<td><em>Software Systems Architecture</em> — Rozanski &amp; Woods (caps. 1–5) — excelente sobre viewpoints</td>
+</tr>
+</tbody>
+</table>
+<h3>PROJECTO: <em>“Architecture Vision Document”</em></h3>
+<p><strong>Overview</strong>
+Para uma organização fictível de média dimensão (ex: cadeia de retalho, hospital, banco regional), cria um Architecture Vision Document contemplando:</p>
+<ul>
+<li>Business Architecture (processos de negócio)</li>
+<li>Data Architecture (dados críticos e fluxo)</li>
+<li>Application Architecture (sistemas e integrações)</li>
+<li>Technology Architecture (infraestrutura)</li>
+</ul>
+<p><strong>Entrega</strong>
+Documento LaTeX profissional de 10–15 páginas com diagramas</p>
+<hr />
+
+</body>
+</html>

@@ -1,0 +1,230 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <style>body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif;
+  line-height: 1.6;
+  min-width: 1200px;
+  padding: 2rem;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: var(--keyword);
+  margin-top: 1.5em;
+}
+
+h1 {
+  font-size: 2.2em;
+  border-bottom: 2px solid var(--border);
+  padding-bottom: 0.3em;
+}
+
+h2 {
+  font-size: 1.8em;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 0.2em;
+}
+
+h3 {
+  font-size: 1.4em;
+}
+
+h4,
+h5,
+h6 {
+  color: var(--constant);
+}
+
+a {
+  color: #66aaff;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+code {
+  background-color: var(--surface);
+  color: var(--function);
+  padding: 0.2em 0.4em;
+  border-radius: 4px;
+}
+
+pre {
+  background-color: var(--surface);
+  color: var(--foreground);
+  padding: 1em;
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  white-space: pre-wrap;
+  /* Wrap long lines */
+  word-wrap: break-word;
+  overflow-y: hidden;
+  /* Disable vertical scrolling */
+}
+
+pre code {
+  background: none;
+  padding: 0;
+  color: inherit;
+  display: block;
+}
+
+pre::-webkit-scrollbar {
+  display: none;
+  /* Hide scrollbar */
+}
+
+blockquote {
+  border-left: 4px solid var(--type);
+  background-color: var(--surface);
+  padding: 0.8em 1em;
+  color: var(--comment);
+  margin: 1em 0;
+}
+
+ul,
+ol {
+  padding-left: 2em;
+}
+
+li::marker {
+  color: var(--function);
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 1em 0;
+}
+
+th,
+td {
+  border: 1px solid var(--border);
+  padding: 0.6em 1em;
+}
+
+th {
+  background-color: var(--surface);
+  color: var(--function);
+}
+
+tr:nth-child(even) {
+  background-color: var(--surface);
+}
+
+hr {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 2em 0;
+}
+
+
+
+:root {
+  --keyword: #FFB347;
+  --function: #D4FF59;
+  --type: #66E6FF;
+  --constant: #D8A5FF;
+  --comment: #5C6773;
+  --foreground: #FFFFFF;
+  
+  /* UI Colors */
+  --background: #14161f;
+  --surface: #1E2129;
+  --border: #5C6773;
+}
+</style>
+</head>
+<body>
+  <h1>Advanced Cybersecurity — Binary Exploitation &amp; Reverse Engineering</h1>
+<p>#week</p>
+<h2>Objectivos</h2>
+<ul>
+<li>Stack-based buffer overflows: smashing the stack, ret2libc</li>
+<li>Return-Oriented Programming (ROP): gadgets, chains</li>
+<li>Format string vulnerabilities: arbitrary read/write</li>
+<li>Reverse engineering: decompilação, analysis de binários</li>
+<li>Mitigações modernas: ASLR, PIE, Stack Canaries, RELRO</li>
+</ul>
+<h2>Recursos</h2>
+<table>
+<thead>
+<tr>
+<th>Tipo</th>
+<th>Recurso</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Plataforma</td>
+<td>pwn.college — gratuito, melhor recurso de binary exploitation</td>
+</tr>
+<tr>
+<td>Livro</td>
+<td><em>Hacking: The Art of Exploitation</em> — Jon Erickson</td>
+</tr>
+<tr>
+<td>Prática</td>
+<td>ROP Emporium — ropemporium.com (gratuito)</td>
+</tr>
+<tr>
+<td>Tools</td>
+<td>GDB + pwndbg, pwntools (Python), Ghidra (gratuito da NSA)</td>
+</tr>
+<tr>
+<td>Plataforma</td>
+<td>PicoCTF — permanentemente disponível</td>
+</tr>
+</tbody>
+</table>
+<h2>Projeto</h2>
+<h3>Binary Exploitation Challenge Set + Educational Platform</h3>
+<p><strong>Tech Stack</strong>
+C (binários vulneráveis) + Python/pwntools (exploits) + Docker (isolamento)</p>
+<p><strong>Overview</strong>
+Um conjunto de 7 challenges de binary exploitation — e a parte que te faz aprender mais do que resolver challenges de outros é ter de criá-los tu mesmo: para construir um bom challenge, tens de entender a vulnerabilidade completamente, implementá-la em C de forma que seja explorável de uma forma específica mas não de outras, e escrever um exploit funcional em Python/pwntools que demonstra a exploração. A progressão vai do stack overflow mais básico (sem mitigações) até chains de ROP para bypass de stack canaries, ASLR e PIE — as mitigações que sistemas modernos têm activadas por default. Para cada challenge: o código C vulnerável comentado pedagogicamente, o exploit Python/pwntools completo, e um write-up detalhado com a análise GDB/pwndbg passo a passo que mostra como identificar a vulnerabilidade, desenvolver a estratégia de exploração, e construir o exploit. A platform Docker isola cada challenge num container separado. Usa Ghidra (gratuito da NSA) para análise de binários e aprende a ler o assembly gerado pelo compilador.</p>
+<p><strong>Core Features</strong></p>
+<ol>
+<li><strong>Stack Smash Básico</strong> — overflow sem mitigações</li>
+<li><strong>ret2win</strong> — overflow para chamar função específica</li>
+<li><strong>ret2libc</strong> — sem stack executável, usa libc</li>
+<li><strong>ROP chain</strong> — encadeia gadgets para system(“/bin/sh”)</li>
+<li><strong>Format String Read</strong> — lê endereços de memória</li>
+<li><strong>Format String Write</strong> — escreve em endereços arbitrários</li>
+<li><strong>Heap UAF</strong> — use-after-free básico</li>
+</ol>
+<p><strong>Requisitos (Para cada challenge)</strong></p>
+<ul>
+<li>Código C vulnerável (comentado pedagogicamente)</li>
+<li>Exploit em Python com pwntools</li>
+<li>Write-up detalhado: análise → estratégia → exploit passo a passo</li>
+<li>Versão corrigida com explicação da mitigação</li>
+<li><strong>Platform Docker:</strong>
+<ul>
+<li>Cada challenge num container isolado</li>
+<li>Pode correr localmente ou no servidor</li>
+</ul>
+</li>
+</ul>
+<h2>Entregáveis</h2>
+<ul>
+<li><input type="checkbox" disabled="" /> Challenge set no GitHub (com soluções em branch separada)</li>
+<li><input type="checkbox" disabled="" /> Write-ups detalhados em Markdown</li>
+<li><input type="checkbox" disabled="" /> Blog: “Binary Exploitation 101 — From Buffer Overflow to ROP Chain”</li>
+<li><input type="checkbox" disabled="" /> Video: Live exploitation de 3 challenges com explicação</li>
+</ul>
+
+</body>
+</html>

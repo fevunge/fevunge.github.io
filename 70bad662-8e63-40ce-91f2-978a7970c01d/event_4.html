@@ -1,0 +1,242 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <style>body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif;
+  line-height: 1.6;
+  min-width: 1200px;
+  padding: 2rem;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: var(--keyword);
+  margin-top: 1.5em;
+}
+
+h1 {
+  font-size: 2.2em;
+  border-bottom: 2px solid var(--border);
+  padding-bottom: 0.3em;
+}
+
+h2 {
+  font-size: 1.8em;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 0.2em;
+}
+
+h3 {
+  font-size: 1.4em;
+}
+
+h4,
+h5,
+h6 {
+  color: var(--constant);
+}
+
+a {
+  color: #66aaff;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+code {
+  background-color: var(--surface);
+  color: var(--function);
+  padding: 0.2em 0.4em;
+  border-radius: 4px;
+}
+
+pre {
+  background-color: var(--surface);
+  color: var(--foreground);
+  padding: 1em;
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  white-space: pre-wrap;
+  /* Wrap long lines */
+  word-wrap: break-word;
+  overflow-y: hidden;
+  /* Disable vertical scrolling */
+}
+
+pre code {
+  background: none;
+  padding: 0;
+  color: inherit;
+  display: block;
+}
+
+pre::-webkit-scrollbar {
+  display: none;
+  /* Hide scrollbar */
+}
+
+blockquote {
+  border-left: 4px solid var(--type);
+  background-color: var(--surface);
+  padding: 0.8em 1em;
+  color: var(--comment);
+  margin: 1em 0;
+}
+
+ul,
+ol {
+  padding-left: 2em;
+}
+
+li::marker {
+  color: var(--function);
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 1em 0;
+}
+
+th,
+td {
+  border: 1px solid var(--border);
+  padding: 0.6em 1em;
+}
+
+th {
+  background-color: var(--surface);
+  color: var(--function);
+}
+
+tr:nth-child(even) {
+  background-color: var(--surface);
+}
+
+hr {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 2em 0;
+}
+
+
+
+:root {
+  --keyword: #FFB347;
+  --function: #D4FF59;
+  --type: #66E6FF;
+  --constant: #D8A5FF;
+  --comment: #5C6773;
+  --foreground: #FFFFFF;
+  
+  /* UI Colors */
+  --background: #14161f;
+  --surface: #1E2129;
+  --border: #5C6773;
+}
+</style>
+</head>
+<body>
+  <h1>Go + Concurrency Patterns</h1>
+<p>#week</p>
+<h2>Objectivos</h2>
+<ul>
+<li>Go idioms modernos (Go 1.22+): range over integers, structured logging com <code>slog</code></li>
+<li>Goroutines e channels — lifecycle, garbage collection, leak detection</li>
+<li><code>context</code> package — propagação de cancelamento e deadlines em profundidade</li>
+<li><code>sync</code> package: Mutex, RWMutex, WaitGroup, Pool, Once</li>
+<li>Concurrency patterns: Fan-in, Fan-out, Pipeline, Worker Pool, Semaphore, Circuit Breaker</li>
+<li>Graceful shutdown com <code>os.Signal</code> e <code>context.WithCancel</code></li>
+</ul>
+<h2>Recursos</h2>
+<table>
+<thead>
+<tr>
+<th>Tipo</th>
+<th>Recurso</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Livro</td>
+<td><em>Concurrency in Go</em> — Katherine Cox-Buday</td>
+</tr>
+<tr>
+<td>Course</td>
+<td>Learn Go with Tests — quii.gitbook.io (100% gratuito)</td>
+</tr>
+<tr>
+<td>Prática</td>
+<td>Exercism Go track</td>
+</tr>
+<tr>
+<td>Blog</td>
+<td>Official Go Blog — go.dev/blog</td>
+</tr>
+<tr>
+<td>Video</td>
+<td>“Concurrency is not Parallelism” — Rob Pike (YouTube)</td>
+</tr>
+</tbody>
+</table>
+<h2>Projeto</h2>
+<h2>Distributed Web Crawler com Pipeline Architecture</h2>
+<p><strong>Tech Stack</strong>
+Go (modern) + Redis + PostgreSQL + colly</p>
+<p><strong>Overview</strong>
+Um Web Crawler distribuído <em><strong>production-ready</strong></em>, que consegue processar centenas de URL’s por segundo de forma concorrente e respeitosa com os servidores-alvo.
+O sistema tem de ser construído como um <strong>pipeline de goroutines com backpressure</strong>: <em>um Frontier</em> mantém a fila de URL’s a visitar em Redis, <em>um pool de Fetcher goroutines</em> descarrega o HTML de forma concorrente com rate limiting por domínio, <em>um pool de Parser goroutines</em> extrai links e texto, e <em>um Storage Worker</em> persiste o link graph no PostgreSQL.
+O diferencial técnico está em dois lugares:
+- primeiro, <strong>implementas um Bloom Filter do zero</strong> (não importas uma biblioteca) para reduplicação de URLs em memória com zero false negatives;
+- segundo, implementas o protocolo <code>robots.txt</code> completo incluindo <code>Crawl-delay</code>.
+O sistema é resumível — podes parar e retomar sem perder estado.
+O projecto termina com benchmarks de URLs processadas por segundo em função do número de workers, e um diagrama detalhado das decisões de arquitectura do pipeline.</p>
+<p><strong>Core Features</strong></p>
+<ul>
+<li>Concurrent crawling com goroutine pool de tamanho configurável</li>
+<li>Bloom filter implementado do zero (não biblioteca)</li>
+<li><code>robots.txt</code> parsing completo com <code>Crawl-delay</code></li>
+<li>Rate limiting por domínio: token bucket com Redis</li>
+<li>HTML parsing + extracção de links, texto, metadata OpenGraph</li>
+<li>Resumable crawling: estado persistido no Redis</li>
+<li><code>context</code> propagation para cancelamento limpo de toda a pipeline</li>
+<li>Link graph storage (adjacency list no PostgreSQL)</li>
+<li>Métricas em tempo real: URLs/segundo, erros, queue depth</li>
+<li>Circuit breaker por domínio: pausa quando error rate &gt; threshold</li>
+<li>Lidar com redireccionamentos circulares</li>
+<li>Backpressure quando o storage é mais lento que o fetch</li>
+</ul>
+<p><strong>Arquitectura</strong></p>
+<pre style="background-color:#1e2129;"><code><span style="color:#ffffff;">Seed URLs → Frontier (Redis Queue)
+</span><span style="color:#ffffff;">               ↓
+</span><span style="color:#ffffff;">         Fetcher Pool (N goroutines com rate limit por domínio)
+</span><span style="color:#ffffff;">               ↓
+</span><span style="color:#ffffff;">         Parser Pool (M goroutines)
+</span><span style="color:#ffffff;">               ↓
+</span><span style="color:#ffffff;">         Storage Worker → PostgreSQL (link graph)
+</span><span style="color:#ffffff;">               ↓
+</span><span style="color:#ffffff;">         Robots Cache (Redis) ← consultado antes de cada fetch
+</span></code></pre>
+<p><strong>Entregáveis</strong></p>
+<ul>
+<li><input type="checkbox" disabled="" /> CLI tool funcional com flags configuráveis</li>
+<li><input type="checkbox" disabled="" /> Benchmark: URLs processadas por segundo com N workers (gráfico)</li>
+<li><input type="checkbox" disabled="" /> Blog: “Building a Production Web Crawler in Go — Concurrency Patterns Explained”</li>
+<li><input type="checkbox" disabled="" /> Diagrama de arquitectura do pipeline com decisões justificadas</li>
+</ul>
+<hr />
+<h1><em><strong>Bônus [02]</strong></em></h1>
+
+</body>
+</html>

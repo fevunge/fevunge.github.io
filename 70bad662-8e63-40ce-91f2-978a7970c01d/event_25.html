@@ -1,0 +1,230 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <style>body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif;
+  line-height: 1.6;
+  min-width: 1200px;
+  padding: 2rem;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: var(--keyword);
+  margin-top: 1.5em;
+}
+
+h1 {
+  font-size: 2.2em;
+  border-bottom: 2px solid var(--border);
+  padding-bottom: 0.3em;
+}
+
+h2 {
+  font-size: 1.8em;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 0.2em;
+}
+
+h3 {
+  font-size: 1.4em;
+}
+
+h4,
+h5,
+h6 {
+  color: var(--constant);
+}
+
+a {
+  color: #66aaff;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+code {
+  background-color: var(--surface);
+  color: var(--function);
+  padding: 0.2em 0.4em;
+  border-radius: 4px;
+}
+
+pre {
+  background-color: var(--surface);
+  color: var(--foreground);
+  padding: 1em;
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  white-space: pre-wrap;
+  /* Wrap long lines */
+  word-wrap: break-word;
+  overflow-y: hidden;
+  /* Disable vertical scrolling */
+}
+
+pre code {
+  background: none;
+  padding: 0;
+  color: inherit;
+  display: block;
+}
+
+pre::-webkit-scrollbar {
+  display: none;
+  /* Hide scrollbar */
+}
+
+blockquote {
+  border-left: 4px solid var(--type);
+  background-color: var(--surface);
+  padding: 0.8em 1em;
+  color: var(--comment);
+  margin: 1em 0;
+}
+
+ul,
+ol {
+  padding-left: 2em;
+}
+
+li::marker {
+  color: var(--function);
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 1em 0;
+}
+
+th,
+td {
+  border: 1px solid var(--border);
+  padding: 0.6em 1em;
+}
+
+th {
+  background-color: var(--surface);
+  color: var(--function);
+}
+
+tr:nth-child(even) {
+  background-color: var(--surface);
+}
+
+hr {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 2em 0;
+}
+
+
+
+:root {
+  --keyword: #FFB347;
+  --function: #D4FF59;
+  --type: #66E6FF;
+  --constant: #D8A5FF;
+  --comment: #5C6773;
+  --foreground: #FFFFFF;
+  
+  /* UI Colors */
+  --background: #14161f;
+  --surface: #1E2129;
+  --border: #5C6773;
+}
+</style>
+</head>
+<body>
+  <h1>WebAssembly — Rust para Browser + SIMD</h1>
+<p>#week</p>
+<h2>Objectivos</h2>
+<ul>
+<li>WebAssembly: formato binário, text format (WAT), módulos</li>
+<li><code>wasm-bindgen</code>: Rust → JavaScript interop</li>
+<li><code>web-sys</code> e <code>js-sys</code>: acesso às Web APIs a partir de Rust</li>
+<li>WASI: WebAssembly fora do browser</li>
+<li>Performance: onde Wasm brilha e onde não</li>
+</ul>
+<h2>Recursos</h2>
+<table>
+<thead>
+<tr>
+<th>Tipo</th>
+<th>Recurso</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Docs</td>
+<td>rustwasm.github.io/book — Rust and WebAssembly oficial</td>
+</tr>
+<tr>
+<td>Tool</td>
+<td>wasm-pack — build tool standard</td>
+</tr>
+<tr>
+<td>Docs</td>
+<td>webassembly.org — spec e overview</td>
+</tr>
+<tr>
+<td>Exercício</td>
+<td>“Game of Life in Rust+Wasm” — tutorial oficial</td>
+</tr>
+<tr>
+<td>Video</td>
+<td>“WebAssembly from Ground Up” — Lin Clark (YouTube)</td>
+</tr>
+</tbody>
+</table>
+<h2>Projeto</h2>
+<h3>Image Processing Studio — Rust + Wasm + React</h3>
+<p><strong>Tech Stack</strong>
+Rust + wasm-bindgen + SIMD + React + TypeScript + Web Workers</p>
+<p><strong>Overview</strong>
+Um editor de imagem completo que corre inteiramente no browser sem servidor, com o processamento de imagem implementado em Rust compilado para WebAssembly com instruções SIMD — o que produz performance comparável a software nativo para operações intensivas em pixeis. O editor suporta upload de JPEG, PNG, WebP e AVIF, e expõe todos os filtros e ajustes processados em Rust via Wasm: Gaussian blur com kernel configurável, Sharpen, Edge detection com Sobel e Laplacian, Color grading (brightness, contrast, saturation, hue, curves), Sepia, Grayscale, Invert, Vignette, e Chromatic aberration. O histograma é também calculado em Rust e actualizado em tempo real enquanto ajustas parâmetros. Todo o processamento corre num Web Worker para não bloquear a thread UI — o utilizador consegue usar a interface enquanto um blur de 20px é aplicado a uma imagem 4K. O Before/After slider mostra o resultado vs original. O batch processing processa múltiplos ficheiros com as mesmas configurações. O benchmark obrigatório compara Rust+Wasm vs JavaScript puro para blur gaussiano em imagens de diferentes tamanhos, e mostra o speedup das instruções SIMD vs Wasm sem SIMD.</p>
+<p><strong>Core Features</strong></p>
+<ul>
+<li>Upload e preview de imagens (JPEG, PNG, WebP, AVIF)</li>
+<li>Filtros implementados em Rust (compilados para Wasm):
+<ul>
+<li>Blur gaussiano (kernel configurável)</li>
+<li>Sharpen, Edge detection (Sobel, Laplacian)</li>
+<li>Color grading: brightness, contrast, saturation, hue</li>
+<li>Sepia, grayscale, invert</li>
+<li>Vignette, chromatic aberration</li>
+</ul>
+</li>
+<li>Histogram em tempo real (implementado em Rust)</li>
+<li>Before/after slider</li>
+<li>Batch processing de múltiplos ficheiros</li>
+<li>Export: PNG, JPEG (qualidade configurável), WebP</li>
+</ul>
+<p><strong>Requisitos</strong></p>
+<ul>
+<li>Rust core via Wasm: processamento no Web Worker (não bloqueia UI)</li>
+<li>SIMD instructions onde disponível (<code>packed_simd</code> crate)</li>
+<li>Benchmark: Rust+Wasm vs JavaScript puro para blur em imagem 4K</li>
+</ul>
+<h2>Entregáveis</h2>
+<ul>
+<li><input type="checkbox" disabled="" /> Web app publicada (GitHub Pages ou Cloudflare Pages — gratuito)</li>
+<li><input type="checkbox" disabled="" /> Blog: “Why Rust + WebAssembly is the Future of Performance-Critical Web Apps”</li>
+<li><input type="checkbox" disabled="" /> Benchmark detalhado: Wasm vs JS em diferentes operações e tamanhos</li>
+<li><input type="checkbox" disabled="" /> Video: “Building a Fast Image Editor with Rust and WebAssembly”</li>
+</ul>
+
+</body>
+</html>

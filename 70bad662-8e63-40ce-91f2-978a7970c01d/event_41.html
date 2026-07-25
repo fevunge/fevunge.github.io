@@ -1,0 +1,184 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <style>body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif;
+  line-height: 1.6;
+  min-width: 1200px;
+  padding: 2rem;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: var(--keyword);
+  margin-top: 1.5em;
+}
+
+h1 {
+  font-size: 2.2em;
+  border-bottom: 2px solid var(--border);
+  padding-bottom: 0.3em;
+}
+
+h2 {
+  font-size: 1.8em;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 0.2em;
+}
+
+h3 {
+  font-size: 1.4em;
+}
+
+h4,
+h5,
+h6 {
+  color: var(--constant);
+}
+
+a {
+  color: #66aaff;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+code {
+  background-color: var(--surface);
+  color: var(--function);
+  padding: 0.2em 0.4em;
+  border-radius: 4px;
+}
+
+pre {
+  background-color: var(--surface);
+  color: var(--foreground);
+  padding: 1em;
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  white-space: pre-wrap;
+  /* Wrap long lines */
+  word-wrap: break-word;
+  overflow-y: hidden;
+  /* Disable vertical scrolling */
+}
+
+pre code {
+  background: none;
+  padding: 0;
+  color: inherit;
+  display: block;
+}
+
+pre::-webkit-scrollbar {
+  display: none;
+  /* Hide scrollbar */
+}
+
+blockquote {
+  border-left: 4px solid var(--type);
+  background-color: var(--surface);
+  padding: 0.8em 1em;
+  color: var(--comment);
+  margin: 1em 0;
+}
+
+ul,
+ol {
+  padding-left: 2em;
+}
+
+li::marker {
+  color: var(--function);
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 1em 0;
+}
+
+th,
+td {
+  border: 1px solid var(--border);
+  padding: 0.6em 1em;
+}
+
+th {
+  background-color: var(--surface);
+  color: var(--function);
+}
+
+tr:nth-child(even) {
+  background-color: var(--surface);
+}
+
+hr {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 2em 0;
+}
+
+
+
+:root {
+  --keyword: #FFB347;
+  --function: #D4FF59;
+  --type: #66E6FF;
+  --constant: #D8A5FF;
+  --comment: #5C6773;
+  --foreground: #FFFFFF;
+  
+  /* UI Colors */
+  --background: #14161f;
+  --surface: #1E2129;
+  --border: #5C6773;
+}
+</style>
+</head>
+<body>
+  <h1>High-Performance Web Server (C++)</h1>
+<p>#week</p>
+<h3>HTTP/2 Server em C++20</h3>
+<p><strong>Tech Stack:</strong> C++20 + OpenSSL + nghttp2 + epoll</p>
+<p><strong>Overview</strong>
+Vais evoluir o servidor HTTP da <a href="week_15" data-wikilink="true">week_15</a> para suportar HTTP/2 com TLS 1.3 e funcionalidade de reverse proxy — tornando-o um servidor que podes usar em produção real para servir as tuas aplicações. HTTP/2 muda fundamentalmente o modelo de comunicação: um único connection TCP multiplexes múltiplos streams em paralelo, server push envia recursos antes de serem pedidos, e HPACK comprime headers de forma que requests repetidos ficam tiny. A implementação usa a biblioteca <code>nghttp2</code> para o framing HTTP/2 (o protocolo de framing é complexo demais para implementar do zero num prazo razoável) e OpenSSL para TLS 1.3. O reverse proxy load balancing usa round-robin com health checks activos, e o response caching respeita os headers Cache-Control e ETag para cache validation. Brotli compression reduz o tamanho dos responses em 20-30% vs gzip. O endpoint <code>/metrics</code> expõe métricas Prometheus para integrar com o stack de observabilidade da <a href="week_28" data-wikilink="true">week_28</a>. O benchmark final compara com nginx nas mesmas condições para requests de ficheiros estáticos e para proxying para um backend Go.</p>
+<p><strong>Core Features</strong></p>
+<ul>
+<li>Todas features da <a href="week_15" data-wikilink="true">week_15</a></li>
+<li>HTTP/2: multiplexing, server push, header compression (HPACK)</li>
+<li>TLS 1.3 via OpenSSL (self-signed para dev, Let’s Encrypt para prod)</li>
+<li>WebSocket upgrade (RFC 6455)</li>
+<li>Reverse proxy: balanceamento de carga entre backends</li>
+<li>Response caching: in-memory + disk (Cache-Control respeitado)</li>
+<li>Compression: gzip + brotli</li>
+<li>Metrics endpoint <code>/metrics</code> compatível com Prometheus</li>
+</ul>
+<p><strong>Performance target:</strong></p>
+<pre style="background-color:#1e2129;"><code class="language-bash"><span style="color:#5c6773;"># Meta: &gt;80% da performance do nginx para static files
+</span><span style="color:#d4ff59;">wrk</span><span style="color:#ffffff;"> -t4 -c400 -d30s https://localhost:443/index.html
+</span><span style="color:#ffffff;">
+</span><span style="color:#5c6773;"># nginx: ~150k req/s
+</span><span style="color:#5c6773;"># Teu server: &gt;120k req/s
+</span></code></pre>
+<h2>Entregáveis</h2>
+<ul>
+<li><input type="checkbox" disabled="" /> Servidor production-ready com TLS funcional</li>
+<li><input type="checkbox" disabled="" /> Benchmark report vs nginx (mesmas condições)</li>
+<li><input type="checkbox" disabled="" /> Blog: “Building an HTTP/2 Server in C++20 — How nginx Actually Works”</li>
+<li><input type="checkbox" disabled="" /> Video: arquitectura explicada com Wireshark mostrando frames HTTP/2</li>
+</ul>
+
+</body>
+</html>

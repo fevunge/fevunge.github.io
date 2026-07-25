@@ -1,0 +1,229 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <style>body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif;
+  line-height: 1.6;
+  min-width: 1200px;
+  padding: 2rem;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: var(--keyword);
+  margin-top: 1.5em;
+}
+
+h1 {
+  font-size: 2.2em;
+  border-bottom: 2px solid var(--border);
+  padding-bottom: 0.3em;
+}
+
+h2 {
+  font-size: 1.8em;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 0.2em;
+}
+
+h3 {
+  font-size: 1.4em;
+}
+
+h4,
+h5,
+h6 {
+  color: var(--constant);
+}
+
+a {
+  color: #66aaff;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+code {
+  background-color: var(--surface);
+  color: var(--function);
+  padding: 0.2em 0.4em;
+  border-radius: 4px;
+}
+
+pre {
+  background-color: var(--surface);
+  color: var(--foreground);
+  padding: 1em;
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  white-space: pre-wrap;
+  /* Wrap long lines */
+  word-wrap: break-word;
+  overflow-y: hidden;
+  /* Disable vertical scrolling */
+}
+
+pre code {
+  background: none;
+  padding: 0;
+  color: inherit;
+  display: block;
+}
+
+pre::-webkit-scrollbar {
+  display: none;
+  /* Hide scrollbar */
+}
+
+blockquote {
+  border-left: 4px solid var(--type);
+  background-color: var(--surface);
+  padding: 0.8em 1em;
+  color: var(--comment);
+  margin: 1em 0;
+}
+
+ul,
+ol {
+  padding-left: 2em;
+}
+
+li::marker {
+  color: var(--function);
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 1em 0;
+}
+
+th,
+td {
+  border: 1px solid var(--border);
+  padding: 0.6em 1em;
+}
+
+th {
+  background-color: var(--surface);
+  color: var(--function);
+}
+
+tr:nth-child(even) {
+  background-color: var(--surface);
+}
+
+hr {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 2em 0;
+}
+
+
+
+:root {
+  --keyword: #FFB347;
+  --function: #D4FF59;
+  --type: #66E6FF;
+  --constant: #D8A5FF;
+  --comment: #5C6773;
+  --foreground: #FFFFFF;
+  
+  /* UI Colors */
+  --background: #14161f;
+  --surface: #1E2129;
+  --border: #5C6773;
+}
+</style>
+</head>
+<body>
+  <h1>Technical Writing &amp; Documentation Master</h1>
+<p>#s_week</p>
+<h2>Objectivo</h2>
+<p>Elevar todos os 40+ repositórios ao nível de documentação de projectos open-source profissionais que as pessoas realmente queiram usar.</p>
+<h2>Documentation Overhaul</h2>
+<p><strong>Para cada projecto no GitHub:</strong></p>
+<ul>
+<li>README: reescreve com estrutura clara (o que é, como instalar, como usar, arquitectura, contribuir)</li>
+<li>ADRs (Architecture Decision Records): mínimo 3 por projecto complexo</li>
+<li>OpenAPI/Swagger: todos os endpoints documentados com exemplos</li>
+<li>Changelog: <code>CHANGELOG.md</code> com semantic versioning</li>
+<li>Contributing guide: <code>CONTRIBUTING.md</code></li>
+<li>Runbooks: para projectos com infra</li>
+</ul>
+<p><strong>Templates criados (publicar no GitHub como template repo):</strong></p>
+<ul>
+<li>Project README template</li>
+<li>ADR template (MADR format)</li>
+<li>Pull Request template</li>
+<li>Issue template (bug report + feature request)</li>
+<li>Runbook template</li>
+</ul>
+<h3>Content Creation desta semana</h3>
+<ul>
+<li>4-5 blog posts técnicos (retrospectiva dos projectos mais interessantes)</li>
+<li>Tutorial series para o projecto mais popular</li>
+<li>Comparação técnica (ex: “Go vs Rust for HTTP servers — Benchmarks and Trade-offs”)</li>
+</ul>
+<h2>Entregáveis</h2>
+<ul>
+<li><input type="checkbox" disabled="" /> Todos os 40+ repositórios com documentação de qualidade</li>
+<li><input type="checkbox" disabled="" /> Template repo público</li>
+<li><input type="checkbox" disabled="" /> Blog: “Documentation as a Competitive Advantage in Open Source”</li>
+<li><input type="checkbox" disabled="" /> Video: walkthrough do processo de documentação</li>
+</ul>
+<hr />
+<h1><strong><em>Bônus</em> [13]</strong></h1>
+<h2>Arquitectura Emergente &amp; Casos de Estudo Avançados</h2>
+<p><strong>Objectivo</strong>
+Aprender com os melhores casos reais da indústria.</p>
+<h3>Recursos Obrigatórios</h3>
+<table>
+<thead>
+<tr>
+<th>Tipo</th>
+<th>Recurso</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Livro</td>
+<td><em>Software Architecture: The Hard Parts</em> — Neal Ford, Mark Richards et al. (livro mais recente e avançado)</td>
+</tr>
+<tr>
+<td>Conferência</td>
+<td><a href="https://www.youtube.com/@GOTOConferences">GOTO Conferences — YouTube</a> — selecciona talks de arquitectura</td>
+</tr>
+<tr>
+<td>Conferência</td>
+<td><a href="https://www.infoq.com/presentations/">QCon (InfoQ) — Architecture Tracks (infoq.com)</a></td>
+</tr>
+<tr>
+<td>Papers</td>
+<td>Papers do Google: MapReduce, Bigtable, Spanner (todos disponíveis em research.google.com)</td>
+</tr>
+<tr>
+<td>Site</td>
+<td><a href="https://blog.acolyer.org/">The Morning Paper — adriancolyer.org</a> — reviews de papers académicos</td>
+</tr>
+</tbody>
+</table>
+<h3>PROJECTO: <em>“Architectural Kata”</em></h3>
+<p><strong>Overview</strong>
+Resolve um “Architectural Kata” — exercício de arquitectura criado por Ted Neward (kata.softwarearchitect.it ou GitHub). Escolhe um dos katas disponíveis publicamente e entrega solução completa. O kata deve ser resolvido como se fosses apresentar a um cliente real.</p>
+<p><strong>Entrega</strong>
+Documento LaTeX completo + todos os diagramas C4 + ADRs</p>
+
+</body>
+</html>

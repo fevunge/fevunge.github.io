@@ -1,0 +1,283 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <style>body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif;
+  line-height: 1.6;
+  min-width: 1200px;
+  padding: 2rem;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: var(--keyword);
+  margin-top: 1.5em;
+}
+
+h1 {
+  font-size: 2.2em;
+  border-bottom: 2px solid var(--border);
+  padding-bottom: 0.3em;
+}
+
+h2 {
+  font-size: 1.8em;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 0.2em;
+}
+
+h3 {
+  font-size: 1.4em;
+}
+
+h4,
+h5,
+h6 {
+  color: var(--constant);
+}
+
+a {
+  color: #66aaff;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+code {
+  background-color: var(--surface);
+  color: var(--function);
+  padding: 0.2em 0.4em;
+  border-radius: 4px;
+}
+
+pre {
+  background-color: var(--surface);
+  color: var(--foreground);
+  padding: 1em;
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  white-space: pre-wrap;
+  /* Wrap long lines */
+  word-wrap: break-word;
+  overflow-y: hidden;
+  /* Disable vertical scrolling */
+}
+
+pre code {
+  background: none;
+  padding: 0;
+  color: inherit;
+  display: block;
+}
+
+pre::-webkit-scrollbar {
+  display: none;
+  /* Hide scrollbar */
+}
+
+blockquote {
+  border-left: 4px solid var(--type);
+  background-color: var(--surface);
+  padding: 0.8em 1em;
+  color: var(--comment);
+  margin: 1em 0;
+}
+
+ul,
+ol {
+  padding-left: 2em;
+}
+
+li::marker {
+  color: var(--function);
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 1em 0;
+}
+
+th,
+td {
+  border: 1px solid var(--border);
+  padding: 0.6em 1em;
+}
+
+th {
+  background-color: var(--surface);
+  color: var(--function);
+}
+
+tr:nth-child(even) {
+  background-color: var(--surface);
+}
+
+hr {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 2em 0;
+}
+
+
+
+:root {
+  --keyword: #FFB347;
+  --function: #D4FF59;
+  --type: #66E6FF;
+  --constant: #D8A5FF;
+  --comment: #5C6773;
+  --foreground: #FFFFFF;
+  
+  /* UI Colors */
+  --background: #14161f;
+  --surface: #1E2129;
+  --border: #5C6773;
+}
+</style>
+</head>
+<body>
+  <h1>Observability — OpenTelemetry &amp; Grafana Stack</h1>
+<p>#s_week</p>
+<h2>Objectivos</h2>
+<ul>
+<li>OpenTelemetry: o standard unificado para telemetria (substitui instrumentação custom)</li>
+<li>Metrics (Prometheus), Logs (Loki), Traces (Tempo) — Grafana Stack</li>
+<li>SLO/SLI/SLA: como definir e medir</li>
+<li>Golden Signals: latency, traffic, errors, saturation</li>
+<li>Alerting baseado em SLO (não apenas thresholds estáticos)</li>
+</ul>
+<h2>Recursos</h2>
+<table>
+<thead>
+<tr>
+<th>Tipo</th>
+<th>Recurso</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Docs</td>
+<td>opentelemetry.io — spec e SDKs</td>
+</tr>
+<tr>
+<td>Livro</td>
+<td><em>Observability Engineering</em> — Majors, Fong-Jones, Miranda</td>
+</tr>
+<tr>
+<td>Course</td>
+<td>Grafana fundamentals — grafana.com/tutorials</td>
+</tr>
+<tr>
+<td>Blog</td>
+<td>“SLO Fundamentals” — Google SRE resources</td>
+</tr>
+<tr>
+<td>Tool</td>
+<td>Grafana Cloud free tier — 3 users grátis, suficiente</td>
+</tr>
+</tbody>
+</table>
+<h2>Projeto</h2>
+<h3>OpenTelemetry Observability Stack</h3>
+<p><strong>Tech Stack:</strong>
+OpenTelemetry Collector + Prometheus + Loki + Tempo + Grafana</p>
+<p><strong>Overview</strong>
+Construir e instrumentar uma stack de observabilidade completa usando OpenTelemetry como camada de abstracção unificada — o standard que ganhou em 2026 e que evita vendor lock-in. O OpenTelemetry Collector recebe métricas, logs e traces de todos os serviços via protocolo OTLP e encaminha para os backends específicos: Prometheus para armazenamento de métricas (com PromQL para queries), Loki para logs com structured logging e LogQL para queries complexas, e Tempo para distributed traces sem limite de storage baseado em objectos. O Grafana unifica os três pilares num único dashboard e permite correlação — de uma trace clicas e vês os logs do mesmo request, e depois vês as métricas do serviço naquele intervalo de tempo. A instrumentação é automática para Node.js, Go e Python sem alterar o código da aplicação. Os dashboards SLO mostram burn rate e error budget remaining em vez de thresholds estáticos que criam alert fatigue. Produz um <code>docker-compose up</code> que levanta toda a stack numa linha.</p>
+<p><strong>Requisitos</strong></p>
+<ul>
+<li><strong>OTel Collector</strong>: recebe métricas/logs/traces de todos os serviços e encaminha</li>
+<li><strong>Prometheus</strong>: armazenamento de métricas com PromQL</li>
+<li><strong>Loki</strong>: logs aggregation com LogQL</li>
+<li><strong>Tempo</strong>: distributed traces sem limits de storage</li>
+<li><strong>Grafana</strong>: dashboards, alertas, correlação entre os três pilares</li>
+<li><strong>Instrumentação (automática com OTel):</strong>
+<ul>
+<li>Node.js: <code>@opentelemetry/auto-instrumentations-node</code></li>
+<li>Go: <code>go.opentelemetry.io/contrib/instrumentation</code></li>
+<li>Python: <code>opentelemetry-distro</code></li>
+</ul>
+</li>
+<li><strong>Dashboards</strong>
+<ul>
+<li>RED metrics por serviço (Rate, Errors, Duration)</li>
+<li>Infrastructure: CPU, memory, disk, network</li>
+<li>Business metrics: orders/min, revenue/hour, DAU</li>
+<li>SLO dashboard: burn rate, error budget remaining</li>
+</ul>
+</li>
+<li><strong>Alertas SLO-based:</strong></li>
+</ul>
+<pre style="background-color:#1e2129;"><code class="language-yaml"><span style="color:#5c6773;"># Alerta se consumir &gt;5% do error budget em 1 hora
+</span><span style="color:#66e6ff;">alert</span><span style="color:#ffffff;">: </span><span style="color:#37dbb5;">ErrorBudgetBurnRateTooHigh
+</span><span style="color:#66e6ff;">expr</span><span style="color:#ffffff;">: </span><span style="color:#37dbb5;">error_budget_burn_rate &gt; 14.4  </span><span style="color:#5c6773;"># 5% em 1h = 14.4x burn rate
+</span></code></pre>
+<h2>Entregáveis</h2>
+<ul>
+<li><input type="checkbox" disabled="" /> Stack completa em <code>docker-compose</code> — um <code>docker-compose up</code> e funciona tudo</li>
+<li><input type="checkbox" disabled="" /> Dashboards exportados como JSON (importáveis)</li>
+<li><input type="checkbox" disabled="" /> Blog: “OpenTelemetry in 2026 — The Standard That Finally Won”</li>
+<li><input type="checkbox" disabled="" /> Playbooks de alertas (runbooks para cada alerta configurado)</li>
+</ul>
+<hr />
+<h1><strong><em>Bônus [12]</em></strong></h1>
+<h2>DevOps, CI/CD &amp; Observabilidade para Arquitectos</h2>
+<p><strong>Objectivo</strong>
+Compreender como arquitetura impacta (e é impactada por) DevOps e observabilidade.</p>
+<h3>Recursos Obrigatórios</h3>
+<table>
+<thead>
+<tr>
+<th>Tipo</th>
+<th>Recurso</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Livro</td>
+<td><em>The Phoenix Project</em> — Gene Kim (ficção técnica — lê completo, é rápido)</td>
+</tr>
+<tr>
+<td>Livro</td>
+<td><em>Accelerate</em> — Nicole Forsgren, Jez Humble &amp; Gene Kim (caps. 1–5)</td>
+</tr>
+<tr>
+<td>Artigo</td>
+<td>“Observability vs Monitoring” — Charity Majors (honeycomb.io blog)</td>
+</tr>
+<tr>
+<td>Vídeo</td>
+<td><a href="https://www.youtube.com/@TechWorldwithNana">DevOps Roadmap — TechWorld with Nana (YouTube)</a></td>
+</tr>
+<tr>
+<td>Artigo</td>
+<td>DORA Metrics — Google (cloud.google.com/devops)</td>
+</tr>
+</tbody>
+</table>
+<h3>PROJECTO: <em>“DevOps Architecture Blueprint”</em></h3>
+<p><strong>Overview</strong>
+Desenha o pipeline completo de DevOps para o sistema e-commerce dos blocos anteriores:</p>
+<ul>
+<li>Pipeline CI/CD (build, test, deploy)</li>
+<li>Estratégia de ambientes (dev, staging, prod)</li>
+<li>Observability stack: logs, métricas, traces (escolha gratuita: Grafana + Prometheus + Jaeger)</li>
+<li>Alerting e SLO/SLA definitions</li>
+<li>Runbook de incidente</li>
+</ul>
+<p><strong>Entrega</strong>
+Documento LaTeX + diagrama do pipeline + diagrama da observability stack</p>
+
+</body>
+</html>

@@ -1,0 +1,238 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <style>body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif;
+  line-height: 1.6;
+  min-width: 1200px;
+  padding: 2rem;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: var(--keyword);
+  margin-top: 1.5em;
+}
+
+h1 {
+  font-size: 2.2em;
+  border-bottom: 2px solid var(--border);
+  padding-bottom: 0.3em;
+}
+
+h2 {
+  font-size: 1.8em;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 0.2em;
+}
+
+h3 {
+  font-size: 1.4em;
+}
+
+h4,
+h5,
+h6 {
+  color: var(--constant);
+}
+
+a {
+  color: #66aaff;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+code {
+  background-color: var(--surface);
+  color: var(--function);
+  padding: 0.2em 0.4em;
+  border-radius: 4px;
+}
+
+pre {
+  background-color: var(--surface);
+  color: var(--foreground);
+  padding: 1em;
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  white-space: pre-wrap;
+  /* Wrap long lines */
+  word-wrap: break-word;
+  overflow-y: hidden;
+  /* Disable vertical scrolling */
+}
+
+pre code {
+  background: none;
+  padding: 0;
+  color: inherit;
+  display: block;
+}
+
+pre::-webkit-scrollbar {
+  display: none;
+  /* Hide scrollbar */
+}
+
+blockquote {
+  border-left: 4px solid var(--type);
+  background-color: var(--surface);
+  padding: 0.8em 1em;
+  color: var(--comment);
+  margin: 1em 0;
+}
+
+ul,
+ol {
+  padding-left: 2em;
+}
+
+li::marker {
+  color: var(--function);
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 1em 0;
+}
+
+th,
+td {
+  border: 1px solid var(--border);
+  padding: 0.6em 1em;
+}
+
+th {
+  background-color: var(--surface);
+  color: var(--function);
+}
+
+tr:nth-child(even) {
+  background-color: var(--surface);
+}
+
+hr {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 2em 0;
+}
+
+
+
+:root {
+  --keyword: #FFB347;
+  --function: #D4FF59;
+  --type: #66E6FF;
+  --constant: #D8A5FF;
+  --comment: #5C6773;
+  --foreground: #FFFFFF;
+  
+  /* UI Colors */
+  --background: #14161f;
+  --surface: #1E2129;
+  --border: #5C6773;
+}
+</style>
+</head>
+<body>
+  <h1>Zig — Systems Programming Moderno</h1>
+<p>#week</p>
+<h2>Objectivos</h2>
+<ul>
+<li>Zig: syntax, comptime, error handling com error unions</li>
+<li>Interoperabilidade com C: importar headers C directamente</li>
+<li>Allocators explícitos: General Purpose, Fixed Buffer, Arena</li>
+<li>Build system: <code>build.zig</code> para projectos cross-platform</li>
+<li>Porque Zig: segurança sem GC, alternativa ao C para sistemas</li>
+</ul>
+<h2>Recursos</h2>
+<table>
+<thead>
+<tr>
+<th>Tipo</th>
+<th>Recurso</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Docs</td>
+<td>ziglang.org/documentation — referência oficial</td>
+</tr>
+<tr>
+<td>Guide</td>
+<td>ziglearn.org — tutorial gratuito</td>
+</tr>
+<tr>
+<td>Prática</td>
+<td>Exercism Zig track</td>
+</tr>
+<tr>
+<td>Video</td>
+<td>“Zig in 100 Seconds” — Fireship; “Why Zig” — Andrew Kelley talks</td>
+</tr>
+<tr>
+<td>Site</td>
+<td>zig.news — blog da comunidade</td>
+</tr>
+</tbody>
+</table>
+<h2>Projeto</h2>
+<h3>CLI DevTools Suite em Zig</h3>
+<p><strong>Tech Stack:</strong>
+Zig 0.13+</p>
+<p><strong>Overview</strong>
+Uma suite de 5 ferramentas de linha de comando em Zig — um file finder, um grep, um JSON formatter/validator, um CSV analyser, e um HTTP client simples — com o objectivo explícito de produzir binários mais rápidos ou comparáveis ao equivalente em Rust e Go, mas com binários mais pequenos e zero dependências. Zig tem uma feature única chamada <code>comptime</code> que permite gerar código em tempo de compilação baseado nos tipos — vais usar isso para gerar parsers de argumentos e processamento de schemas automaticamente sem macro magic. A cross-compilation é trivial em Zig: um único <code>zig build</code> produz binários estáticos para Linux, macOS e Windows sem Docker, sem sysroots, sem configuração. O sistema de allocators explícitos em Zig é obrigatório para cada operação — usas Arena allocator para cada invocação da CLI (cleanup automático quando o processo termina) e Fixed Buffer Allocator para operações com memória limitada conhecida. Os benchmarks comparativos contra <code>fd</code>, <code>ripgrep</code>, <code>jq</code> e <code>curl</code> são parte obrigatória do projecto.</p>
+<p><strong>Core features</strong></p>
+<ul>
+<li>zfind <code>zfind &lt;pattern&gt;</code> File finder</li>
+<li>zgrep <code>zgrep &lt;pattern&gt;</code> Grep com suporte a regex básico</li>
+<li>zjson <code>zjson &lt;file&gt;</code> JSON formatter + validator</li>
+<li>zcsv <code>zcsv &lt;file&gt;</code> CSV analyser: headers, types, stats</li>
+<li>zhttp <code>zhttp &lt;url&gt;</code> HTTP client simples (como curl mas mais legível)</li>
+</ul>
+<p><strong>Requisitos</strong></p>
+<ul>
+<li>
+<p>Cross-compilation: um <code>zig build</code> produz binários para Linux, macOS, Windows</p>
+</li>
+<li>
+<p>Binários estáticos (zero dependências externas)</p>
+</li>
+<li>
+<p>Memória: Arena allocator para cada invocação (cleanup automático)</p>
+</li>
+<li>
+<p>Performance: benchmarks vs <code>fd</code>, <code>ripgrep</code>, <code>curl</code>, <code>jq</code></p>
+</li>
+<li>
+<p><strong>Comptime showcase</strong></p>
+</li>
+</ul>
+<pre style="background-color:#1e2129;"><code class="language-zig"><span style="color:#ffffff;">// Geração de code em compile-time — o que torna Zig especial
+</span><span style="color:#ffffff;">fn generateParser(comptime schema: type) ParserFor(schema) {
+</span><span style="color:#ffffff;">    // Parsing gerado em compile-time baseado no tipo
+</span><span style="color:#ffffff;">}
+</span></code></pre>
+<h2>Entregáveis</h2>
+<ul>
+<li><input type="checkbox" disabled="" /> Suite compilada com GitHub Actions (Linux/macOS/Windows via Zig cross-compilation)</li>
+<li><input type="checkbox" disabled="" /> Benchmark report: Zig vs Rust vs Go em cada tool</li>
+<li><input type="checkbox" disabled="" /> Blog: “Zig in 2026 — Is It Ready to Replace C for Systems Programming?”</li>
+<li><input type="checkbox" disabled="" /> Video: Comptime magic explicado com exemplos</li>
+</ul>
+
+</body>
+</html>

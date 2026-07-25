@@ -1,0 +1,240 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <style>body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif;
+  line-height: 1.6;
+  min-width: 1200px;
+  padding: 2rem;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: var(--keyword);
+  margin-top: 1.5em;
+}
+
+h1 {
+  font-size: 2.2em;
+  border-bottom: 2px solid var(--border);
+  padding-bottom: 0.3em;
+}
+
+h2 {
+  font-size: 1.8em;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 0.2em;
+}
+
+h3 {
+  font-size: 1.4em;
+}
+
+h4,
+h5,
+h6 {
+  color: var(--constant);
+}
+
+a {
+  color: #66aaff;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+code {
+  background-color: var(--surface);
+  color: var(--function);
+  padding: 0.2em 0.4em;
+  border-radius: 4px;
+}
+
+pre {
+  background-color: var(--surface);
+  color: var(--foreground);
+  padding: 1em;
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  white-space: pre-wrap;
+  /* Wrap long lines */
+  word-wrap: break-word;
+  overflow-y: hidden;
+  /* Disable vertical scrolling */
+}
+
+pre code {
+  background: none;
+  padding: 0;
+  color: inherit;
+  display: block;
+}
+
+pre::-webkit-scrollbar {
+  display: none;
+  /* Hide scrollbar */
+}
+
+blockquote {
+  border-left: 4px solid var(--type);
+  background-color: var(--surface);
+  padding: 0.8em 1em;
+  color: var(--comment);
+  margin: 1em 0;
+}
+
+ul,
+ol {
+  padding-left: 2em;
+}
+
+li::marker {
+  color: var(--function);
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 1em 0;
+}
+
+th,
+td {
+  border: 1px solid var(--border);
+  padding: 0.6em 1em;
+}
+
+th {
+  background-color: var(--surface);
+  color: var(--function);
+}
+
+tr:nth-child(even) {
+  background-color: var(--surface);
+}
+
+hr {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 2em 0;
+}
+
+
+
+:root {
+  --keyword: #FFB347;
+  --function: #D4FF59;
+  --type: #66E6FF;
+  --constant: #D8A5FF;
+  --comment: #5C6773;
+  --foreground: #FFFFFF;
+  
+  /* UI Colors */
+  --background: #14161f;
+  --surface: #1E2129;
+  --border: #5C6773;
+}
+</style>
+</head>
+<body>
+  <h1>PostgreSQL Advanced + Query Optimization</h1>
+<p>#week</p>
+<h2>Objectivos</h2>
+<ul>
+<li>Índices avançados: B-tree, Hash, GiST, GIN, BRIN — quando usar cada um e porquê</li>
+<li><code>EXPLAIN ANALYZE</code> — leitura e interpretação do query plan em profundidade</li>
+<li>Window functions: <code>ROW_NUMBER</code>, <code>RANK</code>, <code>LAG</code>, <code>LEAD</code>, <code>PARTITION BY</code></li>
+<li>CTEs recursivas — hierarquias, grafos, sequências</li>
+<li>Query planner understanding</li>
+<li>Particionamento: range, list, hash — quando faz sentido vs overhead</li>
+<li><code>pg_stat_statements</code> e tuning de <code>postgresql.conf</code></li>
+<li>Connection pooling com PgBouncer</li>
+</ul>
+<h2>Recursos</h2>
+<table>
+<thead>
+<tr>
+<th>Tipo</th>
+<th>Recurso</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Livro</td>
+<td><em>SQL Performance Explained</em> — Markus Winand (use-the-index-luke.com — gratuito)</td>
+</tr>
+<tr>
+<td>Prática</td>
+<td>pgexercises.com — exercícios progressivos gratuitos</td>
+</tr>
+<tr>
+<td>Docs</td>
+<td>PostgreSQL 16 official documentation</td>
+</tr>
+<tr>
+<td>Tool</td>
+<td>pgAdmin 4 + <code>pg_stat_statements</code> extension</td>
+</tr>
+<tr>
+<td>Video</td>
+<td>“PostgreSQL Query Optimization” — Hussein Nasser (YouTube)</td>
+</tr>
+</tbody>
+</table>
+<h2>Projeto</h2>
+<h3>Database Performance Analyser — Query Intelligence CLI</h3>
+<p><strong>Tech Stack:</strong> 
+Go + PostgreSQL + <code>pgx/v5</code> + SQLite (histórico local)</p>
+<p><strong>Overview</strong>
+Uma ferramenta de linha de comando que se conecta a uma base de dados PostgreSQL existente e produz um relatório completo de performance com recomendações accionáveis — mais útil do que qualquer tutorial porque trabalha com dados reais.
+A ferramenta lê de <code>pg_stat_statements</code> as queries mais lentas ou mais frequentes, corre <code>EXPLAIN ANALYZE</code> automaticamente em cada uma, <strong>interpreta o query plan</strong> para detectar problemas comuns <em>(sequential scans em tabelas grandes, nested loop joins sem índice, sorts sem memória suficiente, N+1 patterns por fingerprinting)</em>, e <strong>sugere os índices específicos que devias criar com o SQL exacto pronto a executar</strong>.
+Para além das queries, a ferramenta detecta índices não usados que estão a desperdiçar espaço, table bloat por excesso de dead tuples, e lock contention por análise de <code>pg_locks</code>.
+O output é um relatório estruturado em terminal com código de cores por severidade, exportável como Markdown.</p>
+<p><em>Output:</em></p>
+<pre style="background-color:#1e2129;"><code><span style="color:#ffffff;">=== Performance Report — 2026-06-15 ===
+</span><span style="color:#ffffff;">🔴 Critical (3):
+</span><span style="color:#ffffff;">  → SELECT * FROM orders WHERE status=? (avg: 2.3s, calls: 12k/day)
+</span><span style="color:#ffffff;">    No index on &#39;status&#39;. Suggested: CREATE INDEX CONCURRENTLY idx_orders_status
+</span><span style="color:#ffffff;">  → N+1 pattern detected: 847 similar queries in 10s window
+</span><span style="color:#ffffff;">  → Lock contention: orders table locked 340ms avg
+</span><span style="color:#ffffff;">
+</span><span style="color:#ffffff;">🟡 Warning (7):
+</span><span style="color:#ffffff;">  → 12 unused indexes consuming ~400MB
+</span><span style="color:#ffffff;">  → Table &#39;events&#39; has 45% dead tuples — VACUUM needed
+</span><span style="color:#ffffff;">  → connection pool saturation: 94% avg usage
+</span><span style="color:#ffffff;">
+</span><span style="color:#ffffff;">🟢 OK (12): connection latency, query cache hit rate, replication lag
+</span></code></pre>
+<p><strong>Core Features</strong></p>
+<ul>
+<li>Query log parsing de <code>pg_stat_statements</code></li>
+<li><code>EXPLAIN ANALYZE</code> automatizado para as top-N queries lentas</li>
+<li>Slow query detection com threshold configurável</li>
+<li>Index suggestions baseadas em padrões de query</li>
+<li>N+1 detection: agrupa queries similares por fingerprint</li>
+<li>Detecção de table bloat (<code>pg_relation_size</code> + dead tuples)</li>
+<li>Unused index report</li>
+<li>Lock contention analysis via <code>pg_locks</code></li>
+<li>Connection pool metrics</li>
+</ul>
+<h2>Entregáveis</h2>
+<ul>
+<li><input type="checkbox" disabled="" /> CLI tool open-source no GitHub com README completo</li>
+<li><input type="checkbox" disabled="" /> Blog: “10 PostgreSQL Performance Problems — How to Find and Fix Them”</li>
+<li><input type="checkbox" disabled="" /> Video: walkthrough de optimização de uma query real do início ao fim</li>
+<li><input type="checkbox" disabled="" /> Cheat sheet: índices do PostgreSQL — quando usar qual (PDF)</li>
+</ul>
+
+</body>
+</html>

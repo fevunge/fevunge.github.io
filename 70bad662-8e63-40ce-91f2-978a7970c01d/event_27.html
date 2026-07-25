@@ -1,0 +1,232 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <style>body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif;
+  line-height: 1.6;
+  min-width: 1200px;
+  padding: 2rem;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: var(--keyword);
+  margin-top: 1.5em;
+}
+
+h1 {
+  font-size: 2.2em;
+  border-bottom: 2px solid var(--border);
+  padding-bottom: 0.3em;
+}
+
+h2 {
+  font-size: 1.8em;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 0.2em;
+}
+
+h3 {
+  font-size: 1.4em;
+}
+
+h4,
+h5,
+h6 {
+  color: var(--constant);
+}
+
+a {
+  color: #66aaff;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+code {
+  background-color: var(--surface);
+  color: var(--function);
+  padding: 0.2em 0.4em;
+  border-radius: 4px;
+}
+
+pre {
+  background-color: var(--surface);
+  color: var(--foreground);
+  padding: 1em;
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  white-space: pre-wrap;
+  /* Wrap long lines */
+  word-wrap: break-word;
+  overflow-y: hidden;
+  /* Disable vertical scrolling */
+}
+
+pre code {
+  background: none;
+  padding: 0;
+  color: inherit;
+  display: block;
+}
+
+pre::-webkit-scrollbar {
+  display: none;
+  /* Hide scrollbar */
+}
+
+blockquote {
+  border-left: 4px solid var(--type);
+  background-color: var(--surface);
+  padding: 0.8em 1em;
+  color: var(--comment);
+  margin: 1em 0;
+}
+
+ul,
+ol {
+  padding-left: 2em;
+}
+
+li::marker {
+  color: var(--function);
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 1em 0;
+}
+
+th,
+td {
+  border: 1px solid var(--border);
+  padding: 0.6em 1em;
+}
+
+th {
+  background-color: var(--surface);
+  color: var(--function);
+}
+
+tr:nth-child(even) {
+  background-color: var(--surface);
+}
+
+hr {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 2em 0;
+}
+
+
+
+:root {
+  --keyword: #FFB347;
+  --function: #D4FF59;
+  --type: #66E6FF;
+  --constant: #D8A5FF;
+  --comment: #5C6773;
+  --foreground: #FFFFFF;
+  
+  /* UI Colors */
+  --background: #14161f;
+  --surface: #1E2129;
+  --border: #5C6773;
+}
+</style>
+</head>
+<body>
+  <h1>Kubernetes — Platform Engineering</h1>
+<p>#week</p>
+<h2>Objectivos</h2>
+<ul>
+<li>Kubernetes architecture: control plane, data plane, etcd</li>
+<li>Resources: Pods, Deployments, StatefulSets, DaemonSets</li>
+<li>Networking: Services, Ingress, Network Policies</li>
+<li>Storage: PVs, PVCs, StorageClasses</li>
+<li>Helm: charts, values, templates, hooks</li>
+<li>Operators: CRDs + Controller pattern</li>
+</ul>
+<h2>Recursos</h2>
+<table>
+<thead>
+<tr>
+<th>Tipo</th>
+<th>Recurso</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Docs</td>
+<td>kubernetes.io/docs — documentação oficial</td>
+</tr>
+<tr>
+<td>Course</td>
+<td>TechWorld with Nana — Kubernetes Full Course (YouTube)</td>
+</tr>
+<tr>
+<td>Prática</td>
+<td>killer.sh — labs gratuitos para CKAD</td>
+</tr>
+<tr>
+<td>Tool</td>
+<td>k3d — clusters K8s locais em Docker</td>
+</tr>
+<tr>
+<td>Artigo</td>
+<td>Kubernetes Patterns — O’Reilly (versão gratuita no Red Hat)</td>
+</tr>
+</tbody>
+</table>
+<h2>Projeto</h2>
+<h3>Internal Developer Platform (Backstage-inspired)</h3>
+<p><strong>Tech Stack</strong>
+Go + Kubernetes API + Helm + React</p>
+<p><strong>Overview</strong>
+Um portal interno para developers gerirem os seus serviços, fazerem deploys, consultarem métricas e acederem a documentação — o tipo de plataforma que empresas como Spotify (que criou o Backstage) constroem para aumentar a produtividade das equipas de engenharia.
+O sistema usa um Kubernetes Operator com CRDs customizados (<code>Application</code> e <code>Environment</code>) para descrever declarativamente os serviços, e um webhook GitHub que dispara o pipeline de build e deploy automaticamente a cada push.
+O service catalog lista todos os serviços com owner, tecnologia, dependências, link para docs e status de saúde em tempo real.
+O metrics viewer integrado mostra CPU, memória, requests/segundo e error rate sem sair do portal.
+O dependency graph visualiza as dependências entre serviços para entender o impacto de mudanças.
+O sistema de RBAC garante que developers só vêem e actuam sobre os seus próprios serviços.
+A CLI companion (<code>idp</code> command) permite fazer tudo o que o portal faz mas via terminal, para developers que preferem não sair do terminal.</p>
+<p><strong>Core Features</strong></p>
+<ul>
+<li>Service catalog: lista de todos os serviços com owner, docs, status</li>
+<li>One-click deploy: Git push → build → deploy via Kubernetes</li>
+<li>Metrics per service: CPU, memory, requests/s, error rate</li>
+<li>Logs viewer integrado (sem sair do portal)</li>
+<li>Secrets management UI</li>
+<li>Runbook viewer (markdown docs integrados)</li>
+<li>Dependency graph entre serviços</li>
+<li>CLI companion (<code>idp</code> command)</li>
+</ul>
+<p><strong>Requisitos</strong></p>
+<ul>
+<li>Kubernetes Operator com CRDs (<code>Application</code>, <code>Environment</code>)</li>
+<li>Webhook para Git: push → build → deploy automático</li>
+<li>RBAC: developers só vêem os seus serviços</li>
+<li>Multi-namespace isolation</li>
+</ul>
+<h2>Entregáveis</h2>
+<ul>
+<li><input type="checkbox" disabled="" /> Platform funcional em cluster local (k3d)</li>
+<li><input type="checkbox" disabled="" /> Blog: “Building an Internal Developer Platform on Kubernetes”</li>
+<li><input type="checkbox" disabled="" /> Video: Deploy workflow do git push ao serviço em produção</li>
+<li><input type="checkbox" disabled="" /> Helm chart publicado no Artifact Hub</li>
+</ul>
+
+</body>
+</html>

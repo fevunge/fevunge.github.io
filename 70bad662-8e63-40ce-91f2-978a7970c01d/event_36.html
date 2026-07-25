@@ -1,0 +1,278 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <style>body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif;
+  line-height: 1.6;
+  min-width: 1200px;
+  padding: 2rem;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: var(--keyword);
+  margin-top: 1.5em;
+}
+
+h1 {
+  font-size: 2.2em;
+  border-bottom: 2px solid var(--border);
+  padding-bottom: 0.3em;
+}
+
+h2 {
+  font-size: 1.8em;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 0.2em;
+}
+
+h3 {
+  font-size: 1.4em;
+}
+
+h4,
+h5,
+h6 {
+  color: var(--constant);
+}
+
+a {
+  color: #66aaff;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+code {
+  background-color: var(--surface);
+  color: var(--function);
+  padding: 0.2em 0.4em;
+  border-radius: 4px;
+}
+
+pre {
+  background-color: var(--surface);
+  color: var(--foreground);
+  padding: 1em;
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  white-space: pre-wrap;
+  /* Wrap long lines */
+  word-wrap: break-word;
+  overflow-y: hidden;
+  /* Disable vertical scrolling */
+}
+
+pre code {
+  background: none;
+  padding: 0;
+  color: inherit;
+  display: block;
+}
+
+pre::-webkit-scrollbar {
+  display: none;
+  /* Hide scrollbar */
+}
+
+blockquote {
+  border-left: 4px solid var(--type);
+  background-color: var(--surface);
+  padding: 0.8em 1em;
+  color: var(--comment);
+  margin: 1em 0;
+}
+
+ul,
+ol {
+  padding-left: 2em;
+}
+
+li::marker {
+  color: var(--function);
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 1em 0;
+}
+
+th,
+td {
+  border: 1px solid var(--border);
+  padding: 0.6em 1em;
+}
+
+th {
+  background-color: var(--surface);
+  color: var(--function);
+}
+
+tr:nth-child(even) {
+  background-color: var(--surface);
+}
+
+hr {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 2em 0;
+}
+
+
+
+:root {
+  --keyword: #FFB347;
+  --function: #D4FF59;
+  --type: #66E6FF;
+  --constant: #D8A5FF;
+  --comment: #5C6773;
+  --foreground: #FFFFFF;
+  
+  /* UI Colors */
+  --background: #14161f;
+  --surface: #1E2129;
+  --border: #5C6773;
+}
+</style>
+</head>
+<body>
+  <h1>Advanced Algorithms + Competitive Programming</h1>
+<p>#s_week</p>
+<h2>Objectivos</h2>
+<ul>
+<li>Advanced trees: B-trees, Red-Black trees, Segment trees, Fenwick trees</li>
+<li>Graph algorithms: Bellman-Ford, Floyd-Warshall, A*, max-flow (Ford-Fulkerson)</li>
+<li>String algorithms: KMP, Z-algorithm, Rabin-Karp, Suffix Arrays</li>
+<li>Advanced DP: bitmask DP, divide and conquer DP, knuth optimization</li>
+<li>Geometry: convex hull, line intersection, closest pair</li>
+</ul>
+<h2>Recursos</h2>
+<table>
+<thead>
+<tr>
+<th>Tipo</th>
+<th>Recurso</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Livro</td>
+<td><em>Introduction to Algorithms</em> (CLRS) — caps. seleccionados</td>
+</tr>
+<tr>
+<td>Prática</td>
+<td>Codeforces — contests regulares gratuitos</td>
+</tr>
+<tr>
+<td>Prática</td>
+<td>AtCoder — editorial muito educativo</td>
+</tr>
+<tr>
+<td>Site</td>
+<td>cp-algorithms.com — algoritmos com provas e implementações</td>
+</tr>
+<tr>
+<td>Viz</td>
+<td>VisuAlgo — visualgo.net</td>
+</tr>
+</tbody>
+</table>
+<h2>Projeto</h2>
+<h3>Competitive Programming Platform — Interactive Learning</h3>
+<p><strong>Tech Stack</strong>
+React + TypeScript + Canvas API (visualizações) + Go (judge backend)</p>
+<p><strong>Overview</strong>
+Uma plataforma web para aprender algoritmos de forma interactiva — como o LeetCode mas com visualizações passo a passo sincronizadas com código e um juiz de código online, tudo construído por ti. A plataforma tem duas áreas principais: a área de aprendizagem visualiza algoritmos interactivamente no Canvas API com controlo de velocidade, visualização do estado interno (heap, stack, memória), e código-fonte em highlighting sincronizado com cada step; a área de desafios tem um editor de código online com execução num sandbox Go no backend com timeout e memory limits, e diff automático do output. Os algoritmos implementados cobrem sorting (8 algoritmos side-by-side), grafos (DFS, BFS, Dijkstra, A*, Kruskal, Prim), árvores (AVL rotations passo a passo, Red-Black insertions, Segment tree updates), strings (KMP failure function animada, Z-array, Suffix Array), e DP (tabelas de LCS, Knapsack preenchidas em tempo real). O quiz mode pergunta “qual o próximo estado?” para verificar se realmente entendes ou só estás a ver. Esta semana inclui também 50+ problemas LeetCode com foco em padrões avançados.</p>
+<p><strong>Features:</strong></p>
+<ul>
+<li>Editor de código online com execução (Go sandbox no backend)</li>
+<li>Step-by-step com velocidade ajustável e código sincronizado</li>
+<li>Complexidade de tempo e espaço por step</li>
+<li>Quiz mode: “Qual o próximo passo?”</li>
+<li>Challenge mode: implementa o algoritmo e valida</li>
+<li><strong>Judge Backend (Go):</strong>
+<ul>
+<li>Executa código em sandbox seguro</li>
+<li>Timeout e memory limit</li>
+<li>Diff de output</li>
+</ul>
+</li>
+</ul>
+<p><strong>Requisitos</strong></p>
+<ul>
+<li>Sorting: 8 algoritmos com comparação side-by-side</li>
+<li>Graph: DFS, BFS, Dijkstra, A*, Kruskal, Prim</li>
+<li>Trees: AVL rotations, Red-Black insertions, Segment tree updates</li>
+<li>Strings: KMP failure function, Z-array, Suffix Array construction</li>
+<li>DP: LCS, Knapsack, Matrix Chain — visualização da tabela</li>
+</ul>
+<h2>Entregáveis</h2>
+<ul>
+<li><input type="checkbox" disabled="" /> Web app publicada e funcional</li>
+<li><input type="checkbox" disabled="" /> Blog: “How I Built an Interactive Algorithm Visualizer”</li>
+<li><input type="checkbox" disabled="" /> Video: walkthrough da plataforma</li>
+<li><input type="checkbox" disabled="" /> 50+ LeetCode problems resolvidos nesta semana</li>
+</ul>
+<hr />
+<h1><strong><em>Bônus [11]</em></strong></h1>
+<h2>Performance, Escalabilidade &amp; Resiliência</h2>
+<p><strong>Objectivo</strong>
+Arquitectar sistemas que sobrevivem ao sucesso.</p>
+<h3>Recursos Obrigatórios</h3>
+<table>
+<thead>
+<tr>
+<th>Tipo</th>
+<th>Recurso</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Livro</td>
+<td><em>Designing Data-Intensive Applications</em> — Kleppmann (caps. 7–12) — continuação do Bloco 5</td>
+</tr>
+<tr>
+<td>Artigo</td>
+<td>“The Architecture of Open Source Applications” — Vol 1 &amp; 2 (aosabook.org — <strong>gratuito online</strong>)</td>
+</tr>
+<tr>
+<td>Vídeo</td>
+<td><a href="https://www.youtube.com/watch?v=-W9F__D3oY4">“Scalability Harvard Web Development” — David Malan (YouTube)</a></td>
+</tr>
+<tr>
+<td>Artigo</td>
+<td>“Chaos Engineering” — Principles of Chaos (principlesofchaos.org)</td>
+</tr>
+<tr>
+<td>Site</td>
+<td><a href="http://highscalability.com/">High Scalability Blog</a> — casos reais de escalabilidade</td>
+</tr>
+</tbody>
+</table>
+<h3>PROJECTO: <em>“Capacity Planning &amp; Scalability Design”</em></h3>
+<p><strong>Overview</strong>
+Para um sistema de streaming de vídeo fictício que quer passar de 1.000 para 1.000.000 utilizadores simultâneos:</p>
+<ul>
+<li>Cálculos de capacity planning (bandwidth, storage, compute)</li>
+<li>Estratégia de caching (CDN, Redis, in-memory)</li>
+<li>Estratégia de sharding/particionamento de dados</li>
+<li>Padrões de resiliência: Circuit Breaker, Bulkhead, Timeout</li>
+<li>Plano de Chaos Engineering para validar resiliência</li>
+</ul>
+<p><strong>Entrega</strong>
+Documento LaTeX com cálculos justificados + diagramas de escalabilidade</p>
+
+</body>
+</html>
