@@ -1,84 +1,37 @@
-.hover {
-	position: relative;
-	display: flex;
-	flex-direction: row;
-	justify-content: start;
-	align-items: start;
-	padding: 20px;
-	height: 600px;
-	margin: 0;
-	gap: 60px;
-	z-index: 0;
+/* =====================================================================
+   fevunge :: hover.css
+   Estados de interação — o que acontece quando o rato/foco passa
+   por cima de algo. Estrutura e cores base vivem em main.css.
+   ===================================================================== */
+
+/* ---------- navegação do cabeçalho ---------- */
+.site-header nav a:hover,
+.site-header nav a:focus-visible{
+  color: var(--pink);
+  border-color: var(--pink);
 }
 
-.hover::before {
-	content: "";
-	position: absolute;
-	inset: 0;
-	z-index: -1;
-	background-image:
-		repeating-linear-gradient(90deg, rgba(194, 157, 241, 0.035) 0px, rgba(194, 157, 241, 0.035) 1px, transparent 1px, transparent 48px),
-		repeating-linear-gradient(0deg, rgba(194, 157, 241, 0.035) 0px, rgba(194, 157, 241, 0.035) 1px, transparent 1px, transparent 48px),
-		repeating-linear-gradient(45deg, transparent, transparent 67px, rgba(194, 157, 241, 0.02) 67px, rgba(194, 157, 241, 0.02) 68px, transparent 68px, transparent 136px),
-		repeating-linear-gradient(-45deg, transparent, transparent 67px, rgba(194, 157, 241, 0.02) 67px, rgba(194, 157, 241, 0.02) 68px, transparent 68px, transparent 136px),
-		radial-gradient(circle, rgba(194, 157, 241, 0.08) 1.5px, transparent 1.5px);
-	background-size:
-		48px 100%,
-		100% 48px,
-		100% 100%,
-		100% 100%,
-		48px 48px;
-	background-position:
-		0 0,
-		0 0,
-		0 0,
-		0 0,
-		-1px -1px;
+/* ---------- cartões de notícia ---------- */
+.news:hover{
+  transform: translateY(-4px);
+  border-color: var(--cyan);
+  box-shadow: 0 14px 34px -16px rgba(79,242,255,0.3);
 }
 
-.hover div.news {
-    width: 500px;
-	display: flex;
-	justify-content: left;
-	flex-direction: column;
-	animation: devunge-bounce 4s ease-in-out infinite;
+.news > a:hover,
+.news > a:focus-visible{
+  background: var(--pink);
+  color: var(--void);
 }
 
-div.news {
-	height: max-content;
-	height: 100%;
-	border: 1px  var(--function) solid;
-	border-bottom: 10px var(--function) solid;
-	padding: 8px;
-	margin: 0;
-	
-}
-.hover div.news h4 {
-    margin: 4px;
-    text-transform: uppercase;
+/* ---------- cartões dev.to ---------- */
+.devto-card:hover{
+  border-color: var(--pink);
+  background: rgba(255,90,181,0.06);
 }
 
-.hover div.news p {
-    margin: 6px;
-    text-align: justify;
-    
-}
-
-.hover div.news a {
-    display: flex;
-    position: absolute;
-    margin: 6px;
-    bottom: 24px;
-}
-
-div.news:hover {
-    border-color:  var(--keyword) ;
-}
-@keyframes devunge-bounce {
-	0%, 100% {
-		transform: translateY(0);
-	}
-	50% {
-		transform: translateY(-6px);
-	}
+/* ---------- reduzir movimento para quem preferir ---------- */
+@media (prefers-reduced-motion: reduce){
+  .news{ transition: none; }
+  .news:hover{ transform: none; }
 }
