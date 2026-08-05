@@ -4,64 +4,93 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="fevunge the index">
+  <meta name="description" content="fevunge — the index">
   <meta name="author" content="fevunge">
+  <meta name="color-scheme" content="dark">
+  <meta name="theme-color" content="#050440">
+
+  <!-- Open Graph / social preview -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="fevunge">
+  <meta property="og:description" content="fevunge — the index">
+  <meta name="twitter:card" content="summary">
+
   <title>fevunge</title>
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-  <link rel="shortcut icon" href="assets/devunge.png" type="image/x-icon">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;0,500;0,700;0,800;1,400&display=swap" rel="stylesheet">
+  <link rel="icon" href="assets/devunge.png" type="image/png">
   <link rel="stylesheet" href="assets/css/main.css">
   <link rel="stylesheet" href="assets/css/hover.css">
-
 </head>
+
 <body>
   <div class="body-layout">
 
     <div class="container">
       <header class="site-header">
-        <a href="./books.html"> <code>the::list&lt;book&gt;</code> </a>
-        <a href="https://github.com/fevunge/the_blackhole/blob/main/main.md"> <code>the::black_hole</code> </a>
-        <a href="./books.html"> <code>the::vector&lt;article&gt;</code> </a>
+        <pre><code>
+  ▐▘            
+  ▜▘█▌▌▌▌▌▛▌▛▌█▌
+  ▐ ▙▖▚▘▙▌▌▌▙▌▙▖
+            ▄▌  </code></pre>
+        <nav aria-label="Primary">
+          <a href="https://github.com/fevunge"><code>github</code></a>
+          <a href="https://linkedin.com/in/fevunge"><code>linkedin</code></a>
+          <a href="https://dev.to/fevunge"><code>dev.to</code></a>
+        </nav>
       </header>
       <hr>
-      <div class="hover">
-        <div class="news">
-            <h4># The BlackHole Roadmap</h4>
-            <p>Built for intensive self-directed learning. The 2026 Edition features an updated tech stack and hands-on projects that reflect the current job market. All resources are free or include a functional free version</p>
-            <a href="https://github.com/fevunge/the_blackhole/blob/main/main.md"><code>the::link</code></a>
-        </div>
-        <div class="news">
-            <h4># The Talk about numbers!</h4>
-            <p>
-                Numbers are abstract concepts. We can't hold them in our hands, nor can we draw them exactly as they are. What we do instead is represent them using symbols. Throughout history, we've used several different systems to write numbers.
-            </p>
-            <a href="https://dev.to/fevunge/talking-about-numbers-1h49"><code>the::link</code></a>
-        </div>
-        <div class="news">
-            <h4># The Tmux Config</h4>
-            <p>tmux  is  a terminal multiplexer: it enables a number of terminals to be created, accessed, and controlled from a single screen.  tmux may be detached from a screen and continue running in the background, then later reattached. </p>
-            <a href="./config/tmux.html"><code>the::link</code></a>
-        </div>
-      </div>
-      <div class="hover">
-        <div class="news">
-            <h4># The Split</h4>
-            <p>This is the shortened version of the split version. It is intended for cases where a more compact format is sufficient. Use it with caution, as it may not include all the details or safeguards present in the full version</p>
-            <a href="./code/split.html"><code>the::link</code></a>
-        </div>
-      </div>
+
+      <section class="intro" aria-label="Introduction"></section>
+        <p>
+          Welcome to my personal website, where I share my journey as a software engineer and explore the fascinating world of technology.
+          Here, you'll find a collection of my projects, articles, and insights on various topics related to programming, software development, and more.
+          Feel free to explore and join me on this exciting adventure!
+        </p>
+      </section>
       <hr>
-      <iframe data-testid="embed-iframe" style="border-radius:12px" src="https://open.spotify.com/embed/playlist/37i9dQZF1E39q3a1eCurDs?utm_source=generator&theme=0&si=5035cc702bb0449d" width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+      <section class="hover" aria-label="Featured posts">
+        <div class="news">
+          <h4># The BlackHole Roadmap</h4>
+          <p>
+            A journey through the universe, heading toward the center of a black hole and then letting yourself be swallowed up by it—that’s version 02.26.
+            But first, you’ll have to complete a lot of orbits before reaching the center;
+            some  orbits are very hard to escape from, while others are very hard to enter, but you can do it. make it Have fun, explorer!
+          </p>
+          <a href="./70bad662-8e63-40ce-91f2-978a7970c01d/index.html"><code>the::link</code></a>
+        </div>
+        <div class="news">
+          <h4># The Talk about numbers!</h4>
+          <p>Numbers are abstract concepts. We can't hold them in our hands, nor can we draw them exactly as they are. What we do instead is represent them using symbols. Throughout history, we've used several different systems to write numbers.</p>
+          <a href="https://dev.to/fevunge/talking-about-numbers-1h49"><code>the::link</code></a>
+        </div>
+        <div class="news">
+          <h4># The Tmux Config</h4>
+          <p>tmux is a terminal multiplexer: it enables a number of terminals to be created, accessed, and controlled from a single screen. tmux may be detached from a screen and continue running in the background, then later reattached.</p>
+          <a href="./config/tmux.html"><code>the::link</code></a>
+        </div>
+             <div class="news">
+          <h4># The Split</h4>
+          <p>This is the shortened version of the split version. It is intended for cases where a more compact format is sufficient. Use it with caution, as it may not include all the details or safeguards present in the full version.</p>
+          <a href="./code/split.html"><code>the::link</code></a>
+        </div>
+      </section>
+      <hr>
     </div>
 
-    <aside id="devto-aside">
-      <h3 class="section-title"><i class="fa-brands fa-dev"></i>articles</h3>
-      <div id="devto-list">
-        <div class="devto-card" style="opacity:0.6">loading...</div>
+    <aside id="devto-aside" aria-label="Dev.to articles">
+      <h3 class="section-title"><i class="fa-brands fa-dev" aria-hidden="true"></i> articles</h3>
+      <div id="devto-list" aria-live="polite" aria-busy="true">
+        <div class="devto-card loading">loading...</div>
       </div>
     </aside>
 
   </div>
-  <script src="js/devto.js"></script>
+
+  <script src="js/devto.js" defer></script>
 </body>
 
 </html>
