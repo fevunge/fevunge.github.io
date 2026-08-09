@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>THE BLACKHOLE ROADMAP :: terminal de acesso</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;0,500;0,700;0,800;1,400&display=swap" rel="stylesheet">
+<style>
+ :root{
+  --void:       #050440;   /* fundo — azul-marinho profundo, tirado da imagem */
+  --void-2:     #0a0b5c;   /* fundo alternado (linhas de tabela, code blocks) */
+  --border:     #5f5ec1;   /* moldura azul-violeta */
+  --border-lo:  #241f6b;
+
+  --green:      #4ff2ff;   /* ciano vivo — antigo "verde" */
+  --green-dim:  #2b93a3;
+
+  --blue:       #ff5ab5;   /* rosa/magenta vivo — antigo "azul" */
+  --blue-lo:    #d6215f;
+
+  --yellow:     #e2fdf4;   /* branco-gelo — texto de leitura */
+  --yellow-hi:  #b3fdfa;   /* ciano pálido — ênfase */
+
+  --paper:      #fffcff;   /* branco puro */
+  --danger:     #ff4d4d;
+  --focus:      #e2fdf4;
+}
+
+  *{ box-sizing:border-box; }
+
+  html{ font-size:16px; } /* base grande — acessibilidade */
+
+  body{
+    margin:0;
+    min-height:100vh;
+    background: var(--void);
+    color: var(--yellow);
+    font-family: monospace, "JetBrains Mono", monospace;
+    line-height: 1.65;
+    padding: 2.4rem 1.2rem 4rem;
+  }
+
+  /* ---------- foco visível para acessibilidade ---------- */
+  a:focus-visible, button:focus-visible, input:focus-visible{
+    outline: 3px solid var(--focus);
+    outline-offset: 3px;
+  }
+
+  ::selection{ background: var(--blue); color: var(--void); }
+
+  .page{
+    max-width: 980px;
+    margin: 0 auto;
+  }
+
+  /* ---------- topo: crachá de sistema ---------- */
+  .boot-bar{
+    display:flex;
+    flex-wrap:wrap;
+    gap:.6rem 1.4rem;
+    align-items:center;
+    justify-content:space-between;
+    font-size: 0.85rem;
+    color: var(--green-dim);
+    border-bottom: 1px dashed var(--border-lo);
+    padding-bottom: .8rem;
+    margin-bottom: 2rem;
+  }
+  .boot-bar span.dot{ color: var(--green); }
+  .blink{ animation: blink 1.1s steps(2,start) infinite; }
+  @media (prefers-reduced-motion: reduce){ .blink{ animation:none; } }
+  @keyframes blink{ to{ visibility:hidden; } }
+
+  /* ---------- ASCII / cabeçalho de evento ---------- */
+  .ascii-wrap{
+    overflow-x: auto;
+    margin-bottom: 1.6rem;
+  }
+  pre.ascii{
+    margin:0;
+    color: var(--blue);
+    font-size: clamp(0.34rem, 2.6vw, 0.62rem);
+    line-height: 1.15;
+    font-weight: 700;
+    white-space: pre;
+  }
+
+  .event-title{
+    font-size: clamp(1.5rem, 4.4vw, 2.5rem);
+    color: var(--green);
+    font-weight: 800;
+    letter-spacing: 1px;
+    margin: .2rem 0 .3rem;
+  }
+  .event-title .hash{ color: var(--blue); }
+
+  .tagline{
+    color: var(--yellow-hi);
+    font-size: 1.05rem;
+    font-weight: 500;
+    border-left: 4px solid var(--blue);
+    padding-left: .9rem;
+    margin: 0 0 2.4rem;
+  }
+  .tagline em{ color: var(--paper); font-style: normal; }
+
+  /* ---------- secção ABOUT ---------- */
+  .section-label{
+    display:inline-block;
+    color: var(--void);
+    background: var(--green);
+    font-weight: 800;
+    padding: .15rem .7rem;
+    border-radius: 4px;
+    font-size: .9rem;
+    letter-spacing: 1px;
+    margin-bottom: 1rem;
+  }
+  .section-label.alt{ background: var(--blue); }
+
+  .prompt-line{
+    color: var(--green);
+    font-weight: 700;
+    margin: 0 0 .6rem;
+    font-size: 1rem;
+  }
+  .prompt-line .user{ color: var(--blue); }
+  .prompt-line .at{ color: var(--yellow-hi); }
+  .prompt-line .cmd{ color: var(--paper); }
+
+  p{ margin: 0 0 1.1rem; font-size: 1.02rem; }
+  .lede{ color: var(--paper); font-size: 1.1rem; }
+
+  ul.facts{
+    list-style: none;
+    margin: 0 0 1.6rem;
+    padding: 0;
+    display: grid;
+    gap: .7rem;
+  }
+  ul.facts li{
+    display:flex;
+    gap: .8rem;
+    align-items: flex-start;
+    background: rgba(255,255,255,0.02);
+    border: 1px solid var(--border-lo);
+    border-left: 5px solid var(--green);
+    border-radius: 6px;
+    padding: .9rem 1rem;
+    font-size: 1rem;
+  }
+  ul.facts li .tick{ color: var(--green); font-weight: 800; font-size: 1.15rem; flex: 0 0 auto; }
+  ul.facts li b{ color: var(--yellow-hi); }
+
+  .badge-row{
+    display:flex; flex-wrap:wrap; gap:.6rem;
+    margin-bottom: 1.8rem;
+  }
+  .badge{
+    border: 2px solid var(--blue);
+    color: var(--blue);
+    background: rgba(79,179,255,0.08);
+    font-weight: 700;
+    font-size: .82rem;
+    padding: .35rem .7rem;
+    border-radius: 5px;
+    letter-spacing: .4px;
+  }
+
+  hr.divider{
+    border: none;
+    border-top: 1px dashed var(--border);
+    margin: 2.4rem 0;
+  }
+
+  /* ---------- secção LOGIN ---------- */
+  .login-panel{
+    background: rgba(255,255,255,0.015);
+    border: 2px solid var(--border);
+    border-radius: 8px;
+    padding: 1.8rem 1.5rem 2rem;
+    margin-top: .5rem;
+  }
+  @media(min-width:560px){ .login-panel{ padding: 2.2rem 2.4rem 2.4rem; } }
+
+  .login-panel h2{
+    margin: 0 0 .3rem;
+    color: var(--yellow-hi);
+    font-size: 1.3rem;
+    font-weight: 800;
+  }
+  .login-panel .sub{
+    color: var(--green-dim);
+    font-size: .95rem;
+    margin: 0 0 1.6rem;
+  }
+
+  form{ display:flex; flex-direction:column; gap: 1.4rem; }
+
+  .field label{
+    display:block;
+    color: var(--green);
+    font-weight: 700;
+    font-size: 1rem;
+    margin-bottom: .5rem;
+  }
+  .field label .req{ color: var(--blue); }
+
+  .field .input-row{
+    display:flex;
+    align-items:center;
+    background: var(--void);
+    border: 2px solid var(--border);
+    border-radius: 6px;
+    padding: 0 .3rem 0 .9rem;
+    transition: border-color .15s ease, box-shadow .15s ease;
+  }
+  .field .input-row:focus-within{
+    border-color: var(--green);
+    box-shadow: 0 0 0 3px rgba(93,255,156,0.18);
+  }
+  .field .input-row .caret{
+    color: var(--blue);
+    font-weight: 800;
+    margin-right: .5rem;
+  }
+  .field input{
+    flex: 1 1 auto;
+    background: transparent;
+    border: none;
+    color: var(--paper);
+    font-family: inherit;
+    font-size: 1.05rem;
+    padding: .85rem .4rem;
+    min-width: 0;
+  }
+  .field input::placeholder{ color: #7a6a56; }
+  .field input:focus{ outline: none; }
+
+  .field .toggle-visibility{
+    background: none;
+    border: none;
+    color: var(--yellow-hi);
+    font-family: inherit;
+    font-size: .8rem;
+    font-weight: 700;
+    cursor: pointer;
+    padding: .5rem .6rem;
+    white-space: nowrap;
+  }
+  .field .toggle-visibility:hover{ color: var(--blue); }
+
+  .row-options{
+    display:flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items:center;
+    gap: .8rem;
+    font-size: .95rem;
+  }
+  .row-options label{
+    display:flex; align-items:center; gap:.55rem;
+    color: var(--yellow);
+    cursor:pointer;
+  }
+  .row-options input[type="checkbox"]{
+    width: 1.2rem; height: 1.2rem;
+    accent-color: var(--green);
+  }
+  .row-options a{ color: var(--blue); text-decoration: underline; }
+  .row-options a:hover{ color: var(--yellow-hi); }
+
+  .btn-enter{
+    appearance:none;
+    border: 2px solid var(--green);
+    background: var(--green);
+    color: var(--void);
+    font-family: inherit;
+    font-weight: 800;
+    font-size: 1.1rem;
+    letter-spacing: .6px;
+    padding: 1rem 1.2rem;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: transform .08s ease, background .15s ease, border-color .15s ease;
+  }
+  .btn-enter:hover{ background: var(--yellow-hi); border-color: var(--yellow-hi); }
+  .btn-enter:active{ transform: translateY(1px); }
+
+  .divider-or{
+    display:flex; align-items:center; gap: .8rem;
+    color: var(--border);
+    font-size: .85rem;
+    margin: .2rem 0;
+  }
+  .divider-or::before, .divider-or::after{
+    content:""; flex:1; height:1px; background: var(--border);
+  }
+
+  .btn-guest{
+    appearance:none;
+    background: transparent;
+    border: 2px dashed var(--blue);
+    color: var(--blue);
+    font-family: inherit;
+    font-weight: 700;
+    font-size: 1rem;
+    padding: .9rem 1.2rem;
+    border-radius: 6px;
+    cursor: pointer;
+  }
+  .btn-guest:hover{ background: rgba(79,179,255,0.1); color: var(--yellow-hi); border-color: var(--yellow-hi); }
+
+  .signup-note{
+    text-align:center;
+    color: var(--yellow);
+    font-size: .95rem;
+    margin-top: .3rem;
+  }
+  .signup-note a{ color: var(--green); font-weight: 700; text-decoration: underline; }
+  .signup-note a:hover{ color: var(--yellow-hi); }
+
+  /* ---------- rodapé / quote ---------- */
+  .quote-block{
+    margin-top: 2.6rem;
+    border-top: 1px dashed var(--border);
+    padding-top: 1.6rem;
+    text-align:center;
+  }
+  .quote-block q{
+    display:block;
+    color: var(--paper);
+    font-size: 1.1rem;
+    font-style: normal;
+    margin-bottom: .5rem;
+  }
+  .quote-block .who{ color: var(--blue); font-weight:700; font-size: .9rem; }
+
+  .footer-status{
+    margin-top: 2rem;
+    display:flex; flex-wrap:wrap; gap:.5rem 1.4rem; justify-content:space-between;
+    color: var(--green-dim);
+    font-size: .8rem;
+    border-top: 1px dashed var(--border-lo);
+    padding-top: 1rem;
+  }
+
+  /* grelha responsiva das duas colunas principais */
+  .layout{
+    display:grid;
+    grid-template-columns: 1fr;
+    gap: 2.4rem;
+  }
+  @media(min-width: 880px){
+    .layout{ grid-template-columns: 1.1fr 1fr; align-items:start; }
+  }
+</style>
+</head>
+<body>
+  <div class="page">
+
+    <div class="boot-bar">
+      <div><span class="dot">●</span> by devunge</div>
+      <div>v02.26<span class="blink">_</span></div>
+    </div>
+
+    <div class="ascii-wrap">
+      <img src="../assets/img/blackhole.png" style="text-align: center;">
+      <pre class="ascii" aria-hidden="true">
+%      _______ _            ____  _            _    _           _      
+%     |__   __| |          |  _ \| |          | |  | |         | |     
+%        | |  | |__   ___  | |_) | | __ _  ___| | _| |__   ___ | | ___ 
+%        | |  | '_ \ / _ \ |  _ <| |/ _` |/ __| |/ / '_ \ / _ \| |/ _ \
+%        | |  | | | |  __/ | |_) | | (_| | (__|   <| | | | (_) | |  __/
+%        |_|  |_| |_|\___| |____/|_|\__,_|\___|_|\_\_| |_|\___/|_|\___|
+%                                                                      
+%                                                                      
+      </pre>
+    </div>
+    <p class="tagline">
+      A journey through the universe, heading toward the center of a black hole and then letting yourself be swallowed up by it—that’s version 02.26.
+      <br>
+      But first, you’ll have to complete a lot of orbits before reaching the center;
+      <br>
+      some orbits are very hard to escape from, while others are very hard to enter, but you can do it. make it Have fun, explorer!
+    </p>
+
+    <div class="layout">
+
+      <section aria-labelledby="about-heading">
+        <span class="section-label">ABOUT</span>
+        
+        <h2 id="about-heading" style="position:absolute;left:-9999px;">About</h2>
+        <ul class="facts">
+          <li><span class="tick">.</span><span><b>tech stack: </b>TypeScript, Zig, Rust, Go, C, C++ and Python. Elixir and WebAssembly as optional.</span></li>
+          <li><span class="tick">.</span><span>map: <b>48 orbits</b></span></li>
+          <li><span class="tick">.</span><span><b>topics covered: </b>Systems Architecture, Cybersecurity, Computer Graphics, Machine Learning, Distributed Systems</span></li>
+          <li><span class="tick">.</span><span><b>what you can learn: </b>Software engineer with expertise in multiple programming languages, full-stack development, system design, databases, DevOps, security, AI/ML, computer graphics, low-level systems, and distributed architectures.
+</span></li>
+          
+        </ul>
+
+        <div class="badge-row" aria-hidden="true">
+          <span class="badge">SYSTEMS</span>
+          <span class="badge">CYBERSECURITY</span>
+          <span class="badge">ML/AI</span>
+          <span class="badge">GRAPHICS</span>
+          <span class="badge">DISTRIBUTED</span>
+        </div>
+
+        <p class="prompt-line" style="margin-top:1.6rem;">
+          <span class="user">visitante</span><span class="at">@</span><span>blackhole</span><span class="at">:</span><span class="cmd">~$</span> echo $LEMA
+        </p>
+      </section>
+
+      <!-- ================= LOGIN ================= -->
+      <section aria-labelledby="login-heading">
+        <span class="section-label alt">ACCESS</span>
+        <div class="login-panel">
+          <h2 id="login-heading">Welcome back, Explorer</h2>
+          <p class="sub">We need to verify your username and password, for security reasons, nothing personal.</p>
+
+          <form action="#" method="post">
+            <div class="field">
+              <label for="user">username <span class="req">*</span></label>
+              <div class="input-row">
+                <span class="caret" aria-hidden="true">&gt;</span>
+                <input type="text" id="user" name="user" placeholder="your.name" autocomplete="username" required>
+              </div>
+            </div>
+
+            <div class="field">
+              <label for="pass">password <span class="req">*</span></label>
+              <div class="input-row">
+                <span class="caret" aria-hidden="true">&gt;</span>
+                <input type="password" id="pass" name="pass" placeholder="••••••••••" autocomplete="current-password" required>
+                <button type="button" class="toggle-visibility" onclick="var p=document.getElementById('pass'); p.type = p.type==='password' ? 'text' : 'password'; this.textContent = p.type==='password' ? 'SHOW' : 'HIDE';">SHOW</button>
+              </div>
+            </div>
+
+            <div class="row-options">
+              <label><input type="checkbox" name="remember">remember me</label>
+              <a href="#">Oh man, I forgot my password</a>
+            </div>
+
+            <button type="submit" class="btn-enter">[ CONTINUE JOURNEY ]</button>
+
+            <div class="divider-or" aria-hidden="true">ou</div>
+
+            <button type="button" class="btn-guest">[ EXPLORE AS GUEST ]</button>
+          </form>
+
+          <p class="signup-note">Do not have an account?<a href="#">Sign up here</a></p>
+        </div>
+      </section>
+
+    </div>
+
+    <div class="quote-block">
+      <q>How can someone write something I don't understand? There's no way... I'm going to read that shit UNTIL I UNDERSTAND IT. Otherwise, the guy will shit on your head and you won't even react.</q>
+    </div>
+
+    <div class="footer-status">
+      <span>the_blackhole@v02.26</span>
+    </div>
+
+  </div>
+</body>
+</html>
