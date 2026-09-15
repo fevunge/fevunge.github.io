@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-PT">
 
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="fevunge — the index">
   <meta name="author" content="fevunge">
   <meta name="color-scheme" content="dark">
@@ -14,83 +14,546 @@
   <meta property="og:title" content="fevunge">
   <meta property="og:description" content="fevunge — the index">
   <meta name="twitter:card" content="summary">
-
-  <title>fevunge</title>
-
-  <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+  <title>fevunge — portfólio</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;0,500;0,700;0,800;1,400&display=swap" rel="stylesheet">
-  <link rel="icon" href="assets/devunge.png" type="image/png">
-  <link rel="stylesheet" href="assets/css/main.css">
-  <link rel="stylesheet" href="assets/css/hover.css">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500;700&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      --paper: #efece1;
+      --paper-edge: #e6e2d4;
+      --ink: #2b2a25;
+      --ink-soft: #5c5848;
+      --rule: #c7c0a8;
+      --accent: #47606b;
+      --accent-dim: #7c95a0;
+      --mark: #7a4a3a;
+      --code-bg: #e4dfcd;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      -webkit-text-size-adjust: 100%;
+    }
+
+    body {
+      margin: 0;
+      background: var(--paper-edge);
+      color: var(--ink);
+      font-family: 'EB Garamond', Georgia, 'Times New Roman', serif;
+      font-size: 19px;
+      line-height: 1.65;
+    }
+
+    ::selection {
+      background: var(--accent);
+      color: var(--paper);
+    }
+
+    .sheet {
+      max-width: 1080px;
+      margin: 0 auto;
+      background: var(--paper);
+      padding: 56px 56px 40px;
+      min-height: 100vh;
+      box-shadow: 0 0 0 1px var(--rule);
+    }
+
+    @media (max-width: 900px) {
+      .sheet {
+        padding: 40px 28px 30px;
+      }
+    }
+
+    @media (max-width: 620px) {
+      .sheet {
+        padding: 34px 22px 28px;
+      }
+
+      body {
+        font-size: 17.5px;
+      }
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 1fr 260px;
+      column-gap: 52px;
+      align-items: start;
+    }
+
+    @media (max-width: 780px) {
+      .layout {
+        grid-template-columns: 1fr;
+      }
+
+      .aside {
+        border-left: none !important;
+        border-top: 1px solid var(--rule);
+        padding-left: 0 !important;
+        padding-top: 28px;
+        margin-top: 8px;
+      }
+    }
+
+    .main {
+      min-width: 0;
+    }
+
+    .aside {
+      border-left: 1px solid var(--rule);
+      padding-left: 30px;
+    }
+
+    .aside-block {
+      margin-bottom: 36px;
+    }
+
+    .aside-block:last-child {
+      margin-bottom: 0;
+    }
+
+    .aside-h {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--ink-soft);
+      margin: 0 0 14px;
+      padding-bottom: 6px;
+      border-bottom: 1px solid var(--rule);
+    }
+
+    .post-list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    .post-list li {
+      margin-bottom: 14px;
+    }
+
+    .post-list li:last-child {
+      margin-bottom: 0;
+    }
+
+    .post-list .date {
+      display: block;
+      font-size: 11.5px;
+      color: var(--ink-soft);
+      margin-bottom: 2px;
+    }
+
+    .post-list a {
+      font-size: 15px;
+      line-height: 1.35;
+      display: inline-block;
+    }
+
+    .link-list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      font-size: 15px;
+    }
+
+    .link-list li {
+      padding: 6px 0;
+      border-bottom: 1px solid var(--rule);
+    }
+
+    .link-list li:last-child {
+      border-bottom: none;
+    }
+
+    a {
+      color: var(--accent);
+      text-decoration: underline;
+      text-decoration-color: var(--accent-dim);
+      text-underline-offset: 2px;
+    }
+
+    a:hover {
+      color: var(--mark);
+    }
+
+    a:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
+
+    .mono {
+      font-family: 'JetBrains Mono', ui-monospace, monospace;
+    }
+
+    /* ---- cabeçalho tipo ficha de documento ---- */
+    .doc-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      font-size: 12.5px;
+      color: var(--ink-soft);
+      letter-spacing: 0.02em;
+      border-bottom: 1px solid var(--rule);
+      padding-bottom: 10px;
+      margin-bottom: 40px;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    h1 {
+      font-size: 44px;
+      font-weight: 600;
+      margin: 0 0 6px;
+      line-height: 1.1;
+    }
+
+    .tagline {
+      font-size: 14px;
+      color: var(--ink-soft);
+      margin: 0 0 22px;
+    }
+
+    .rule-double {
+      border: none;
+      border-top: 3px double var(--ink);
+      margin: 0 0 22px;
+    }
+
+    .byline {
+      display: grid;
+      grid-template-columns: 110px 1fr;
+      row-gap: 4px;
+      column-gap: 14px;
+      font-size: 14.5px;
+      margin-bottom: 34px;
+    }
+
+    .byline dt {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12.5px;
+      color: var(--ink-soft);
+      padding-top: 2px;
+    }
+
+    .byline dd {
+      margin: 0;
+    }
+
+    .abstract {
+      font-style: italic;
+      font-size: 17px;
+      color: var(--ink);
+      border-left: 2px solid var(--rule);
+      padding-left: 20px;
+      margin: 0 0 44px;
+    }
+
+    section {
+      margin-bottom: 40px;
+    }
+
+    h2 {
+      font-size: 15px;
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 500;
+      color: var(--ink);
+      margin: 0 0 16px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--rule);
+    }
+
+    h2 .n {
+      color: var(--accent);
+      margin-right: 8px;
+    }
+
+    h3 {
+      font-size: 17px;
+      font-weight: 600;
+      margin: 22px 0 4px;
+    }
+
+    h3 .n {
+      color: var(--ink-soft);
+      font-weight: 400;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 14px;
+      margin-right: 6px;
+    }
+
+    h3:first-child {
+      margin-top: 0;
+    }
+
+    p {
+      margin: 0 0 14px;
+    }
+
+    .stack-grid {
+      display: grid;
+      grid-template-columns: 150px 1fr;
+      row-gap: 12px;
+      column-gap: 14px;
+      font-size: 15.5px;
+    }
+
+    .stack-grid dt {
+      color: var(--ink-soft);
+      font-size: 13px;
+      font-family: 'JetBrains Mono', monospace;
+      padding-top: 2px;
+    }
+
+    .stack-grid dd {
+      margin: 0;
+    }
+
+    code,
+    .tech {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.86em;
+      background: var(--code-bg);
+      padding: 1px 5px;
+      border-radius: 2px;
+    }
+
+    sup.fn {
+      font-family: 'JetBrains Mono', monospace;
+      color: var(--mark);
+    }
+
+    sup.fn a {
+      color: var(--mark);
+      text-decoration: none;
+    }
+
+    .refs {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      font-size: 15.5px;
+    }
+
+    .refs li {
+      display: flex;
+      gap: 10px;
+      padding: 8px 0;
+      border-bottom: 1px solid var(--rule);
+    }
+
+    .refs li:last-child {
+      border-bottom: none;
+    }
+
+    .refs .tag {
+      font-family: 'JetBrains Mono', monospace;
+      color: var(--ink-soft);
+      flex-shrink: 0;
+    }
+
+    .refs .placeholder {
+      color: var(--ink-soft);
+      font-size: 13px;
+      display: block;
+      margin-top: 2px;
+    }
+
+    .footnotes {
+      font-size: 13px;
+      color: var(--ink-soft);
+      border-top: 1px solid var(--rule);
+      padding-top: 14px;
+      margin-bottom: 34px;
+    }
+
+    .footnotes ol {
+      margin: 0;
+      padding-left: 20px;
+    }
+
+    .footnotes li {
+      margin-bottom: 6px;
+    }
+
+    footer {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      color: var(--ink-soft);
+      display: flex;
+      justify-content: space-between;
+      border-top: 1px solid var(--rule);
+      padding-top: 14px;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    @media print {
+      body {
+        background: #fff;
+      }
+
+      .sheet {
+        box-shadow: none;
+        max-width: 100%;
+      }
+    }
+  </style>
 </head>
 
 <body>
-  <div class="body-layout">
+  <div class="sheet">
 
-    <div class="container">
-      <header class="site-header">
-        <pre><code>
-  ▐▘            
-  ▜▘█▌▌▌▌▌▛▌▛▌█▌
-  ▐ ▙▖▚▘▙▌▌▌▙▌▙▖
-            ▄▌  </code></pre>
-        <nav aria-label="Primary">
-          <a href="https://github.com/fevunge"><code>github</code></a>
-          <a href="https://linkedin.com/in/fevunge"><code>linkedin</code></a>
-          <a href="https://dev.to/fevunge"><code>dev.to</code></a>
-        </nav>
-      </header>
-      <hr>
-
-      <section class="intro" aria-label="Introduction"></section>
-        <p>
-          Welcome to my personal website, where I share my journey as a software engineer and explore the fascinating world of technology.
-          Here, you'll find a collection of my projects, articles, and insights on various topics related to programming, software development, and more.
-          Feel free to explore and join me on this exciting adventure!
-        </p>
-      </section>
-      <hr>
-      <section class="hover" aria-label="Featured posts">
-        <div class="news">
-          <h4># The BlackHole Roadmap</h4>
-          <p>
-            A journey through the universe, heading toward the center of a black hole and then letting yourself be swallowed up by it—that’s version 02.26.
-            But first, you’ll have to complete a lot of orbits before reaching the center;
-            some  orbits are very hard to escape from, while others are very hard to enter, but you can do it. make it Have fun, explorer!
-          </p>
-          <a href="./blackhole/index.html"><code>the::link</code></a>
-        </div>
-        <div class="news">
-          <h4># The Talk about numbers!</h4>
-          <p>Numbers are abstract concepts. We can't hold them in our hands, nor can we draw them exactly as they are. What we do instead is represent them using symbols. Throughout history, we've used several different systems to write numbers.</p>
-          <a href="https://dev.to/fevunge/talking-about-numbers-1h49"><code>the::link</code></a>
-        </div>
-        <div class="news">
-          <h4># The Tmux Config</h4>
-          <p>tmux is a terminal multiplexer: it enables a number of terminals to be created, accessed, and controlled from a single screen. tmux may be detached from a screen and continue running in the background, then later reattached.</p>
-          <a href="./config/tmux.html"><code>the::link</code></a>
-        </div>
-             <div class="news">
-          <h4># The Split</h4>
-          <p>This is the shortened version of the split version. It is intended for cases where a more compact format is sufficient. Use it with caution, as it may not include all the details or safeguards present in the full version.</p>
-          <a href="./code/split.html"><code>the::link</code></a>
-        </div>
-      </section>
-      <hr>
+    <div class="doc-meta">
+      <span class="mono">~/fevunge/portfolio</span>
+      <span class="mono">build 2026.09</span>
     </div>
 
-    <aside id="devto-aside" aria-label="Dev.to articles">
-      <h3 class="section-title"><i class="fa-brands fa-dev" aria-hidden="true"></i> articles</h3>
-      <div id="devto-list" aria-live="polite" aria-busy="true">
-        <div class="devto-card loading">loading...</div>
+    <h1>fevunge</h1>
+    <p class="tagline mono">notas de um developer de sistemas — backend, arquitetura e baixo nível</p>
+
+    <hr class="rule-double">
+
+    <dl class="byline">
+      <dt>Área</dt>
+      <dd>Sistemas backend e arquitetura de software</dd>
+      <dt>Em curso</dt>
+      <dd><span class="tech">C++98</span> na 42 School e um microsserviço em <span class="tech">Java/Spring Boot</span>
+      </dd>
+      <dt>Ambiente</dt>
+      <dd>Arch Linux com i3wm</dd>
+    </dl>
+
+    <p class="abstract">
+      Este documento reúne, de forma breve, o trabalho e os interesses de fevunge — um developer de abordagem metódica,
+      mais confortável a decompor um problema do que a assumi-lo resolvido à primeira tentativa. O percurso atual cruza
+      dois mundos: a disciplina de baixo nível do C++98 na 42 School e a arquitetura de serviços backend em Java, com
+      uma curiosidade contínua por sistemas embutidos, cibersegurança, machine learning e computação gráfica.
+    </p>
+
+    <div class="layout">
+      <div class="main">
+
+        <section>
+          <h2><span class="n">1.</span>Stack e ferramentas</h2>
+          <dl class="stack-grid">
+            <dt>Linguagens</dt>
+            <dd><span class="tech">C++98</span> · <span class="tech">Java</span></dd>
+            <dt>Arquitetura</dt>
+            <dd><span class="tech">Spring Boot</span>, <span class="tech">Spring Data JPA / Hibernate</span>,
+              arquitetura hexagonal (Ports &amp; Adapters)</dd>
+            <dt>Terminal</dt>
+            <dd><span class="tech">tmux</span>, <span class="tech">zsh</span> + oh-my-zsh, <span
+                class="tech">vim</span>, <span class="tech">starship</span></dd>
+            <dt>Infra</dt>
+            <dd><span class="tech">Docker</span>, <span class="tech">nginx</span>, <span class="tech">git</span>, <span
+                class="tech">openssh</span></dd>
+            <dt>Desktop</dt>
+            <dd>Arch Linux puro, i3wm, Quickshell</dd>
+          </dl>
+        </section>
+
+        <section>
+          <h2><span class="n">2.</span>Projetos em curso</h2>
+
+          <h3><span class="n">2.1</span>core_service — zfleet</h3>
+          <p>Microsserviço em Java/Spring Boot construído sobre arquitetura hexagonal, com as camadas de domínio,
+            aplicação e adaptadores mantidas estritamente separadas. Inclui hierarquia própria de exceções, respostas de
+            erro estruturadas, remoção lógica (<code>deletedAt</code>) e merge condicional de campos nas atualizações.
+          </p>
+
+          <h3><span class="n">2.2</span>Currículo C++98 — 42 School</h3>
+          <p>Percurso pelos módulos de C++98, atualmente no módulo de herança — a família <code>ClapTrap</code> /
+            <code>ScavTrap</code> / <code>FragTrap</code> / <code>DiamondTrap</code>. Foco na forma canónica ortodoxa
+            (regra dos três), semântica de referências versus ponteiros, e correção de <code>const</code> nos getters.
+          </p>
+
+          <h3><span class="n">2.3</span>Template de repositório</h3>
+          <p>Um repositório-modelo com ficheiros padronizados — <code>TODO.md</code>, <code>Makefile</code>, guia de
+            contribuição, changelog e pipelines de CI — incluindo instruções próprias para orientar o comportamento do
+            GitHub Copilot em projetos derivados.</p>
+        </section>
+
+        <section>
+          <h2><span class="n">3.</span>Notas de metodologia</h2>
+          <p>O trabalho tende a seguir o mesmo princípio em qualquer contexto: analisar antes de concluir, e separar
+            claramente uma falha confirmada de uma observação de estilo.<sup class="fn"><a href="#fn1">1</a></sup> Essa
+            disciplina vem do hábito de rever o próprio código secção a secção antes de o dar como terminado.</p>
+        </section>
+
+        <section>
+          <h2><span class="n">4.</span>Contacto</h2>
+          <ul class="refs">
+            <li>
+              <span class="tag">[1]</span>
+              <span>Email
+                <span class="placeholder">teu-email@exemplo.com — substituir pelo endereço real</span>
+              </span>
+            </li>
+            <li>
+              <span class="tag">[2]</span>
+              <span>GitHub
+                <span class="placeholder">github.com/teu-usuario — substituir pelo perfil real</span>
+              </span>
+            </li>
+            <li>
+              <span class="tag">[3]</span>
+              <span>LinkedIn
+                <span class="placeholder">linkedin.com/in/teu-usuario — substituir pelo perfil real</span>
+              </span>
+            </li>
+          </ul>
+        </section>
+
+        <div class="footnotes">
+          <ol>
+            <li id="fn1">Abordagem aplicada, por exemplo, numa auditoria estruturada em sete passagens sobre uma classe
+              do currículo de C++98, com achados classificados por probabilidade e impacto.</li>
+          </ol>
+        </div>
+
       </div>
-    </aside>
+
+      <aside class="aside">
+        <div class="aside-block">
+          <h3 class="aside-h">Notas</h3>
+          <ul class="post-list">
+            <li>
+              <span class="mono date">2026.09</span>
+              <a href="#">Título do primeiro post — substituir</a>
+            </li>
+            <li>
+              <span class="mono date">2026.08</span>
+              <a href="#">Título do segundo post — substituir</a>
+            </li>
+            <li>
+              <span class="mono date">2026.07</span>
+              <a href="#">Título do terceiro post — substituir</a>
+            </li>
+          </ul>
+        </div>
+
+        <div class="aside-block">
+          <h3 class="aside-h">Outros links</h3>
+          <ul class="link-list">
+            <li><a href="#">GitHub</a></li>
+            <li><a href="#">Currículo (PDF)</a></li>
+            <li><a href="#">RSS</a></li>
+          </ul>
+        </div>
+      </aside>
+
+    </div>
+
+    <footer>
+      <span>página estática — sem scripts, sem tracking</span>
+      <span>~/fevunge/portfolio</span>
+    </footer>
 
   </div>
-
-  <script src="js/devto.js" defer></script>
 </body>
-
-</html>
